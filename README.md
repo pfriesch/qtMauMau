@@ -1,0 +1,4 @@
+qtMauMau
+========
+
+MauMau in Qt
