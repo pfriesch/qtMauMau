@@ -40,8 +40,8 @@ void Settings::setProperty(const QString key, const QString value){
  * @param key
  * @return
  */
-QVariant Settings::getProperty(const QString key){
-    return this->settings->value(key,"");
+QString Settings::getProperty(const QString key){
+    return this->settings->value(key,"").toString();
 }
 
 void Settings::showAllKeys(){

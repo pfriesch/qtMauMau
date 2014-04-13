@@ -12,14 +12,16 @@ TARGET = qtMauMau
 TEMPLATE = app
 CONFIG += c++11
 
+QT += network
+
 SOURCES += main.cpp\
         mainwindow.cpp \
-    network/networkmanager.cpp \
-    settings.cpp
+    settings.cpp \
+    network/server.cpp
 
 HEADERS  += mainwindow.h \
-    network/networkmanager.h \
-    settings.h
+    settings.h \
+    network/server.h
 
 FORMS    += mainwindow.ui
 

@@ -14,7 +14,7 @@ class Settings : public QObject
 public:
     static Settings* getInstance();
     void setProperty(QString key, QString value);
-    QVariant getProperty(QString key);
+    QString getProperty(QString key);
     void showAllKeys();
     ~Settings();
 
