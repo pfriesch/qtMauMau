@@ -17,11 +17,13 @@ QT += network
 SOURCES += main.cpp\
         mainwindow.cpp \
     settings.cpp \
-    network/server.cpp
+    network/server.cpp \
+    network/client.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
-    network/server.h
+    network/server.h \
+    network/client.h
 
 FORMS    += mainwindow.ui
 
