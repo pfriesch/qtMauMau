@@ -34,9 +34,13 @@ int main(int argc, char *argv[])
 {
 
       QApplication a(argc, argv);
-
+      if (QFile::exists("maumau-log.txt")) {
+          QFile::remove("maumau-log.txt");
+        }
       //Lets register our custom debug handler, before we start
       qInstallMessageHandler(customMessageHandler);
+
+      qDebug()<<"Test";
 
       MainWindow w;
       w.show();
