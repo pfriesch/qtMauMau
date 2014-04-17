@@ -1,24 +1,17 @@
-#ifndef CLIENT_H
-#define CLIENT_H
-
+#include <QtNetwork>
 #include <QObject>
-#include <QHostAddress>
+#include <QString>
 #include <QTcpSocket>
 
-class Client : public QObject
+class Client: public QObject
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    explicit Client(QObject *parent = 0);
-    void start(QString address, quint16 port);
-    ~Client();
-
+  Client(QObject* parent = 0);
+  ~Client();
+  void setupConnection(QHostAddress address);
+public slots:
+  void write();
 private:
   QTcpSocket client;
-signals:
-
-public slots:
-  void startTransfer();
 };
-
-#endif // CLIENT_H

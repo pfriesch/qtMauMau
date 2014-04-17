@@ -1,37 +1,38 @@
 #include "server.h"
+#include <iostream>
+#include <settings.h>
 
 Server::Server(QObject* parent): QObject(parent)
 {
-    //Everytime a client connects, read() is called
-    connect(&server, SIGNAL(newConnection()),this, SLOT(read()));
+  connect(&server, SIGNAL(newConnection()),this, SLOT(acceptConnection()));
 
-    quint16 port = Settings::getInstance()->getProperty("network/port").toInt();
+  int port(Settings::getInstance()->getProperty("network/port").toInt());
+  server.listen(QHostAddress::Any, port);
+  qDebug() << "Server is now listening";
 
-    if(!server.listen(QHostAddress::Any, port))
-    {
-        qDebug() << "Server could not start";
-    }
-    else
-    {
-        qDebug() << "Server started!";
-    }
 }
 
-void Server::read(){
-    QTcpSocket *socket = server.nextPendingConnection();
-    char buffer[1024] = {0};
-    socket->read(buffer, socket->bytesAvailable());
-    qDebug() << buffer;
-    socket->close();
+void Server::acceptConnection()
+{
+  qDebug() << "Server acceptedConection";
+  client = server.nextPendingConnection();
+
+  connect(client, SIGNAL(readyRead()),this, SLOT(startRead()));
 }
 
-void Server::write(){
-    QTcpSocket *socket = server.nextPendingConnection();
-    QString message("response");
-    socket->write(message.toStdString().c_str(),message.length());
+void Server::startRead()
+{
+  qDebug() << "start reading from Client";
+
+  char buffer[1024] = {0};
+  client->read(buffer, client->bytesAvailable());
+  qDebug() << buffer;
+  //we have to write the buffer to an object or something,
+  //not implemented yet!!
+  client->close();
 }
 
-
-Server::~Server(){
-    server.close();
+Server::~Server()
+{
+  server.close();
 }

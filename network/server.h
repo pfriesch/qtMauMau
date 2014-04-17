@@ -1,28 +1,18 @@
-#ifndef SERVER_H
-#define SERVER_H
-
+#include <QtNetwork>
 #include <QObject>
-#include <QtNetwork/QTcpServer>
-#include <QtNetwork/QTcpSocket>
-#include "settings.h"
+#include <QTcpServer>
+#include <QTcpSocket>
 
-class Server : public QObject
+class Server: public QObject
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    //the server should send and get messages, we have to build a client and a server together.
-    explicit Server(QObject * parent = 0);
-    Server(void);
-    void write();
-    bool listen();
-    ~Server();
-
-private:
-    QTcpServer server;
-signals:
-
+  Server(QObject * parent = 0);
+  ~Server();
 public slots:
-  void read();
+  void acceptConnection();
+  void startRead();
+private:
+  QTcpServer server;
+  QTcpSocket* client;
 };
-
-#endif // SERVER_H

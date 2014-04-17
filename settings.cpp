@@ -12,7 +12,7 @@ Settings::Settings(QObject *parent) : QObject(parent)
     }
     else {
         this->settings = new QSettings();
-        qDebug() << "Error, can't read config file";
+        qCritical() << "Error, can't read config file";
     }
 }
 
