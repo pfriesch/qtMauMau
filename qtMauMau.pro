@@ -10,11 +10,40 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = qtMauMau
 TEMPLATE = app
+CONFIG += c++11
 
+QT += network
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    settings.cpp \
+    network/server.cpp \
+    network/client.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    settings.h \
+    network/server.h \
+    network/client.h
 
 FORMS    += mainwindow.ui
+
+OTHER_FILES += \
+    config.ini
+
+# Copy ini file post build
+win32 {
+    DESTDIR_WIN = $${DESTDIR}
+    DESTDIR_WIN ~= s,/,\\,g
+    PWD_WIN = $${PWD}
+    PWD_WIN ~= s,/,\\,g
+    for(FILE, OTHER_FILES){
+        QMAKE_POST_LINK += $$quote(cmd /c copy /y $${PWD_WIN}\\$${FILE} $${DESTDIR_WIN}$$escape_expand(\\n\\t))
+    }
+}
+unix {
+    for(FILE, OTHER_FILES){
+        QMAKE_POST_LINK += $$quote(cp $${PWD}/$${FILE} $${DESTDIR}$$escape_expand(\\n\\t))
+}
+}
+
+
