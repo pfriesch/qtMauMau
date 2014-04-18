@@ -25,7 +25,10 @@ HEADERS  += mainwindow.h \
     network/server.h \
     network/client.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
+
+
+TRANSLATIONS    = qtmaumau_de.ts \
 
 OTHER_FILES += \
     config.ini

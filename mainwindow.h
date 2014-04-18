@@ -16,7 +16,7 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    void setupMenuBar();
 };
 
 #endif // MAINWINDOW_H
