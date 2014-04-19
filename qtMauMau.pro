@@ -18,12 +18,20 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     settings.cpp \
     network/server.cpp \
-    network/client.cpp
+    network/client.cpp \
+    gameLogic/Card.cpp \
+    gameLogic/Deck.cpp \
+    gameLogic/player.cpp \
+    gameLogic/gamecontroller.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
     network/server.h \
-    network/client.h
+    network/client.h \
+    gameLogic/Card.h \
+    gameLogic/Deck.h \
+    gameLogic/player.h \
+    gameLogic/gamecontroller.h
 
 FORMS    +=
 
@@ -31,6 +39,7 @@ FORMS    +=
 TRANSLATIONS    = qtmaumau_de.ts \
 
 OTHER_FILES += \
+    config.ini \
     config.ini
 
 # Copy ini file post build
