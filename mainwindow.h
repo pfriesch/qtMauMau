@@ -17,6 +17,7 @@ public:
 
 private:
     void setupMenuBar();
+    void setupGraphicsView();
 };
 
 #endif // MAINWINDOW_H

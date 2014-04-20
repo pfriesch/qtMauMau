@@ -18,12 +18,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     settings.cpp \
     network/server.cpp \
-    network/client.cpp
+    network/client.cpp \
+    gui/playground.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
     network/server.h \
-    network/client.h
+    network/client.h \
+    gui/playground.h
 
 FORMS    +=
 

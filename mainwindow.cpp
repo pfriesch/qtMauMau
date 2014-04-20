@@ -2,13 +2,32 @@
 #include <QAction>
 #include <QMenuBar>
 #include <QAction>
+#include <QGraphicsView>
+#include <QBrush>
+#include "gui/playground.h"
+#include "settings.h"
+
 MainWindow::MainWindow(QWidget *parent)
 {
     setupMenuBar();
+    setupGraphicsView();
 }
 
 /**
- * Sets up the Menubar for the MainWindow
+ * Setup the View with Cards
+ * @brief MainWindow::setupGraphicsView
+ */
+void MainWindow::setupGraphicsView(){
+    Playground *scene = new Playground();
+    QGraphicsView *view = new QGraphicsView(this);
+    scene->setSceneRect(0, 0, Settings::getInstance()->getProperty("common/width").toInt(),Settings::getInstance()->getProperty("common/height").toInt());
+    view->setScene(scene);
+    setCentralWidget(view);
+    scene->init();
+}
+
+/**
+ * Setup the Menubar for the MainWindow
  * @brief MainWindow::setupMenuBar
  */
 void MainWindow::setupMenuBar(){
