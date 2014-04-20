@@ -21,8 +21,9 @@ SOURCES += main.cpp\
     network/client.cpp \
     gameLogic/Card.cpp \
     gameLogic/Deck.cpp \
-    gameLogic/player.cpp \
-    gameLogic/gamecontroller.cpp
+    gameLogic/gamecontroller.cpp \
+    gameLogic/player.old.cpp \
+    gameLogic/player.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
@@ -30,8 +31,9 @@ HEADERS  += mainwindow.h \
     network/client.h \
     gameLogic/Card.h \
     gameLogic/Deck.h \
-    gameLogic/player.h \
-    gameLogic/gamecontroller.h
+    gameLogic/gamecontroller.h \
+    gameLogic/player.old.h \
+    gameLogic/player.h
 
 FORMS    +=
 

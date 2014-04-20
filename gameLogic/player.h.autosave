@@ -10,8 +10,11 @@ public:
   explicit Player(QObject *parent = 0);
 
 signals:
+  void playCard(const Card &card);
+  void  
 
 public slots:
+  void doTurn();
 
 };
 

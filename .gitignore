@@ -22,3 +22,8 @@
 
 # QT Files
 *.pro.user
+
+# QT Creator Files
+*.autosave
+
+
