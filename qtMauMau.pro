@@ -22,7 +22,6 @@ SOURCES += main.cpp\
     gameLogic/Card.cpp \
     gameLogic/Deck.cpp \
     gameLogic/gamecontroller.cpp \
-    gameLogic/player.old.cpp \
     gameLogic/player.cpp
 
 HEADERS  += mainwindow.h \
@@ -32,7 +31,6 @@ HEADERS  += mainwindow.h \
     gameLogic/Card.h \
     gameLogic/Deck.h \
     gameLogic/gamecontroller.h \
-    gameLogic/player.old.h \
     gameLogic/player.h
 
 FORMS    +=
