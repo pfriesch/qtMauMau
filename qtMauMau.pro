@@ -19,23 +19,34 @@ SOURCES += main.cpp\
     settings.cpp \
     network/server.cpp \
     network/client.cpp \
+    gameLogic/gamecontroller.cpp \
+    gameLogic/player.cpp \
+    gameLogic/deck.cpp \
+    gameLogic/card.cpp \
     gui/playground.cpp \
     gui/cardviewcontroller.cpp \
     gui/optiondialog.cpp
+
 
 HEADERS  += mainwindow.h \
     settings.h \
     network/server.h \
     network/client.h \
+    gameLogic/gamecontroller.h \
+    gameLogic/player.h \
+    gameLogic/card.h \
+    gameLogic/deck.h \
     gui/playground.h \
     gui/cardviewcontroller.h \
     gui/optiondialog.h
+
 
 FORMS    += \
     gui/optiondialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \
+
 
 # Decide if its Debug or Release
 CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/release
