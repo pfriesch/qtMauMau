@@ -23,6 +23,9 @@ SOURCES += main.cpp\
     gameLogic/player.cpp \
     gameLogic/deck.cpp \
     gameLogic/card.cpp
+    gui/playground.cpp \
+    gui/cardviewcontroller.cpp
+
 
 HEADERS  += mainwindow.h \
     settings.h \
@@ -32,30 +35,24 @@ HEADERS  += mainwindow.h \
     gameLogic/player.h \
     gameLogic/card.h \
     gameLogic/deck.h
+    gui/playground.h \
+    gui/cardviewcontroller.h
+
 
 FORMS    +=
 
 
 TRANSLATIONS    = qtmaumau_de.ts \
 
-OTHER_FILES += \
-    config.ini \
-    config.ini
 
-# Copy ini file post build
-win32 {
-    DESTDIR_WIN = $${DESTDIR}
-    DESTDIR_WIN ~= s,/,\\,g
-    PWD_WIN = $${PWD}
-    PWD_WIN ~= s,/,\\,g
-    for(FILE, OTHER_FILES){
-        QMAKE_POST_LINK += $$quote(cmd /c copy /y $${PWD_WIN}\\$${FILE} $${DESTDIR_WIN}$$escape_expand(\\n\\t))
-    }
-}
-unix {
-    for(FILE, OTHER_FILES){
-        QMAKE_POST_LINK += $$quote(cp $${PWD}/$${FILE} $${DESTDIR}$$escape_expand(\\n\\t))
-}
-}
+# Decide if its Debug or Release
+CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/release
+CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/debug
 
+# Copy images,config etc. in the build folder
+images.path    = $$DESTDIR/img
+images.files   = img/*
+config.path    = $$DESTDIR/
+config.files   = config.ini
+INSTALLS       += images config
 
