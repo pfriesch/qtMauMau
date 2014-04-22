@@ -4,7 +4,7 @@
 #include <QVector>
 #include <algorithm>
 #include <ctime>
-#include "Card.h"
+#include "card.h"
 
 class Deck {
 private:
@@ -15,7 +15,7 @@ public:
 	void pushCard(const Card card);
 	const Card getLast(Deck& deck);
 	const Card back() const;
-	int size() const;
+	//int size() const;
 	bool empty() const;
 	const Card getCard(int index) const;
 	void addCards(QVector<Card> newCards);

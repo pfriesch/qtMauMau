@@ -31,6 +31,7 @@ public:
   cardSuit getSuit() const;
   cardValue getValue() const;
   QString as_string() const;
+  bool operator ==(const Card &card)const;
 };
 
 

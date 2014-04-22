@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QTranslator>
 #include <QTime>
+#include "gameLogic/gamecontroller.h"
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString &message)
 {

@@ -1,4 +1,4 @@
-#include "Deck.h"
+#include "deck.h"
 
 /**
  * Initializes a full cad deck

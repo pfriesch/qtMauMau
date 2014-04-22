@@ -1,4 +1,4 @@
-#include "Card.h"
+#include "card.h"
 
 Card::Card(const cardSuit cSuit, const cardValue cValue) :
 		suit(cSuit), value(cValue) {
@@ -11,6 +11,11 @@ cardSuit Card::getSuit() const {
 cardValue Card::getValue() const {
 	return value;
 }
+
+bool Card::operator ==(const Card &card) const{
+  return ((card.getSuit()==suit))&&(card.getValue()==value);
+}
+
 
 //ostream& operator<<(ostream& output, const Card& card) {
 //	output << card.as_string();
