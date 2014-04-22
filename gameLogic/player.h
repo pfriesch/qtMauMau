@@ -5,25 +5,25 @@
 #include <QVector>
 #include "card.h"
 
-namespace Player {
+
+
+
+
+class Player : public QObject
+{
+  Q_OBJECT
+public:
   enum PlayerType{
     human = 0,
     ai = 1,
     remote = 2
   };
-}
-
-class Player : public QObject
-{
-
-  Q_OBJECT
-
 private:
   Player::PlayerType playerType;
   QVector<Card> *hand;
   QString name;
-  Player& operator = (const Player &Player);
-  void Player(const Player &Player);
+  Player& operator = (const Player &player);
+  Player(const Player &player);
 
 public:
   explicit Player(Player::PlayerType playerType, QString name);

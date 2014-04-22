@@ -8,7 +8,7 @@
 
 class Deck {
 private:
-	QVector<Card> cards;
+	QVector<Card> *cards;
 public:
 	Deck(bool full_deck);
 	void shuffle();
@@ -18,8 +18,8 @@ public:
 	//int size() const;
 	bool empty() const;
 	const Card getCard(int index) const;
-	void addCards(QVector<Card> newCards);
-	QVector<Card> getUnderlyingCards();
+	void addCards(QVector<Card>& newCards);
+	QVector<Card>& getUnderlyingCards();
 };
 
 #endif /* DECK_H_ */

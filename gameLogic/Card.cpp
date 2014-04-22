@@ -1,14 +1,22 @@
 #include "card.h"
 
 Card::Card(const cardSuit cSuit, const cardValue cValue) :
-		suit(cSuit), value(cValue) {
+  suit(cSuit), value(cValue) {
 }
 
-cardSuit Card::getSuit() const {
+Card::Card(const Card &card) : suit(card.getSuit()), value(card.getValue())
+{
+}
+
+Card::Card() : suit(Card::cardSuit(1)), value(Card::cardValue(1))
+{
+}
+
+Card::cardSuit Card::getSuit() const {
 	return suit;
 }
 
-cardValue Card::getValue() const {
+Card::cardValue Card::getValue() const {
 	return value;
 }
 

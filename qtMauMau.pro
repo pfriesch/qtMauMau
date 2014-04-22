@@ -22,9 +22,9 @@ SOURCES += main.cpp\
     gameLogic/gamecontroller.cpp \
     gameLogic/player.cpp \
     gameLogic/deck.cpp \
-    gameLogic/card.cpp
+    gameLogic/card.cpp \
     gui/playground.cpp \
-    gui/cardviewcontroller.cpp
+    gui/cardviewcontroller.cpp \
 
 
 HEADERS  += mainwindow.h \
@@ -34,9 +34,9 @@ HEADERS  += mainwindow.h \
     gameLogic/gamecontroller.h \
     gameLogic/player.h \
     gameLogic/card.h \
-    gameLogic/deck.h
+    gameLogic/deck.h \
     gui/playground.h \
-    gui/cardviewcontroller.h
+    gui/cardviewcontroller.h \
 
 
 FORMS    +=
