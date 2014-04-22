@@ -7,6 +7,7 @@
 #include "gui/playground.h"
 #include "settings.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
 {
     setupMenuBar();
@@ -41,9 +42,15 @@ void MainWindow::setupMenuBar(){
     fileMenu->addAction(startGameMenu);
 
     QAction *optionsMenu = new QAction(QAction::tr("Options"),this);
+
+    optionDialog = new OptionDialog;
+    connect(optionsMenu, SIGNAL(triggered()), optionDialog, SLOT(show()));
+
     fileMenu->addAction(optionsMenu);
 
+
     QAction *exitMenu = new QAction(QAction::tr("Exit"),this);
+    connect(exitMenu, SIGNAL(triggered()), this, SLOT(close()));
     fileMenu->addAction(exitMenu);
 
     //Info Menu

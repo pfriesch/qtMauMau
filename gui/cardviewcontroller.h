@@ -11,7 +11,7 @@ public:
     explicit CardViewController(QObject *parent = 0);
     void initGame(QGraphicsScene *scene);
 signals:
-
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 public slots:
 
 };

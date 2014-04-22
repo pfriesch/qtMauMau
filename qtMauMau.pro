@@ -20,16 +20,19 @@ SOURCES += main.cpp\
     network/server.cpp \
     network/client.cpp \
     gui/playground.cpp \
-    gui/cardviewcontroller.cpp
+    gui/cardviewcontroller.cpp \
+    gui/optiondialog.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
     network/server.h \
     network/client.h \
     gui/playground.h \
-    gui/cardviewcontroller.h
+    gui/cardviewcontroller.h \
+    gui/optiondialog.h
 
-FORMS    +=
+FORMS    += \
+    gui/optiondialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \
@@ -43,5 +46,7 @@ images.path    = $$DESTDIR/img
 images.files   = img/*
 config.path    = $$DESTDIR/
 config.files   = config.ini
-INSTALLS       += images config
+translation.path    = $$DESTDIR/
+translation.files   = qtmaumau_de.qm
+INSTALLS       += images config translation
 
