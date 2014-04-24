@@ -8,18 +8,19 @@
 
 class Deck {
 private:
-	QVector<Card> cards;
+    QVector<Card> cards;
+
 public:
-	Deck(bool full_deck = false);
-	void shuffle();
-	void pushCard(const Card card);
-	const Card getLast(Deck& deck);
-	const Card back() const;
-	//int size() const;
-	bool empty() const;
-	const Card getCard(int index) const;
-	void addCards(QVector<Card>& newCards);
-	QVector<Card>& getUnderlyingCards();
+    Deck(bool full_deck = false);
+    void shuffle();
+    void pushCard(const Card card);
+    const Card getLast(Deck& deck);
+    const Card back() const;
+    //int size() const;
+    bool empty() const;
+    const Card getCard(int index) const;
+    void addCards(QVector<Card>& newCards);
+    QVector<Card>& getUnderlyingCards();
 };
 
 #endif /* DECK_H_ */
