@@ -9,9 +9,9 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <QTime>
 
-
-void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString &message)
+void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
     QString txt;
     QTime time;
@@ -22,10 +22,10 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
         break;
     case QtWarningMsg:
         txt = QString("Warning - %1: %2").arg(time.currentTime().toString()).arg(message);
-    break;
+        break;
     case QtCriticalMsg:
         txt = QString("Critical - %1: %2").arg(time.currentTime().toString()).arg(message);
-    break;
+        break;
     case QtFatalMsg:
         txt = QString("Fatal - %1: %2").arg(time.currentTime().toString()).arg(message);
         abort();
@@ -37,26 +37,24 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     ts << txt << endl;
 }
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
+    QApplication app(argc, argv);
 
-      QApplication app(argc, argv);
+    if (QFile::exists("maumau-log.txt")) {
+        QFile::remove("maumau-log.txt");
+    }
 
-      if (QFile::exists("maumau-log.txt")) {
-          QFile::remove("maumau-log.txt");
-      }
+    //This should be changeable in the option menu
+    QTranslator translator;
+    translator.load("qtmaumau_de");
+    app.installTranslator(&translator);
 
-      //This should be changeable in the option menu
-      QTranslator translator;
-      translator.load("qtmaumau_de");
-      app.installTranslator(&translator);
+    //Lets register our custom debug handler, before we start
+    qInstallMessageHandler(customMessageHandler);
 
-      //Lets register our custom debug handler, before we start
-      qInstallMessageHandler(customMessageHandler);
+    MainWindow window;
+    window.show();
 
-      MainWindow window;
-      window.show();
-
-      return app.exec();
+    return app.exec();
 }

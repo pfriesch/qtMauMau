@@ -4,16 +4,15 @@
 #include <QObject>
 #include <QGraphicsScene>
 
-class CardViewController : public QObject
-{
+class CardViewController : public QObject {
     Q_OBJECT
 public:
-    explicit CardViewController(QObject *parent = 0);
-    void initGame(QGraphicsScene *scene);
+    explicit CardViewController(QObject* parent = 0);
+    void initGame(QGraphicsScene* scene);
 signals:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-public slots:
-
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+public
+slots:
 };
 
 #endif // CARDVIEWCONTROLLER_H

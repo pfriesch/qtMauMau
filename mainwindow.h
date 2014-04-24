@@ -8,19 +8,19 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
-private slots:
+private
+slots:
 
 private:
     void setupMenuBar();
     void setupGraphicsView();
-    OptionDialog *optionDialog;
+    OptionDialog* optionDialog;
 };
 
 #endif // MAINWINDOW_H

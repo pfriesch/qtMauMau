@@ -1,16 +1,16 @@
 #include "settings.h"
 
-Settings *instance;
+Settings* instance;
 // config.ini should store all the additional configurations
 const QString configPath("config.ini");
 
-Settings::Settings(QObject *parent) : QObject(parent)
+Settings::Settings(QObject* parent)
+    : QObject(parent)
 {
     QFile configFile(configPath);
-    if(configFile.exists()){
+    if (configFile.exists()) {
         this->settings = new QSettings(configFile.fileName(), QSettings::IniFormat);
-    }
-    else {
+    } else {
         this->settings = new QSettings();
         qCritical() << "Error, can't read config file";
     }
@@ -22,15 +22,17 @@ Settings::Settings(QObject *parent) : QObject(parent)
  * @brief Settings::getInstance
  * @return
  */
-Settings* Settings::getInstance(){
-    if(!instance){
+Settings* Settings::getInstance()
+{
+    if (!instance) {
         instance = new Settings();
     }
     return instance;
 }
 
-void Settings::setProperty(const QString key, const QString value){
-    settings->setProperty(key.toStdString().c_str(),value);
+void Settings::setProperty(const QString key, const QString value)
+{
+    settings->setProperty(key.toStdString().c_str(), value);
 }
 
 /**
@@ -40,17 +42,20 @@ void Settings::setProperty(const QString key, const QString value){
  * @param key
  * @return
  */
-QString Settings::getProperty(const QString key){
-    return this->settings->value(key,"").toString();
+QString Settings::getProperty(const QString key)
+{
+    return this->settings->value(key, "").toString();
 }
 
-void Settings::showAllKeys(){
-    for( QString key : settings->allKeys()){
+void Settings::showAllKeys()
+{
+    for (QString key : settings->allKeys()) {
         qDebug() << key;
     }
 }
 
-Settings::~Settings(){
+Settings::~Settings()
+{
     delete settings;
     delete instance;
 }

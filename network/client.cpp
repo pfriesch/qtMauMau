@@ -2,30 +2,31 @@
 #include <QHostAddress>
 #include <settings.h>
 
-Client::Client(QObject* parent): QObject(parent)
+Client::Client(QObject* parent)
+    : QObject(parent)
 {
-  connect(&client, SIGNAL(connected()),this, SLOT(write()));
+    connect(&client, SIGNAL(connected()), this, SLOT(write()));
 }
 
 void Client::setupConnection(QHostAddress address)
 {
-  int port(Settings::getInstance()->getProperty("network/port").toInt());
+    int port(Settings::getInstance()->getProperty("network/port").toInt());
 
-  client.connectToHost(address, port);
+    client.connectToHost(address, port);
 
-  if(client.error()){
-    qCritical() << client.error();
-    qCritical() << client.errorString();
-  }
+    if (client.error()) {
+        qCritical() << client.error();
+        qCritical() << client.errorString();
+    }
 }
 
 void Client::write()
 {
-  //write HelloWorld is just a dummy
-  client.write("Hello, world", 13);
+    //write HelloWorld is just a dummy
+    client.write("Hello, world", 13);
 }
 
 Client::~Client()
 {
-  client.close();
+    client.close();
 }

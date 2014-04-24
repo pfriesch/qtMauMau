@@ -5,7 +5,6 @@
  */
 Deck::Deck(bool full_deck)
 {
-
     if (full_deck) {
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j <= 8; j++) {
@@ -14,12 +13,29 @@ Deck::Deck(bool full_deck)
         }
     }
 }
+
+/*
+ * http://bost.ocks.org/mike/shuffle/
+ *
+ */
 void Deck::shuffle()
 {
     std::time_t t;
     time(&t);
     srand((unsigned int)t);
-    std::random_shuffle(cards.begin(), cards.end());
+
+//    std::random_shuffle(cards.begin(), cards.end());
+  int m = cards.length();
+  Card temp;
+  int i;
+  while (m) {
+      i = (rand() * m--);
+      temp = cards[m];
+      cards[m] = cards[i];
+      cards[i] = temp;
+
+    }
+
 }
 
 //int Deck::size() const {
@@ -65,7 +81,7 @@ const Card Deck::getCard(int index) const
 
 QVector<Card>& Deck::getUnderlyingCards()
 {
-    QVector<Card> *underlying_cards = new QVector<Card>;
+    QVector<Card>* underlying_cards = new QVector<Card>;
     *underlying_cards << cards;
     underlying_cards->pop_back();
     cards.erase(cards.begin(), cards.end() - 1);
