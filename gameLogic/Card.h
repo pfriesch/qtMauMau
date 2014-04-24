@@ -7,10 +7,10 @@
 class Card {
 public:
   enum cardSuit {
-    HEARTS = 1,
-        DIAMONDS = 2,
-        CLUBS = 3,
-        SPADES = 4,
+    HEARTS = 0,
+        DIAMONDS = 1,
+        CLUBS = 2,
+        SPADES = 3,
   };
   enum cardValue {
     SEVEN = 1,

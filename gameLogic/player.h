@@ -20,14 +20,13 @@ public:
   };
 private:
   Player::PlayerType playerType;
-  QVector<Card> *hand;
+  QVector<Card> hand;
   QString name;
-  Player& operator = (const Player &player);
-  Player(const Player &player);
+
 
 public:
   explicit Player(Player::PlayerType playerType, QString name);
-  virtual ~Player();
+
   void reciveCard(const Card &card);
   void dropCard(const Card &card);
 

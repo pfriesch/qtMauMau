@@ -7,7 +7,7 @@ Deck::Deck(bool full_deck) {
   if (full_deck) {
       for (int i = 0; i < 4; i++) {
           for (int j = 1; j <= 8; j++) {
-              cards->push_back(Card(Card::cardSuit(i), Card::cardValue(j)));
+              cards.push_back(Card(Card::cardSuit(i), Card::cardValue(j)));
             }
         }
     }
@@ -16,7 +16,7 @@ void Deck::shuffle() {
   std::time_t t;
   time(&t);
   srand((unsigned int) t);
-  std::random_shuffle(cards->begin(), cards->end());
+  std::random_shuffle(cards.begin(), cards.end());
 }
 
 //int Deck::size() const {
@@ -24,7 +24,7 @@ void Deck::shuffle() {
 //}
 
 void Deck::pushCard(const Card card) {
-  cards->push_back(card);
+  cards.push_back(card);
 }
 
 /**
@@ -39,32 +39,32 @@ const Card Deck::getLast(Deck& dropped_cards) {
   if (this->empty()) {
       this->addCards(dropped_cards.getUnderlyingCards());
     }
-  Card returned_card = cards->back();
-  cards->pop_back();
+  Card returned_card = cards.back();
+  cards.pop_back();
   return returned_card;
 }
 
 const Card Deck::back() const {
-  return cards->back();
+  return cards.back();
 }
 
 bool Deck::empty() const {
-  return cards->empty();
+  return cards.empty();
 }
 const Card Deck::getCard(int index) const {
-  return cards->at(index);
+  return cards.at(index);
 }
 
 QVector<Card>& Deck::getUnderlyingCards() {
-  QVector<Card> *underlying_cards = new QVector<Card>;
-      *underlying_cards << *cards;
-  underlying_cards->pop_back();
-  cards->erase(cards->begin(), cards->end() - 1);
-  return *underlying_cards;
+  QVector<Card> underlying_cards;
+      underlying_cards << cards;
+  underlying_cards.pop_back();
+  cards.erase(cards.begin(), cards.end() - 1);
+  return underlying_cards;
 }
 
 void Deck::addCards(QVector<Card>& newCards) {
-  *cards << newCards;
+  cards << newCards;
 
   shuffle();
 }

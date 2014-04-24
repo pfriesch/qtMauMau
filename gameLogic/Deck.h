@@ -8,9 +8,9 @@
 
 class Deck {
 private:
-	QVector<Card> *cards;
+	QVector<Card> cards;
 public:
-	Deck(bool full_deck);
+	Deck(bool full_deck = false);
 	void shuffle();
 	void pushCard(const Card card);
 	const Card getLast(Deck& deck);
