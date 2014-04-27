@@ -1,14 +1,14 @@
 #include "gamecontroller.h"
 
 
-void GameController::playCard(Player& player, const Card& card)
+void QGameController::playCard(Player& player, const Card& card)
 {
     //TODO mb need to verify if this is a legal action
     player.dropCard(card);
     cardDepot.pushCard(card);
 }
 
-void GameController::drawCard(Player& player)
+void QGameController::drawCard(Player& player)
 {
     Card card(cardStack.getLast(cardDepot));
     player.reciveCard(card);
