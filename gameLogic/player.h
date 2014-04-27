@@ -20,9 +20,9 @@ private:
 
 public:
     explicit Player(Player::PlayerType playerType, QString name);
-
     void reciveCard(const Card& card);
     void dropCard(const Card& card);
+    QVector<Card>& getPlayableCards();
 };
 
 #endif // PLAYER_H

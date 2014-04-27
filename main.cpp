@@ -41,6 +41,11 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
+    //set seed for rand()
+    std::time_t t;
+    time(&t);
+    srand((unsigned int)t);
+
     if (QFile::exists("maumau-log.txt")) {
         QFile::remove("maumau-log.txt");
     }

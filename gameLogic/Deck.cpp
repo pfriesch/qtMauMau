@@ -12,6 +12,7 @@ Deck::Deck(bool full_deck)
             }
         }
     }
+    this->shuffle();
 }
 
 /*
@@ -20,9 +21,7 @@ Deck::Deck(bool full_deck)
  */
 void Deck::shuffle()
 {
-    std::time_t t;
-    time(&t);
-    srand((unsigned int)t);
+
 
 //    std::random_shuffle(cards.begin(), cards.end());
   int m = cards.length();
