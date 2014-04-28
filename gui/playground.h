@@ -5,8 +5,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <gameLogic/gamecontroller.h>
 
-class Playground : public QGraphicsScene
-{
+class Playground : public QGraphicsScene {
     Q_OBJECT
 public:
     explicit Playground( QObject * parent = 0 );
@@ -17,9 +16,7 @@ private:
     GameController gameController;
 
 signals:
-
 public slots:
-
 };
 
 #endif // PLAYGROUND_H

@@ -3,16 +3,17 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
-class Server: public QObject
-{
-Q_OBJECT
+class Server : public QObject {
+    Q_OBJECT
 public:
-  Server(QObject * parent = 0);
-  ~Server();
-public slots:
-  void acceptConnection();
-  void startRead();
+    Server(QObject* parent = 0);
+    ~Server();
+public
+slots:
+    void acceptConnection();
+    void startRead();
+
 private:
-  QTcpServer server;
-  QTcpSocket* client;
+    QTcpServer server;
+    QTcpSocket* client;
 };

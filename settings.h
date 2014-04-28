@@ -8,8 +8,7 @@
 #include <QDebug>
 #include <QVariant>
 
-class Settings : public QObject
-{
+class Settings : public QObject {
     Q_OBJECT
 public:
     static Settings* getInstance();
@@ -18,15 +17,14 @@ public:
     void showAllKeys();
     ~Settings();
 
- private:
-    explicit Settings(QObject *parent = 0);
-    QSettings *settings;
-
+private:
+    explicit Settings(QObject* parent = 0);
+    QSettings* settings;
 
 signals:
 
-public slots:
-
+public
+slots:
 };
 
 #endif // SETTINGS_H

@@ -7,16 +7,15 @@ namespace Ui {
 class OptionDialog;
 }
 
-class OptionDialog : public QDialog
-{
+class OptionDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit OptionDialog(QWidget *parent = 0);
+    explicit OptionDialog(QWidget* parent = 0);
     ~OptionDialog();
 
 private:
-    Ui::OptionDialog *ui;
+    Ui::OptionDialog* ui;
 };
 
 #endif // OPTIONDIALOG_H

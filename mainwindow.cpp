@@ -7,8 +7,7 @@
 #include "gui/playground.h"
 #include "settings.h"
 
-
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
 {
     setupMenuBar();
     setupGraphicsView();
@@ -18,10 +17,11 @@ MainWindow::MainWindow(QWidget *parent)
  * Setup the View with Cards and setup a new Game
  * @brief MainWindow::setupGraphicsView
  */
-void MainWindow::setupGraphicsView(){
-    Playground *scene = new Playground();
-    QGraphicsView *view = new QGraphicsView(this);
-    scene->setSceneRect(0, 0, Settings::getInstance()->getProperty("common/width").toInt(),Settings::getInstance()->getProperty("common/height").toInt());
+void MainWindow::setupGraphicsView()
+{
+    Playground* scene = new Playground();
+    QGraphicsView* view = new QGraphicsView(this);
+    scene->setSceneRect(0, 0, Settings::getInstance()->getProperty("common/width").toInt(), Settings::getInstance()->getProperty("common/height").toInt());
     view->setScene(scene);
     setCentralWidget(view);
     scene->startGame();
@@ -31,30 +31,30 @@ void MainWindow::setupGraphicsView(){
  * Setup the Menubar for the MainWindow
  * @brief MainWindow::setupMenuBar
  */
-void MainWindow::setupMenuBar(){
-    QMenuBar *menuBar = new QMenuBar();
+void MainWindow::setupMenuBar()
+{
+    QMenuBar* menuBar = new QMenuBar();
 
     // File Menu
-    QMenu *fileMenu = new QMenu(QMenu::tr("File"));
+    QMenu* fileMenu = new QMenu(QMenu::tr("File"));
     menuBar->addMenu(fileMenu);
 
-    QAction *startGameMenu = new QAction(QAction::tr("Start Game"),this);
+    QAction* startGameMenu = new QAction(QAction::tr("Start Game"), this);
     fileMenu->addAction(startGameMenu);
 
-    QAction *optionsMenu = new QAction(QAction::tr("Options"),this);
+    QAction* optionsMenu = new QAction(QAction::tr("Options"), this);
 
     optionDialog = new OptionDialog;
     connect(optionsMenu, SIGNAL(triggered()), optionDialog, SLOT(show()));
 
     fileMenu->addAction(optionsMenu);
 
-
-    QAction *exitMenu = new QAction(QAction::tr("Exit"),this);
+    QAction* exitMenu = new QAction(QAction::tr("Exit"), this);
     connect(exitMenu, SIGNAL(triggered()), this, SLOT(close()));
     fileMenu->addAction(exitMenu);
 
     //Info Menu
-    QMenu *infoMenu = new QMenu(QMenu::tr("Info"));
+    QMenu* infoMenu = new QMenu(QMenu::tr("Info"));
     menuBar->addMenu(infoMenu);
 
     setMenuBar(menuBar);
