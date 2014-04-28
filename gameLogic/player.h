@@ -17,12 +17,15 @@ private:
     Player::PlayerType playerType;
     QVector<Card> hand;
     QString name;
+    short id;
 
 public:
     explicit Player(Player::PlayerType playerType, QString name);
     void reciveCard(const Card& card);
     void dropCard(const Card& card);
-    QVector<Card>& getPlayableCards();
+    QVector<Card>& getPlayableCards(const Card &card);
+    short getId() const;
+
 };
 
 #endif // PLAYER_H

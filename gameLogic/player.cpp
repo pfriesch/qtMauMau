@@ -1,5 +1,11 @@
 #include "player.h"
 
+
+short Player::getId() const
+{
+    return id;
+}
+
 Player::Player(Player::PlayerType playerType, QString name)
     : playerType(playerType)
     , name(name)
