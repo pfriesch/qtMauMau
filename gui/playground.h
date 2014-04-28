@@ -3,15 +3,20 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <gameLogic/gamecontroller.h>
 
 class Playground : public QGraphicsScene
 {
     Q_OBJECT
 public:
     explicit Playground( QObject * parent = 0 );
-    void init();
+    void startGame();
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
- signals:
+
+private:
+    GameController gameController;
+
+signals:
 
 public slots:
 

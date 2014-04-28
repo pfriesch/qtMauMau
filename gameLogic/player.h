@@ -12,15 +12,13 @@ public:
         ai = 1,
         remote = 2
     };
-
 private:
     Player::PlayerType playerType;
     QVector<Card> hand;
     QString name;
 
 public:
-    explicit Player(Player::PlayerType playerType, QString name);
-
+    explicit Player(Player::PlayerType playerType = PlayerType::ai, QString name = "Peter");
     void reciveCard(const Card& card);
     void dropCard(const Card& card);
 };

@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 /**
- * Setup the View with Cards
+ * Setup the View with Cards and setup a new Game
  * @brief MainWindow::setupGraphicsView
  */
 void MainWindow::setupGraphicsView(){
@@ -24,7 +24,7 @@ void MainWindow::setupGraphicsView(){
     scene->setSceneRect(0, 0, Settings::getInstance()->getProperty("common/width").toInt(),Settings::getInstance()->getProperty("common/height").toInt());
     view->setScene(scene);
     setCentralWidget(view);
-    scene->init();
+    scene->startGame();
 }
 
 /**
