@@ -20,11 +20,11 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::setupGraphicsView()
 {
     Playground* scene = new Playground();
+    scene->startGame();
     QGraphicsView* view = new QGraphicsView(this);
     scene->setSceneRect(0, 0, Settings::getInstance()->getProperty("common/width").toInt(), Settings::getInstance()->getProperty("common/height").toInt());
     view->setScene(scene);
     setCentralWidget(view);
-    scene->startGame();
 }
 
 /**
