@@ -7,7 +7,6 @@
 #include "player.h"
 #include "card.h"
 
-
 class GameController : QObject {
     Q_OBJECT
 private:
@@ -16,7 +15,6 @@ private:
     Deck cardStack;
     //The stack of cards where the played cards are dropped.
     Deck cardDepot;
-
 
     //flags
     int humanPlayer = 0;
@@ -29,15 +27,11 @@ private:
     bool skipNextPlayer = false;
     //TODO always 4 players, 4+ players unregarded
 
-
-
-
-
 public:
     explicit GameController(int currentPlayer = 0);
 
 signals:
-    void initPlayground(const QVector<Card>& humanPlayerCards, int *otherPlayerCardCount,const Card& topDepotCard, int startingPlayer);
+    void initPlayground(const QVector<Card>& humanPlayerCards, int* otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
     void playerDoTurn(QVector<Card>& playableCards); //an die view
     void playerPlaysCard(int player, const Card& playedCard);
     void playerDrawsCard(int player);
@@ -52,7 +46,6 @@ slots:
 private:
     void gameInit();
     void dealCards();
-
 };
 
 #endif // GAMECONTROLLER_H

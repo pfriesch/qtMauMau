@@ -14,9 +14,10 @@
 //}
 
 GameController::GameController(int currentPlayer)
-    : currentPlayer(currentPlayer), cardStack(true)
+    : currentPlayer(currentPlayer)
+    , cardStack(true)
 {
-  //TODO what players do we have ?? remote??
+    //TODO what players do we have ?? remote??
     gameInit();
     int* otherPlayerCardCount = new int[4];
     for (int i = 0; i < players.length(); ++i) {
@@ -35,28 +36,27 @@ void GameController::playCard(const Card& card)
 
 void GameController::drawCard()
 {
- players[humanPlayer].reciveCard(cardStack.getLast(cardDepot));
+    players[humanPlayer].reciveCard(cardStack.getLast(cardDepot));
 }
 //private
 void GameController::gameInit()
 {
- cardStack.shuffle();
-//kind of players unregarded
- players.push_back(Player(Player::human,"Hans"));
- players.push_back(Player(Player::ai));
- players.push_back(Player(Player::ai));
- players.push_back(Player(Player::ai));
- dealCards();
- cardDepot.pushCard(cardStack.getLast(cardDepot));
- emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
+    cardStack.shuffle();
+    //kind of players unregarded
+    players.push_back(Player(Player::human, "Hans"));
+    players.push_back(Player(Player::ai));
+    players.push_back(Player(Player::ai));
+    players.push_back(Player(Player::ai));
+    dealCards();
+    cardDepot.pushCard(cardStack.getLast(cardDepot));
+    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
 }
 //private
 void GameController::dealCards()
 {
-  for (int i = 0; i < 4; i++) {
-          for (int j = 0; j < 5; j++) {
-                  players[i].reciveCard(cardStack.getLast(cardDepot));
-          }
-  }
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 5; j++) {
+            players[i].reciveCard(cardStack.getLast(cardDepot));
+        }
+    }
 }
-
