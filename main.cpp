@@ -46,6 +46,8 @@ int main(int argc, char* argv[])
     time(&t);
     srand((unsigned int)t);
 
+    GameController gc;
+
     if (QFile::exists("maumau-log.txt")) {
         QFile::remove("maumau-log.txt");
     }

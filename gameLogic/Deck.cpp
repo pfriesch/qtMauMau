@@ -22,19 +22,16 @@ Deck::Deck(bool full_deck)
 void Deck::shuffle()
 {
 
-
-//    std::random_shuffle(cards.begin(), cards.end());
-  int m = cards.length();
-  Card temp;
-  int i;
-  while (m) {
-      i = (rand() * m--);
-      temp = cards[m];
-      cards[m] = cards[i];
-      cards[i] = temp;
-
+    //    std::random_shuffle(cards.begin(), cards.end());
+    int m = cards.length();
+    Card temp;
+    int i;
+    while (m) {
+        i = (rand() * m--);
+        temp = cards[m];
+        cards[m] = cards[i];
+        cards[i] = temp;
     }
-
 }
 
 //int Deck::size() const {
@@ -54,7 +51,7 @@ void Deck::pushCard(const Card card)
  * @param dropped_cards
  * @return
  */
-const Card Deck::getLast(Deck& dropped_cards)
+Card Deck::getLast(Deck& dropped_cards)
 {
     if (empty()) {
         addCards(dropped_cards.getUnderlyingCards());
@@ -64,7 +61,7 @@ const Card Deck::getLast(Deck& dropped_cards)
     return returned_card;
 }
 
-const Card Deck::back() const
+Card Deck::back() const
 {
     return cards.back();
 }
@@ -73,7 +70,7 @@ bool Deck::empty() const
 {
     return cards.empty();
 }
-const Card Deck::getCard(int index) const
+Card Deck::getCard(int index) const
 {
     return cards.at(index);
 }

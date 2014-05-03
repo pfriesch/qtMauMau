@@ -6,7 +6,7 @@
 #include "deck.h"
 #include "player.h"
 #include "card.h"
-#include "gstateflags.h"
+
 
 class GameController : QObject {
     Q_OBJECT
@@ -16,16 +16,31 @@ private:
     Deck cardStack;
     //The stack of cards where the played cards are dropped.
     Deck cardDepot;
-    GStateFlags flags;
+
+
+    //flags
+    int humanPlayer = 0;
+    int currentPlayer = 0;
+    bool changedDirection = false;
+    bool colorWished = false;
+    Card::cardSuit wishedSuit = Card::cardSuit(0);
+    bool draw2x = false;
+    int draw2xCount = 0;
+    bool skipNextPlayer = false;
+    //TODO always 4 players, 4+ players unregarded
+
+
+
+
 
 public:
-    explicit GameController(short* currentPlayer = 0);
+    explicit GameController(int currentPlayer = 0);
 
 signals:
-    void initPlayground(QVector<Cards>* humanPlayerCards, QVecotr<Short> otherPlayerCardCount, const Card& topDepotCard, short startingPlayer);
-    void playerDoTurn(QVector<Card>* playableCards); //an die view
-    void playerPlaysCard(short player, const Card& playedCard);
-    void playerDrawsCard(short player);
+    void initPlayground(const QVector<Card>& humanPlayerCards, int *otherPlayerCardCount,const Card& topDepotCard, int startingPlayer);
+    void playerDoTurn(QVector<Card>& playableCards); //an die view
+    void playerPlaysCard(int player, const Card& playedCard);
+    void playerDrawsCard(int player);
     //sends drawn card to the gui
     void addPlayerCard(const Card& card);
 
@@ -36,7 +51,8 @@ slots:
 
 private:
     void gameInit();
-    void dealCards(QVector<Player>& players);
+    void dealCards();
+
 };
 
 #endif // GAMECONTROLLER_H

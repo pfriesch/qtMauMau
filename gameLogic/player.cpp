@@ -1,9 +1,18 @@
 #include "player.h"
 
-
-short Player::getId() const
+int Player::getId() const
 {
     return id;
+}
+
+QVector<Card> Player::getHand() const
+{
+  return hand;
+}
+
+int Player::getCardCount() const
+{
+  return hand.length();
 }
 
 Player::Player(Player::PlayerType playerType, QString name)
@@ -19,5 +28,10 @@ void Player::reciveCard(const Card& card)
 
 void Player::dropCard(const Card& card)
 {
-    hand.remove(hand.indexOf(card));
+  hand.remove(hand.indexOf(card));
+}
+
+QVector<Card> &Player::getPlayableCards(const Card &card)
+{
+
 }
