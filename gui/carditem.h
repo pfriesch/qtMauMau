@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <stdlib.h>
 #include <string>
+#include <sstream>
 #include <QGraphicsPixmapItem>
 #include <QString>
 #include <QPixmap>

@@ -3,11 +3,15 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <gameLogic/gamecontroller.h>
-#include <gameLogic/Card.h>
 #include <QVector>
 #include <QPointF>
+#include <QHash>
+#include <QString>
+#include <gameLogic/gamecontroller.h>
+#include <gameLogic/Card.h>
 #include <gui/carditem.h>
+#include <gui/playeritem.h>
+
 
 class Playground : public QGraphicsScene {
     Q_OBJECT
@@ -19,9 +23,18 @@ public:
 private:
     void fakeInit();
     void fakeDoTurn();
+
+    QVector<CardItem* > cardItems;
+    QVector<Card> *humanPlayerCards;
+    QVector<short> otherPlayerCardCount;
+
+    //Layout entities
+    void measureLayout();
     int cardWidth;
     int cardHeight;
-    QVector< CardItem* > *cardItems;
+    int horizontalCardGap = 15;
+    int verticalCardGap = 20;
+    QHash<QString,int> layout;
 
 public slots:
 

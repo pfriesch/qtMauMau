@@ -26,7 +26,7 @@ SOURCES += main.cpp\
     gui/playground.cpp \
     gui/optiondialog.cpp \
     gui/carditem.cpp \
-    gui/deckitem.cpp
+    gui/playeritem.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -34,13 +34,14 @@ HEADERS  += mainwindow.h \
     network/server.h \
     network/client.h \
     gameLogic/gamecontroller.h \
-    gameLogic/player.h \
     gameLogic/card.h \
     gameLogic/deck.h \
     gui/playground.h \
     gui/optiondialog.h \
     gui/carditem.h \
-    gui/deckitem.h
+    gui/playeritem.h \
+    gameLogic/player.h \
+    gui/playeritem.h
 
 
 FORMS    += \

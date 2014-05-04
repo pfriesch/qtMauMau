@@ -27,7 +27,7 @@ QGraphicsPixmapItem* CardItem::getGraphicsItem(){
             imgName = getNormalCardName();
         }
         std::string fullImagePath("img/deck_"+deckNumber+"/"+imgName+imgExtension);
-        qDebug() << fullImagePath.c_str();
+
         graphicsItem = new QGraphicsPixmapItem(QPixmap(fullImagePath.c_str()));
     }
     return graphicsItem;
@@ -82,7 +82,10 @@ std::string CardItem::getNormalCardName(){
         }
     }
     else{
-        imgName += std::to_string(value);
+        //because std::to_string() is bugged in some MinGW versions, a workaround
+        std::stringstream ss;
+        ss << value;
+        imgName += ss.str();
     }
     return imgName;
 }

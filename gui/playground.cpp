@@ -12,59 +12,43 @@ Playground::Playground(QObject* parent): QGraphicsScene(parent)
     cardHeight = 96;
     QBrush brush(img);
     this->setBackgroundBrush(brush);
+}
 
 
+void Playground::measureLayout(){
+    //Center for the scene, but we need to include the card sizes
+    QPointF sceneCenterPointRaw = this->sceneRect().center();
+    //The real center for a Card
+    qreal sceneCenter_X = sceneCenterPointRaw.x()-cardWidth;
+    qreal sceneCenter_Y = sceneCenterPointRaw.y()-cardHeight;
 
-    humanPlayerX = 0
-            humanPlayerY = 0;
 
+    layout.insert("STACK_X",sceneCenter_X);
+    layout.insert("STACK_Y",sceneCenter_Y);
+
+    layout.insert("TALON_X",sceneCenter_X+cardWidth+20);
+    layout.insert("TALON_Y",sceneCenter_Y);
+
+    int playerCardsWidth = ((humanPlayerCards->size())*horizontalCardGap);
+    layout.insert("HUMAN_X",((sceneCenterPointRaw.x())-(playerCardsWidth/2)));
+    layout.insert("HUMAN_Y",height()-cardHeight-30);
 }
 
 void Playground::startGame(){
 
-    cardItems = new QVector< CardItem* >();
-    QPointF centerPoint = this->sceneRect().center();
-    qDebug() << centerPoint.x();
-    CardItem *stack = new CardItem(CardItem::specialCards::RED_VERTICAL);
-    QGraphicsPixmapItem *stackItem = stack->getGraphicsItem();
-    stackItem->setPos(centerPoint.x()-stackItem->pixmap().width(),centerPoint.y()-stackItem->pixmap().height());
-    cardItems->append(stack);
-    this->addItem(stackItem);
-
-
-    CardItem *talon = new CardItem(CardItem::specialCards::TALON);
-    QGraphicsPixmapItem *talonItem = talon->getGraphicsItem();
-    talonItem->setPos((centerPoint.x()-talonItem->pixmap().width())+cardWidth+20,centerPoint.y()-talonItem->pixmap().height());
-    talonItem->setOpacity(0.7);
-    cardItems->append(talon);
-    this->addItem(talonItem);
-
-
-
-
     fakeInit();
 
-    /*
-    QGraphicsPixmapItem *stack = new QGraphicsPixmapItem(QPixmap("img/deck_1/b1fv.png"));
+    CardItem *stack = new CardItem(CardItem::specialCards::RED_VERTICAL);
+    stack->getGraphicsItem()->setPos(layout.value("STACK_X"),layout.value("STACK_Y"));
+    cardItems.append(stack);
+    this->addItem(stack->getGraphicsItem());
 
+    CardItem *talon = new CardItem(CardItem::specialCards::TALON);
+    talon->getGraphicsItem()->setPos(layout.value("TALON_X"),layout.value("TALON_Y"));
+    talon->getGraphicsItem()->setOpacity(0.7);
+    cardItems.append(talon);
+    this->addItem(talon->getGraphicsItem());
 
-    centerPoint.setX(centerPoint.x()-stack->pixmap().width());
-    centerPoint.setY(centerPoint.y()-stack->pixmap().height());
-    stack->setPos(centerPoint);
-
-    // Setup Depot
-    QGraphicsPixmapItem *depot = new QGraphicsPixmapItem(QPixmap("img/deck_1/depot.png"));
-    centerPoint = scene->sceneRect().center();
-
-    centerPoint.setX((centerPoint.x()-stack->pixmap().width())+depot->pixmap().width()+10);
-    centerPoint.setY(centerPoint.y()-stack->pixmap().height());
-    depot->setPos(centerPoint);
-    depot->setOpacity(0.6);
-
-
-    scene->addItem(stack);
-    scene->addItem(depot);
-    */
 }
 
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -82,14 +66,27 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 // topDepotCard kann ja auch keine sein also NULL, vielleicht doch lieber POINTER!!! TODO
 void Playground::initPlayground(QVector<Card> *humanPlayerCards, QVector<short> otherPlayerCardCount, Card *topDepotCard, short startingPlayer){
-    qDebug() << "hier hier hier";
-    int x = 0;
+    this->humanPlayerCards = humanPlayerCards;
+    this->otherPlayerCardCount = otherPlayerCardCount;
+
+    measureLayout();
+
     for(int i=0;i < humanPlayerCards->size();i++){
         CardItem *card = new CardItem(humanPlayerCards->at(i));
-        card->getGraphicsItem()->setPos((this->width()/2)+x,this->height()-cardHeight-20);
-        x+= 20;
+        card->getGraphicsItem()->setPos(layout.value("HUMAN_X"),layout.value("HUMAN_Y"));
+        layout.insert("HUMAN_X",layout.value("HUMAN_X")+horizontalCardGap);
         this->addItem(card->getGraphicsItem());
     }
+
+    PlayerItem p(PlayerItem::direction::LEFT,5,this->sceneRect().center());
+
+    //there are alway 3 other player
+    for (int i = 0; i < otherPlayerCardCount.size(); ++i) {
+        for (int j = 0; j < p.getCards().size(); ++j) {
+            this->addItem(p.getCards().at(j)->getGraphicsItem());
+        }
+    }
+
 
 }
 
@@ -114,6 +111,14 @@ void Playground::addPlayerCard(const Card& card){
 
 }
 
+
+
+
+/**
+  * That are allllll fake methods
+  *
+ * @brief Playground::fakeInit
+ */
 void Playground::fakeInit(){
     QVector<short> otherPlayerCardCount = QVector<short>();
     for(int i=0;i<4;i++){
@@ -125,6 +130,12 @@ void Playground::fakeInit(){
     cards->append(Card(Card::cardSuit::CLUBS,Card::cardValue::KING));
     cards->append(Card(Card::cardSuit::DIAMONDS,Card::cardValue::SEVEN));
     cards->append(Card(Card::cardSuit::HEARTS,Card::cardValue::TEN));
+    cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
+    cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
+    cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
+    cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
+    cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
+    cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
     cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
     short i = 2;
     Card *c = new Card(Card::cardSuit::SPADES,Card::cardValue::ACE);
