@@ -16,7 +16,7 @@ Playground::Playground(QObject* parent): QGraphicsScene(parent)
 
 
     humanPlayerX = 0
-    humanPlayerY = 0;
+            humanPlayerY = 0;
 
 }
 
