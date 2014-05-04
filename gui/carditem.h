@@ -12,11 +12,9 @@
 #include <QPixmap>
 #include <QDebug>
 
-class CardItem : public QWidget
-{
+class CardItem : public QWidget {
     Q_OBJECT
 public:
-
     enum specialCards {
         TALON = 0,
         EMPTY_TALON = 1,
@@ -26,9 +24,10 @@ public:
         RED_HORIZONTAL = 5,
     };
 
-    explicit CardItem(const Card& card, QWidget *parent = 0);
+    explicit CardItem(const Card& card, QWidget* parent = 0);
     CardItem(int specialCode);
     QGraphicsPixmapItem* getGraphicsItem();
+
 private:
     std::string getSpecialCardName();
     std::string getNormalCardName();
@@ -37,14 +36,14 @@ private:
     std::string deckNumber;
     bool specialCard = false;
     int specialCode;
-    QGraphicsPixmapItem *graphicsItem = NULL;
+    QGraphicsPixmapItem* graphicsItem = NULL;
     Card::cardSuit suit;
     Card::cardValue value;
 
 signals:
 
-public slots:
-
+public
+slots:
 };
 
 #endif // CARDITEM_H
