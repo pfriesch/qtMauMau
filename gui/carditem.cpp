@@ -1,6 +1,6 @@
 #include "carditem.h"
 
-CardItem::CardItem(Card& card,QWidget *parent) : QWidget(parent)
+CardItem::CardItem(const Card& card,QWidget *parent) : QWidget(parent)
 {
     this->value = card.getValue();
     this->suit = card.getSuit();
@@ -72,17 +72,17 @@ std::string CardItem::getNormalCardName(){
         switch(value){
             case Card::cardValue::JACK: imgName += "j";
                  break;
-            case Card::cardValue::QUEEN: imgName = "q";
+            case Card::cardValue::QUEEN: imgName += "q";
                  break;
-            case Card::cardValue::KING: imgName = "k";
+            case Card::cardValue::KING: imgName += "k";
                  break;
-            case Card::cardValue::ACE: imgName = "a";
+            case Card::cardValue::ACE: imgName += "a";
                  break;
             default: break;
         }
     }
     else{
-            imgName = value;
+            imgName += std::to_string(value);
     }
         return imgName;
 }

@@ -4,28 +4,39 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include "gui\playground.h"
-#include "gui/carditem.h"
 
 Playground::Playground(QObject* parent): QGraphicsScene(parent)
 {
     QImage img("img/green_background.jpg", "jpg");
-    this->width = 71;
-    height = 96;
-    centerPoint = QPointF(&sceneRect().center().QPointF);
+    cardWidth = 71;
+    cardHeight = 96;
     QBrush brush(img);
     this->setBackgroundBrush(brush);
+
+
+
+    humanPlayerX = 0
+    humanPlayerY = 0;
+
 }
 
 void Playground::startGame(){
-    qDebug() << centerPoint->x();
-    CardItem stack(CardItem::specialCards::RED_VERTICAL);
-    QGraphicsPixmapItem *stackItem = stack.getGraphicsItem();
-    stackItem->setPos(centerPoint->x()-stackItem->pixmap().width(),centerPoint->y()-stackItem->pixmap().height());
+
+    cardItems = new QVector< CardItem* >();
+    QPointF centerPoint = this->sceneRect().center();
+    qDebug() << centerPoint.x();
+    CardItem *stack = new CardItem(CardItem::specialCards::RED_VERTICAL);
+    QGraphicsPixmapItem *stackItem = stack->getGraphicsItem();
+    stackItem->setPos(centerPoint.x()-stackItem->pixmap().width(),centerPoint.y()-stackItem->pixmap().height());
+    cardItems->append(stack);
     this->addItem(stackItem);
 
-    CardItem talon(CardItem::specialCards::TALON);
-    QGraphicsPixmapItem *talonItem = talon.getGraphicsItem();
-    talonItem->setPos((centerPoint->x()-talonItem->pixmap().width())+width+20,centerPoint->y()-talonItem->pixmap().height());
+
+    CardItem *talon = new CardItem(CardItem::specialCards::TALON);
+    QGraphicsPixmapItem *talonItem = talon->getGraphicsItem();
+    talonItem->setPos((centerPoint.x()-talonItem->pixmap().width())+cardWidth+20,centerPoint.y()-talonItem->pixmap().height());
+    talonItem->setOpacity(0.7);
+    cardItems->append(talon);
     this->addItem(talonItem);
 
 
@@ -69,7 +80,17 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 }
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
-void Playground::initPlayground(QVector<Card> *humanPlayerCards, QVector<short> otherPlayerCardCount, Card& topDepotCard, short startingPlayer){
+// topDepotCard kann ja auch keine sein also NULL, vielleicht doch lieber POINTER!!! TODO
+void Playground::initPlayground(QVector<Card> *humanPlayerCards, QVector<short> otherPlayerCardCount, Card *topDepotCard, short startingPlayer){
+    qDebug() << "hier hier hier";
+    int x = 0;
+    for(int i=0;i < humanPlayerCards->size();i++){
+        CardItem *card = new CardItem(humanPlayerCards->at(i));
+        card->getGraphicsItem()->setPos((this->width()/2)+x,this->height()-cardHeight-20);
+        x+= 20;
+        this->addItem(card->getGraphicsItem());
+    }
+
 }
 
 
@@ -94,6 +115,18 @@ void Playground::addPlayerCard(const Card& card){
 }
 
 void Playground::fakeInit(){
+    QVector<short> otherPlayerCardCount = QVector<short>();
+    for(int i=0;i<4;i++){
+        otherPlayerCardCount += 5;
+    }
 
-
+    QVector<Card> *cards = new QVector<Card>();
+    cards->append(Card(Card::cardSuit::CLUBS,Card::cardValue::ACE));
+    cards->append(Card(Card::cardSuit::CLUBS,Card::cardValue::KING));
+    cards->append(Card(Card::cardSuit::DIAMONDS,Card::cardValue::SEVEN));
+    cards->append(Card(Card::cardSuit::HEARTS,Card::cardValue::TEN));
+    cards->append(Card(Card::cardSuit::SPADES,Card::cardValue::QUEEN));
+    short i = 2;
+    Card *c = new Card(Card::cardSuit::SPADES,Card::cardValue::ACE);
+    this->initPlayground(cards,otherPlayerCardCount,c,i);
 }

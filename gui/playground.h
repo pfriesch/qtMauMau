@@ -7,6 +7,7 @@
 #include <gameLogic/Card.h>
 #include <QVector>
 #include <QPointF>
+#include <gui/carditem.h>
 
 class Playground : public QGraphicsScene {
     Q_OBJECT
@@ -18,13 +19,13 @@ public:
 private:
     void fakeInit();
     void fakeDoTurn();
-    int width;
-    int height;
-    QPointF centerPoint;
+    int cardWidth;
+    int cardHeight;
+    QVector< CardItem* > *cardItems;
 
 public slots:
 
-void initPlayground(QVector<Card> *humanPlayerCards, QVector<short> otherPlayerCardCount, Card& topDepotCard, short startingPlayer);
+void initPlayground(QVector<Card> *humanPlayerCards, QVector<short> otherPlayerCardCount, Card *topDepotCard, short startingPlayer);
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
 void playerDoTurn(QVector<Card> *playableCards);

@@ -25,7 +25,7 @@ public:
         RED_HORIZONTAL = 5,
     };
 
-    explicit CardItem(Card& card, QWidget *parent = 0);
+    explicit CardItem(const Card& card, QWidget *parent = 0);
     CardItem(int specialCode);
     QGraphicsPixmapItem* getGraphicsItem();
 private:
