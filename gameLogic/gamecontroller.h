@@ -18,7 +18,7 @@ private:
 
     //flags
     int humanPlayer = 0;
-    int currentPlayer = 0;
+    int currentPlayer;
     bool changedDirection = false;
     bool colorWished = false;
     Card::cardSuit wishedSuit = Card::cardSuit(0);
@@ -26,6 +26,7 @@ private:
     int draw2xCount = 0;
     bool skipNextPlayer = false;
     //TODO always 4 players, 4+ players unregarded
+    bool currentPlayerDrewCard = false;
 
 public:
     explicit GameController(int currentPlayer = 0);
@@ -42,10 +43,13 @@ public
 slots:
     void playCard(const Card& card);
     void drawCard();
+    void doNothing();
 
 private:
     void gameInit();
     void dealCards();
+    void nextTurn();
+    void aiDoTurn(int aiPlayer);
 };
 
 #endif // GAMECONTROLLER_H

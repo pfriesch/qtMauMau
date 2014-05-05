@@ -26,6 +26,7 @@ public:
     int getId() const;
     QVector<Card> getHand() const;
     int getCardCount() const;
+    Player::PlayerType getType() const;
 };
 
 #endif // PLAYER_H
