@@ -24,9 +24,8 @@ SOURCES += main.cpp\
     gameLogic/deck.cpp \
     gameLogic/card.cpp \
     gui/playground.cpp \
-    gui/cardviewcontroller.cpp \
     gui/optiondialog.cpp \
-    gameLogic/logictest.cpp
+    gameLogic/logictest.cpp \
     gui/optiondialog.cpp \
     gui/carditem.cpp \
     gui/playeritem.cpp
@@ -40,9 +39,8 @@ HEADERS  += mainwindow.h \
     gameLogic/card.h \
     gameLogic/deck.h \
     gui/playground.h \
-    gui/cardviewcontroller.h \
     gui/optiondialog.h \
-    gameLogic/logictest.h
+    gameLogic/logictest.h \
     gui/optiondialog.h \
     gui/carditem.h \
     gui/playeritem.h \
