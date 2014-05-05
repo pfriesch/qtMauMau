@@ -23,9 +23,8 @@ private:
     void fakeInit();
     void fakeDoTurn();
 
-    QVector<CardItem*> cardItems;
-    QVector<Card>* humanPlayerCards;
-    QVector<short> otherPlayerCardCount;
+    QVector<CardItem*> graphicalItems;
+    QVector<PlayerItem*> players;
 
     //Layout entities
     void measureLayout();
@@ -41,7 +40,7 @@ slots:
     void initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card* topDepotCard, short startingPlayer);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
-    void playerDoTurn(QVector<Card>* playableCards);
+    /*void playerDoTurn(QVector<Card>* playableCards);
     // bekomme alle Spielbaren Karten von Human player
 
     void playerPlaysCard(short player, Card& playedCard);
@@ -50,7 +49,7 @@ slots:
     void playerDrawsCard(short player, Card& card);
     // Spieler zieht eine Karte
 
-    void addPlayerCard(const Card& card);
+    void addPlayerCard(const Card& card);*/
 // Human Spieler hat eine Karte gezogen
 
 signals:

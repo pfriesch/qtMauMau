@@ -5,20 +5,19 @@ CardItem::CardItem(const Card& card, QWidget* parent)
 {
     this->value = card.getValue();
     this->suit = card.getSuit();
-    imgExtension = ".png";
-    deckNumber = "1";
 }
 
 CardItem::CardItem(int specialCode)
 {
     specialCard = true;
     this->specialCode = specialCode;
-    imgExtension = ".png";
-    deckNumber = "1";
 }
 
 QGraphicsPixmapItem* CardItem::getGraphicsItem()
 {
+    //TODO: make this variable, so we can use different card decks
+    deckNumber = "1";
+    imgExtension = ".png";
 
     if (graphicsItem == NULL) {
 

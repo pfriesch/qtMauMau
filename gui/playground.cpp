@@ -26,12 +26,8 @@ void Playground::measureLayout()
     layout.insert("STACK_X", sceneCenter_X);
     layout.insert("STACK_Y", sceneCenter_Y);
 
-    layout.insert("TALON_X", sceneCenter_X + cardWidth + 20);
+    layout.insert("TALON_X", sceneCenter_X + cardWidth + horizontalCardGap);
     layout.insert("TALON_Y", sceneCenter_Y);
-
-    int playerCardsWidth = ((humanPlayerCards->size()) * horizontalCardGap);
-    layout.insert("HUMAN_X", ((sceneCenterPointRaw.x()) - (playerCardsWidth / 2)));
-    layout.insert("HUMAN_Y", height() - cardHeight - 30);
 }
 
 void Playground::startGame()
@@ -41,13 +37,11 @@ void Playground::startGame()
 
     CardItem* stack = new CardItem(CardItem::specialCards::RED_VERTICAL);
     stack->getGraphicsItem()->setPos(layout.value("STACK_X"), layout.value("STACK_Y"));
-    cardItems.append(stack);
     this->addItem(stack->getGraphicsItem());
 
     CardItem* talon = new CardItem(CardItem::specialCards::TALON);
     talon->getGraphicsItem()->setPos(layout.value("TALON_X"), layout.value("TALON_Y"));
     talon->getGraphicsItem()->setOpacity(0.7);
-    cardItems.append(talon);
     this->addItem(talon->getGraphicsItem());
 }
 
@@ -67,30 +61,32 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 // topDepotCard kann ja auch keine sein also NULL, vielleicht doch lieber POINTER!!! TODO
 void Playground::initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card* topDepotCard, short startingPlayer)
 {
-    this->humanPlayerCards = humanPlayerCards;
-    this->otherPlayerCardCount = otherPlayerCardCount;
 
     measureLayout();
 
-    for (int i = 0; i < humanPlayerCards->size(); i++) {
-        CardItem* card = new CardItem(humanPlayerCards->at(i));
-        card->getGraphicsItem()->setPos(layout.value("HUMAN_X"), layout.value("HUMAN_Y"));
-        layout.insert("HUMAN_X", layout.value("HUMAN_X") + horizontalCardGap);
-        this->addItem(card->getGraphicsItem());
-    }
 
-    PlayerItem p(PlayerItem::direction::LEFT, 5, this->sceneRect().center());
+    PlayerItem* human = new PlayerItem(PlayerItem::direction::BOTTOM, humanPlayerCards, this->sceneRect().center());
+    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(0), this->sceneRect().center());
+    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(1), this->sceneRect().center());
+    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(2), this->sceneRect().center());
+
+    players.append(human);
+    players.append(p1);
+    players.append(p2);
+    players.append(p3);
+
 
     //there are alway 3 other player
-    for (int i = 0; i < otherPlayerCardCount.size(); ++i) {
-        for (int j = 0; j < p.getCards().size(); ++j) {
-            this->addItem(p.getCards().at(j)->getGraphicsItem());
+    for (int i = 0; i < players.size(); ++i) {
+        PlayerItem* p(players.at(i));
+        for (int j = 0; j < p->getCards()->size(); ++j) {
+            this->addItem(p->getCards()->at(j)->getGraphicsItem());
         }
     }
 }
 
 // bekomme alle Spielbaren Karten von Human player
-void Playground::playerDoTurn(QVector<Card>* playableCards)
+/*void Playground::playerDoTurn(QVector<Card>* playableCards)
 {
 }
 
@@ -108,7 +104,7 @@ void Playground::playerDrawsCard(short player, Card& card)
 void Playground::addPlayerCard(const Card& card)
 {
 }
-
+*/
 /**
   * That are allllll fake methods
   *
