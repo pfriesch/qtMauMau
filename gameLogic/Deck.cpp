@@ -75,6 +75,7 @@ Card Deck::getCard(int index) const
     return cards.at(index);
 }
 
+
 QVector<Card>& Deck::getUnderlyingCards()
 {
     QVector<Card>* underlying_cards = new QVector<Card>;

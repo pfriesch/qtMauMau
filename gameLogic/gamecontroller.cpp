@@ -1,5 +1,6 @@
 #include "gamecontroller.h"
 
+
 //void QGameController::playCard(Player& player, const Card& card)
 //{
 //    //TODO mb need to verify if this is a legal action
@@ -16,6 +17,7 @@
 GameController::GameController(int currentPlayer)
     : currentPlayer(currentPlayer)
     , cardStack(true)
+
 {
     //TODO what players do we have ?? remote??
     gameInit();

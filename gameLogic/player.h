@@ -11,7 +11,6 @@ public:
         ai = 1,
         remote = 2
     };
-
 private:
     Player::PlayerType playerType;
     QVector<Card> hand;

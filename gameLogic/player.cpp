@@ -21,8 +21,7 @@ Player::PlayerType Player::getType() const
 }
 
 Player::Player(Player::PlayerType playerType, QString name)
-    : playerType(playerType)
-    , name(name)
+    : playerType(playerType), name(name)
 {
 }
 

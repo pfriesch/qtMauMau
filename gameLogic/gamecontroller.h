@@ -10,11 +10,11 @@
 class GameController : QObject {
     Q_OBJECT
 private:
-    QVector<Player> players;
-    //The stack of cards where cards are taken if a player has to draw.
-    Deck cardStack;
-    //The stack of cards where the played cards are dropped.
-    Deck cardDepot;
+  QVector<Player> players;
+  //The stack of cards where cards are taken if a player has to draw.
+  Deck cardStack;
+  //The stack of cards where the played cards are dropped.
+  Deck cardDepot;
 
     //flags
     int humanPlayer = 0;
