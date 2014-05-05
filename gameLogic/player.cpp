@@ -12,12 +12,12 @@ QVector<Card> Player::getHand() const
 
 int Player::getCardCount() const
 {
-  return hand.length();
+    return hand.length();
 }
 
 Player::PlayerType Player::getType() const
 {
-  return playerType;
+    return playerType;
 }
 
 Player::Player(Player::PlayerType playerType, QString name)
@@ -38,7 +38,7 @@ void Player::dropCard(const Card& card)
 //TODO
 QVector<Card>& Player::getPlayableCards(const Card& card)
 {
-    QVector<Card> *playableCards = new QVector<Card>;
+    QVector<Card>* playableCards = new QVector<Card>;
     for (int i = 0; i < hand.size(); ++i) {
         if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue()) {
             playableCards->append(hand[i]);
