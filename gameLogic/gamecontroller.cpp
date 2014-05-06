@@ -1,25 +1,133 @@
 #include "gamecontroller.h"
 
-void GameController::startGame(){
-    cardStack = Deck(true);
+//void QGameController::playCard(Player& player, const Card& card)
+//{
+//    //TODO mb need to verify if this is a legal action
+//    player.dropCard(card);
+//    cardDepot.pushCard(card);
+//}
 
-    players.append(Player(Player::PlayerType::human,"Human"));
-    players.append(Player(Player::PlayerType::ai,"Peter"));
-    players.append(Player(Player::PlayerType::ai,"Manfred"));
-    players.append(Player(Player::PlayerType::ai,"Maria"));
-}
+//void QGameController::drawCard(Player& player)
+//{
+//    Card card(cardStack.getLast(cardDepot));
+//    player.reciveCard(card);
+//}
 
-
-void GameController::playCard(Player &player, const Card &card)
+GameController::GameController(int currentPlayer, int playerCount)
+    : currentPlayer(currentPlayer)
+    , cardStack(true)
+    , playerCount(playerCount)
 
 {
-    //TODO mb need to verify if this is a legal action
-    player.dropCard(card);
+  if (playerCount < 2 || playerCount > 4) {
+      throw std::invalid_argument("playercount has to be between 2 and 4");
+    }
+    //TODO what players do we have ?? remote??
+    gameInit();
+    int* otherPlayerCardCount = new int[playerCount - 1];
+    for (int i = 0; i < players.length(); ++i) {
+        otherPlayerCardCount[i] = players[i].getCardCount();
+    }
+    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
+}
+
+void GameController::playCard(const Card& card)
+{
+    //TODO check if valid
+    players[humanPlayer].dropCard(card);
     cardDepot.pushCard(card);
+    //TODO custom actions
+    nextTurn();
 }
 
-void GameController::drawCard(Player& player)
+void GameController::drawCard()
 {
-    Card card(cardStack.getLast(cardDepot));
-    player.reciveCard(card);
+    if (!currentPlayerDrewCard) {
+        Card drawnCard = cardStack.getLast(cardDepot);
+        players[humanPlayer].reciveCard(drawnCard);
+        currentPlayerDrewCard = true;
+        emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
+    } else {
+        //TODO error handling
+    }
+}
+
+void GameController::doNothing()
+{
+    if (!currentPlayerDrewCard) {
+        drawCard();
+    } else {
+        //TODO continue game
+    }
+}
+
+//private
+void GameController::gameInit()
+{
+    cardStack.shuffle();
+    //kind of players unregarded
+    players.push_back(Player(Player::human, "Hans"));
+    for (int i = 0; i < playerCount; ++i) {
+        players.push_back(Player(Player::ai));
+    }
+    dealCards();
+    cardDepot.pushCard(cardStack.getLast(cardDepot));
+    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
+}
+//private
+void GameController::dealCards()
+{
+    for (int i = 0; i < playerCount; i++) {
+        for (int j = 0; j < 5; j++) {
+            players[i].reciveCard(cardStack.getLast(cardDepot));
+        }
+    }
+}
+//private
+void GameController::nextTurn()
+{
+    if (currentPlayer < playerCount) {
+        currentPlayer++;
+    } else {
+        currentPlayer = 0;
+    }
+    switch (players[currentPlayer].getType()) {
+    case Player::human:
+        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back()));
+        break;
+    case Player::ai:
+        aiDoTurn(currentPlayer);
+        break;
+    case Player::remote:
+        //TODO
+        break;
+    default:
+        break;
+    }
+}
+
+void GameController::aiDoTurn(int aiPlayer)
+{
+    if (players[aiPlayer].getPlayableCards(cardDepot.back()).size() == 0) {
+        players[aiPlayer].reciveCard(cardStack.getLast(cardDepot));
+        emit playerDrawsCard(aiPlayer);
+        if (players[aiPlayer].getPlayableCards(cardDepot.back()).size() == 0) {
+            nextTurn();
+        } else {
+            //ai just plays the first playable card
+            Card card = players[aiPlayer].getPlayableCards(cardDepot.back())[0];
+            players[aiPlayer].dropCard(card);
+            cardDepot.pushCard(card);
+            emit playerPlaysCard(aiPlayer, card);
+            //TODO custom actions
+            nextTurn();
+        }
+    } else {
+        Card card = players[aiPlayer].getPlayableCards(cardDepot.back())[0];
+        players[aiPlayer].dropCard(card);
+        cardDepot.pushCard(card);
+        emit playerPlaysCard(aiPlayer, card);
+        //TODO custom actions
+        nextTurn();
+    }
 }

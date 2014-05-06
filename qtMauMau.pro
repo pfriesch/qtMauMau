@@ -5,14 +5,17 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += network
+QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = qtMauMau
+TARGET   = qtMauMau
 TEMPLATE = app
 CONFIG += c++11
+CONFIG += testcase
 
-QT += network
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -26,7 +29,9 @@ SOURCES += main.cpp\
     gui/playground.cpp \
     gui/optiondialog.cpp \
     gui/carditem.cpp \
-    gui/playeritem.cpp
+    gui/playeritem.cpp \
+    gameLogic/Test/gamecontroller_test.cpp \
+    gameLogic/Test/decktest.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -39,9 +44,12 @@ HEADERS  += mainwindow.h \
     gui/playground.h \
     gui/optiondialog.h \
     gui/carditem.h \
-    gui/playeritem.h \
     gameLogic/player.h \
-    gui/playeritem.h
+    gui/playeritem.h \
+    gameLogic/Deck.h \
+    gameLogic/Test/gamecontroller_test.h \
+    gameLogic/Test/decktest.h
+
 
 
 FORMS    += \
