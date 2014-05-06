@@ -24,9 +24,14 @@ public:
         RED_HORIZONTAL = 5,
     };
 
-    explicit CardItem(const Card& card, QWidget* parent = 0);
+    explicit CardItem(const Card& _card, QWidget* parent = 0);
     CardItem(int specialCode);
     QGraphicsPixmapItem* getGraphicsItem();
+    void setCard(const Card &card);
+    Card& getCard();
+    void setPos(qreal x, qreal y);
+    qreal getX();
+    qreal getY();
 
 private:
     std::string getSpecialCardName();
@@ -39,6 +44,9 @@ private:
     QGraphicsPixmapItem* graphicsItem = NULL;
     Card::cardSuit suit;
     Card::cardValue value;
+    qreal x = 0;
+    qreal y = 0;
+    Card card;
 
 signals:
 

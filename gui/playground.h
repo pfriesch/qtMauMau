@@ -26,6 +26,11 @@ private:
     QVector<CardItem*> graphicalItems;
     QVector<PlayerItem*> players;
 
+    CardItem *talon;
+    CardItem *stack;
+
+    void updateCard(CardItem *card, Card& newCard);
+
     //Layout entities
     void measureLayout();
     int cardWidth;
@@ -37,15 +42,15 @@ private:
 public
 slots:
 
-    void initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card* topDepotCard, short startingPlayer);
+    void initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card& topDepotCard, short startingPlayer);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
-    /*void playerDoTurn(QVector<Card>* playableCards);
+    void playerDoTurn(QVector<Card>* playableCards);
     // bekomme alle Spielbaren Karten von Human player
 
     void playerPlaysCard(short player, Card& playedCard);
     // Spieler spielt eine Karte und welche
-
+/*
     void playerDrawsCard(short player, Card& card);
     // Spieler zieht eine Karte
 

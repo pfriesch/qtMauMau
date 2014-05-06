@@ -33,11 +33,15 @@ PlayerItem::PlayerItem(direction dir, QVector<Card> *humanCards, QPointF centerP
     this->createHumanCards(humanCards);
 }
 
+PlayerItem::direction PlayerItem::getDirection(){
+    return playerDirection;
+}
+
 void PlayerItem::createCards(short cardCount){
     for (int i = 0; i < cardCount; i++) {
         CardItem* card = new CardItem(specialCard);
 
-        card->getGraphicsItem()->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
+        card->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
 
         if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
             layout.insert(layoutKey + "Y", layout.value(layoutKey + "Y") + cardGap);
@@ -58,7 +62,7 @@ void PlayerItem::createCards(short cardCount){
 void PlayerItem::createHumanCards(QVector<Card> *humanCards){
     for (int i = 0; i < humanCards->size(); i++) {
         CardItem* card = new CardItem(humanCards->at(i));
-        card->getGraphicsItem()->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
+        card->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
         layout.insert(layoutKey + "X", layout.value(layoutKey + "X") + cardGap);
 
         cards->append(card);
@@ -95,6 +99,35 @@ void PlayerItem::measureLayout(short cardCount)
         layout.insert(QString::number(direction::RIGHT) + "Y", ((centerPoint.y()/2) - (playerCardsWidth / 2)));
     }
 }
+
+void PlayerItem::setPlayableCards(QVector<Card>* playableCards){
+    for (int i = 0; i < playableCards->size(); ++i) {
+        for (int j = 0; j < cards->size(); ++j) {
+            if(playableCards->at(i) == cards->at(j)->getCard()){
+                CardItem *cardItem = cards->at(j);
+                cardItem->setPos(cardItem->getX(),cardItem->getY()-offsetPlayableCard);
+                cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                /*QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+                effect->setColor(QColor(0,0,0,0));
+                effect->setStrength(1);
+                cards->at(j)->getGraphicsItem()->setGraphicsEffect(effect);
+                */
+            }
+        }
+    }
+}
+
+void PlayerItem::unsetPlayableCards(){
+        for (int i = 0; i < cards->size(); ++i) {
+                if( cards->at(i)->getGraphicsItem()->flags() == QGraphicsItem::ItemIsSelectable){
+                    CardItem *cardItem = cards->at(i);
+                    cardItem->setPos(cards->at(i)->getX(),cards->at(i)->getY()+offsetPlayableCard);
+                    cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                }
+            }
+}
+
 
 QVector<CardItem*>* PlayerItem::getCards()
 {

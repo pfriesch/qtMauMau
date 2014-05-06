@@ -4,6 +4,9 @@
 #include <gui/carditem.h>
 #include <QDebug>
 #include <QString>
+#include <QGraphicsColorizeEffect>
+#include <QColor>
+#include <QPainter>
 
 class PlayerItem : public QObject {
     Q_OBJECT
@@ -19,6 +22,11 @@ public:
     PlayerItem(direction dir, QVector<Card> *humanCards, QPointF centerPoint);
     QVector<CardItem*>* getCards();
     void createCards(short cardCount);
+    void getCard();
+    direction getDirection();
+    void setPlayableCards(QVector<Card>* playableCards);
+    void unsetPlayableCards();
+
 private:
     void measureLayout(short cardCount);
     void createHumanCards(QVector<Card> *humanCards);
@@ -33,6 +41,7 @@ private:
     int cardWidth = 71;
     int cardHeight = 96;
     int cardGap = 20;
+    int offsetPlayableCard = 20;
 
 signals:
 

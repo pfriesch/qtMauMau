@@ -33,37 +33,48 @@ void Playground::measureLayout()
 void Playground::startGame()
 {
 
-    fakeInit();
+    measureLayout();
 
-    CardItem* stack = new CardItem(CardItem::specialCards::RED_VERTICAL);
-    stack->getGraphicsItem()->setPos(layout.value("STACK_X"), layout.value("STACK_Y"));
+    stack = new CardItem(CardItem::specialCards::RED_VERTICAL);
+    stack->setPos(layout.value("STACK_X"), layout.value("STACK_Y"));
     this->addItem(stack->getGraphicsItem());
 
-    CardItem* talon = new CardItem(CardItem::specialCards::TALON);
-    talon->getGraphicsItem()->setPos(layout.value("TALON_X"), layout.value("TALON_Y"));
+    talon = new CardItem(CardItem::specialCards::TALON);
+    talon->setPos(layout.value("TALON_X"), layout.value("TALON_Y"));
     talon->getGraphicsItem()->setOpacity(0.7);
     this->addItem(talon->getGraphicsItem());
+
+    fakeInit();
+
 }
 
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     QGraphicsItem* item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
     if (item == NULL) {
-        // do stuff if not clicked on an item
+        // do stuff if not clicked on an item, probably do nothing
     } else {
-
-        //signal to GameController
-        // QGraphicsScene::mousePressEvent(event); // this forwards the event to the item
+        for (int i = 0; i < players.size(); ++i) {
+            PlayerItem *p = players.at(i);
+            if(p->getDirection() == PlayerItem::direction::BOTTOM){
+                for (int j = 0; j < p->getCards()->size(); ++j) {
+                    CardItem *c = p->getCards()->at(j);
+                    if(c->getGraphicsItem() == item && c->getGraphicsItem()->isSelected()){
+                        removeItem(c->getGraphicsItem());
+                        updateCard(talon,c->getCard());
+                        players.at(0)->unsetPlayableCards();
+                        /// SIGNAL, DAS SPIELER GESPIELT HAT
+                    }
+                }
+            }
+        }
     }
 }
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
-// topDepotCard kann ja auch keine sein also NULL, vielleicht doch lieber POINTER!!! TODO
-void Playground::initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card* topDepotCard, short startingPlayer)
+// TODO: show starting player
+void Playground::initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card& topDepotCard, short startingPlayer)
 {
-
-    measureLayout();
-
 
     PlayerItem* human = new PlayerItem(PlayerItem::direction::BOTTOM, humanPlayerCards, this->sceneRect().center());
     PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(0), this->sceneRect().center());
@@ -75,28 +86,43 @@ void Playground::initPlayground(QVector<Card>* humanPlayerCards, QVector<short> 
     players.append(p2);
     players.append(p3);
 
+    Card c(Card::cardSuit::SPADES, Card::cardValue::ACE);
+    updateCard(talon,c);
 
-    //there are alway 3 other player
+    // set playercards for every player
     for (int i = 0; i < players.size(); ++i) {
         PlayerItem* p(players.at(i));
         for (int j = 0; j < p->getCards()->size(); ++j) {
             this->addItem(p->getCards()->at(j)->getGraphicsItem());
         }
     }
+    QVector<Card>* p = new QVector<Card>;
+    p->append(human->getCards()->at(0)->getCard());
+    p->append(human->getCards()->at(1)->getCard());
+    p->append(human->getCards()->at(2)->getCard());
+    playerDoTurn(p);
 }
 
-// bekomme alle Spielbaren Karten von Human player
-/*void Playground::playerDoTurn(QVector<Card>* playableCards)
+void Playground::updateCard(CardItem *card,Card& newCard){
+    removeItem(card->getGraphicsItem());
+    card->setCard(newCard);
+    addItem(card->getGraphicsItem());
+    update(sceneRect());
+}
+
+
+
+void Playground::playerDoTurn(QVector<Card>* playableCards)
 {
+    players.at(0)->setPlayableCards(playableCards);
 }
 
-// Spieler spielt eine Karte und welche
 void Playground::playerPlaysCard(short player, Card& playedCard)
 {
 }
 
 // Spieler zieht eine Karte
-void Playground::playerDrawsCard(short player, Card& card)
+/*void Playground::playerDrawsCard(short player, Card& card)
 {
 }
 
@@ -124,12 +150,8 @@ void Playground::fakeInit()
     cards->append(Card(Card::cardSuit::HEARTS, Card::cardValue::TEN));
     cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
     cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
-    cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
-    cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
-    cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
-    cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
-    cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
+
     short i = 2;
-    Card* c = new Card(Card::cardSuit::SPADES, Card::cardValue::ACE);
+    Card c(Card::cardSuit::SPADES, Card::cardValue::ACE);
     this->initPlayground(cards, otherPlayerCardCount, c, i);
 }

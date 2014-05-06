@@ -1,16 +1,26 @@
 #include "carditem.h"
 
-CardItem::CardItem(const Card& card, QWidget* parent)
-    : QWidget(parent)
+CardItem::CardItem(const Card& _card, QWidget* parent) : QWidget(parent)
 {
-    this->value = card.getValue();
-    this->suit = card.getSuit();
+    card = _card;
 }
 
 CardItem::CardItem(int specialCode)
 {
     specialCard = true;
     this->specialCode = specialCode;
+}
+
+void CardItem::setPos(qreal x, qreal y){
+    this->x = x;
+    this->y = y;
+    if(graphicsItem != NULL){
+        graphicsItem->setPos(x,y);
+    }
+}
+
+Card& CardItem::getCard(){
+    return card;
 }
 
 QGraphicsPixmapItem* CardItem::getGraphicsItem()
@@ -30,6 +40,9 @@ QGraphicsPixmapItem* CardItem::getGraphicsItem()
         std::string fullImagePath("img/deck_" + deckNumber + "/" + imgName + imgExtension);
 
         graphicsItem = new QGraphicsPixmapItem(QPixmap(fullImagePath.c_str()));
+        if(x != 0 && y != 0){
+            graphicsItem->setPos(x,y);
+        }
     }
     return graphicsItem;
 }
@@ -64,7 +77,7 @@ std::string CardItem::getNormalCardName()
     std::string imgName("");
 
     //Set the Name for the color
-    switch (suit) {
+    switch (card.getSuit()) {
     case Card::cardSuit::HEARTS:
         imgName += "h";
         break;
@@ -82,8 +95,8 @@ std::string CardItem::getNormalCardName()
     }
 
     //Everything over 4 is a Picture (Jack,Queen,King,...)
-    if (value > 4) {
-        switch (value) {
+    if (card.getValue() > 4) {
+        switch (card.getValue()) {
         case Card::cardValue::JACK:
             imgName += "j";
             break;
@@ -102,8 +115,22 @@ std::string CardItem::getNormalCardName()
     } else {
         //because std::to_string() is bugged in some MinGW versions, a workaround
         std::stringstream ss;
-        ss << value;
+        ss << card.getValue();
         imgName += ss.str();
     }
     return imgName;
+}
+
+qreal CardItem::getX(){
+    return x;
+}
+
+qreal CardItem::getY(){
+    return y;
+}
+
+void CardItem::setCard(const Card &_card){
+    specialCard = false;
+    card = _card;
+    graphicsItem = NULL;
 }
