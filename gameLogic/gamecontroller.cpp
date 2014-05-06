@@ -17,18 +17,14 @@ GameController::GameController(int currentPlayer, int playerCount)
     : currentPlayer(currentPlayer)
     , cardStack(true)
     , playerCount(playerCount)
-
 {
-  if (playerCount < 2 || playerCount > 4) {
-      throw std::invalid_argument("playercount has to be between 2 and 4");
+    if (playerCount < 2 || playerCount > 4) {
+        throw std::invalid_argument("playercount has to be between 2 and 4");
     }
-    //TODO what players do we have ?? remote??
-    gameInit();
-    int* otherPlayerCardCount = new int[playerCount - 1];
-    for (int i = 0; i < players.length(); ++i) {
-        otherPlayerCardCount[i] = players[i].getCardCount();
+    players.push_back(Player(Player::human, "Hans"));
+    for (int i = 0; i < playerCount; ++i) {
+        players.push_back(Player(Player::ai));
     }
-    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
 }
 
 void GameController::playCard(const Card& card)
@@ -64,14 +60,16 @@ void GameController::doNothing()
 //private
 void GameController::gameInit()
 {
+    //TODO what players do we have ?? remote??
     cardStack.shuffle();
     //kind of players unregarded
-    players.push_back(Player(Player::human, "Hans"));
-    for (int i = 0; i < playerCount; ++i) {
-        players.push_back(Player(Player::ai));
-    }
     dealCards();
     cardDepot.pushCard(cardStack.getLast(cardDepot));
+    int* otherPlayerCardCount = new int[playerCount - 1];
+    for (int i = 0; i < players.length(); ++i) {
+        otherPlayerCardCount[i] = players[i].getCardCount();
+    }
+    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
     emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
 }
 //private

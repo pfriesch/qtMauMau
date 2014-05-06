@@ -34,9 +34,9 @@ void Deck::shuffle()
     }
 }
 
-//int Deck::size() const {
-//  return cards.size();
-//}
+int Deck::size() const {
+  return cards.size();
+}
 
 void Deck::pushCard(const Card card)
 {
@@ -51,10 +51,14 @@ void Deck::pushCard(const Card card)
  * @param dropped_cards
  * @return
  */
-Card Deck::getLast(Deck& dropped_cards)
+Card Deck::getLast(Deck& cardDepot)
 {
     if (empty()) {
-        addCards(dropped_cards.getUnderlyingCards());
+        if (cardDepot.empty()) {
+            throw std::invalid_argument("cardDepot contains too few cards");
+        } else {
+            addCards(cardDepot.getUnderlyingCards());
+        }
     }
     Card returned_card = cards.back();
     cards.pop_back();

@@ -13,9 +13,12 @@
 #include <QObject>
 #include <gui/playground.h>
 
-//TODO TEST
+//#define TEST
+
+#ifdef TEST
 #include "gameLogic/Test/gamecontroller_test.h"
 #include "gameLogic/Test/decktest.h"
+#endif
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
@@ -43,9 +46,10 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     ts << txt << endl;
 }
 
-void connectSignals(Playground *playground, GameController &gc){
-    QObject::connect(&gc, &GameController::initPlayground,playground,&Playground::initPlayground);
-
+void connectSignals(Playground* playground, GameController& gc)
+{
+    QObject::connect(&gc, &GameController::initPlayground, playground, &Playground::initPlayground);
+    QObject::connect(&gc,&GameController::playerDoTurn,playground,&Playground::playerDoTurn);
 }
 
 int main(int argc, char* argv[])
@@ -71,21 +75,20 @@ int main(int argc, char* argv[])
 
     MainWindow window;
 
-    Playground *playground = window.getPlayground();
+    Playground* playground = window.getPlayground();
     GameController gc;
-    connectSignals(playground,gc);
-
-
-
+    connectSignals(playground, gc);
+    gc.gameInit();
 
     window.show();
 
-
-
+#ifdef TEST
     //TODO TEST
     GameControllerTest* gcTest = new GameControllerTest();
     DeckTest* deckTest = new DeckTest();
     QTest::qExec(gcTest);
     QTest::qExec(deckTest);
+#endif
+
     return app.exec();
 }

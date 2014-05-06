@@ -100,10 +100,10 @@ void PlayerItem::measureLayout(int cardCount)
     }
 }
 
-void PlayerItem::setPlayableCards(QVector<Card>* playableCards){
-    for (int i = 0; i < playableCards->size(); ++i) {
+void PlayerItem::setPlayableCards(QVector<Card> playableCards){
+    for (int i = 0; i < playableCards.size(); ++i) {
         for (int j = 0; j < cards->size(); ++j) {
-            if(playableCards->at(i) == cards->at(j)->getCard()){
+            if(playableCards.at(i) == cards->at(j)->getCard()){
                 CardItem *cardItem = cards->at(j);
                 cardItem->setPos(cardItem->getX(),cardItem->getY()-offsetPlayableCard);
                 cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);

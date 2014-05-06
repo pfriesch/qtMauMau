@@ -24,7 +24,7 @@ public:
     void createCards(int cardCount);
     void getCard();
     direction getDirection();
-    void setPlayableCards(QVector<Card>* playableCards);
+    void setPlayableCards(QVector<Card> playableCards);
     void unsetPlayableCards();
 
 private:

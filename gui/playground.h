@@ -45,7 +45,7 @@ slots:
     void initPlayground(const QVector<Card> humanPlayerCards, int *otherPlayerCardCount,const Card topDepotCard, int startingPlayer);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
-    void playerDoTurn(QVector<Card>* playableCards);
+    void playerDoTurn(QVector<Card> playableCards);
     // bekomme alle Spielbaren Karten von Human player
 
     void playerPlaysCard(int player, Card& playedCard);

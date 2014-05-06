@@ -44,7 +44,8 @@ private:
     Card::cardValue changedDirectionCardValue = Card::TEN;
 
 public:
-    explicit GameController(int currentPlayer = 0,int playerCount = 4);
+    explicit GameController(int currentPlayer = 0, int playerCount = 4);
+    void gameInit();
 
 signals:
     /**
@@ -59,7 +60,7 @@ signals:
      * @brief playerDoTurn Sends a signal to the view with the cards the human player can play
      * @param playableCards
      */
-    void playerDoTurn(QVector<Card>& playableCards);
+    void playerDoTurn(QVector<Card> playableCards);
     /**
      * @brief playerPlaysCard Sends a signal to the view that the given non human player has played the given card
      * @param player the player who played a card
@@ -88,7 +89,6 @@ slots:
     void doNothing();
 
 private:
-    void gameInit();
     void dealCards();
     void nextTurn();
     void aiDoTurn(int aiPlayer);

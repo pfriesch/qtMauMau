@@ -4,6 +4,7 @@
 #include <QVector>
 #include <algorithm>
 #include <ctime>
+#include <stdexcept>
 #include "card.h"
 
 class Deck {
@@ -16,11 +17,13 @@ public:
     void pushCard(const Card card);
     Card getLast(Deck& deck);
     Card back() const;
-    //int size() const;
-    bool empty() const;
+
     Card getCard(int index) const;
     void addCards(QVector<Card>& newCards);
     QVector<Card>& getUnderlyingCards();
+    bool empty() const;
+    //TODO TEST
+    int size() const;
 };
 
 #endif /* DECK_H_ */

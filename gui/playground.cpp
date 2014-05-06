@@ -92,11 +92,7 @@ void Playground::initPlayground(const QVector<Card> humanPlayerCards, int *other
             this->addItem(p->getCards()->at(j)->getGraphicsItem());
         }
     }
-    QVector<Card>* p = new QVector<Card>;
-    p->append(human->getCards()->at(0)->getCard());
-    p->append(human->getCards()->at(1)->getCard());
-    p->append(human->getCards()->at(2)->getCard());
-    playerDoTurn(p);
+
 }
 
 void Playground::updateCard(CardItem *card,const Card newCard){
@@ -108,7 +104,7 @@ void Playground::updateCard(CardItem *card,const Card newCard){
 
 
 
-void Playground::playerDoTurn(QVector<Card>* playableCards)
+void Playground::playerDoTurn(QVector<Card> playableCards)
 {
     players.at(0)->setPlayableCards(playableCards);
 }
