@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include <QTime>
 
+//TODO TEST
+#include "gameLogic/Test/gamecontroller_test.h"
+#include "gameLogic/Test/decktest.h"
+
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
     QString txt;
@@ -63,5 +67,10 @@ int main(int argc, char* argv[])
     MainWindow window;
     window.show();
 
+    //TODO TEST
+    GameControllerTest* gcTest = new GameControllerTest();
+    DeckTest* deckTest = new DeckTest();
+    QTest::qExec(gcTest);
+    QTest::qExec(deckTest);
     return app.exec();
 }

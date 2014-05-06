@@ -1,6 +1,5 @@
 #include "gamecontroller.h"
 
-
 //void QGameController::playCard(Player& player, const Card& card)
 //{
 //    //TODO mb need to verify if this is a legal action
@@ -14,14 +13,18 @@
 //    player.reciveCard(card);
 //}
 
-GameController::GameController(int currentPlayer)
+GameController::GameController(int currentPlayer, int playerCount)
     : currentPlayer(currentPlayer)
     , cardStack(true)
+    , playerCount(playerCount)
 
 {
+  if (playerCount < 2 || playerCount > 4) {
+      throw std::invalid_argument("playercount has to be between 2 and 4");
+    }
     //TODO what players do we have ?? remote??
     gameInit();
-    int* otherPlayerCardCount = new int[4];
+    int* otherPlayerCardCount = new int[playerCount - 1];
     for (int i = 0; i < players.length(); ++i) {
         otherPlayerCardCount[i] = players[i].getCardCount();
     }
@@ -64,9 +67,9 @@ void GameController::gameInit()
     cardStack.shuffle();
     //kind of players unregarded
     players.push_back(Player(Player::human, "Hans"));
-    players.push_back(Player(Player::ai));
-    players.push_back(Player(Player::ai));
-    players.push_back(Player(Player::ai));
+    for (int i = 0; i < playerCount; ++i) {
+        players.push_back(Player(Player::ai));
+    }
     dealCards();
     cardDepot.pushCard(cardStack.getLast(cardDepot));
     emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
@@ -74,7 +77,7 @@ void GameController::gameInit()
 //private
 void GameController::dealCards()
 {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < playerCount; i++) {
         for (int j = 0; j < 5; j++) {
             players[i].reciveCard(cardStack.getLast(cardDepot));
         }
@@ -83,7 +86,7 @@ void GameController::dealCards()
 //private
 void GameController::nextTurn()
 {
-    if (currentPlayer < 4) {
+    if (currentPlayer < playerCount) {
         currentPlayer++;
     } else {
         currentPlayer = 0;

@@ -27,7 +27,7 @@ void Deck::shuffle()
     Card temp;
     int i;
     while (m) {
-        i = (rand() * m--);
+        i = (rand() % m--);
         temp = cards[m];
         cards[m] = cards[i];
         cards[i] = temp;
@@ -74,7 +74,6 @@ Card Deck::getCard(int index) const
 {
     return cards.at(index);
 }
-
 
 QVector<Card>& Deck::getUnderlyingCards()
 {
