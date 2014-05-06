@@ -8,7 +8,7 @@
 #include "player.h"
 #include "card.h"
 
-class GameController : QObject {
+class GameController : public QObject {
     Q_OBJECT
 private:
     QVector<Player> players;
@@ -54,7 +54,7 @@ signals:
      * @param topDepotCard The top card of the Card Depot
      * @param startingPlayer The player who is the first to do his turn
      */
-    void initPlayground(const QVector<Card>& humanPlayerCards, int* otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
+    void initPlayground(const QVector<Card> humanPlayerCards, int* otherPlayerCardCount, const Card topDepotCard, int startingPlayer);
     /**
      * @brief playerDoTurn Sends a signal to the view with the cards the human player can play
      * @param playableCards

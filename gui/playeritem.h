@@ -18,18 +18,18 @@ public:
         BOTTOM = 4
     };
 
-    PlayerItem(direction dir, short cardCount, QPointF centerPoint, QObject* parent = 0);
-    PlayerItem(direction dir, QVector<Card> *humanCards, QPointF centerPoint);
+    PlayerItem(direction dir, int cardCount, QPointF centerPoint, QObject* parent = 0);
+    PlayerItem(direction dir, QVector<Card> humanCards, QPointF centerPoint);
     QVector<CardItem*>* getCards();
-    void createCards(short cardCount);
+    void createCards(int cardCount);
     void getCard();
     direction getDirection();
     void setPlayableCards(QVector<Card>* playableCards);
     void unsetPlayableCards();
 
 private:
-    void measureLayout(short cardCount);
-    void createHumanCards(QVector<Card> *humanCards);
+    void measureLayout(int cardCount);
+    void createHumanCards(QVector<Card> humanCards);
     QVector<CardItem*> *cards = new QVector<CardItem*>();
     CardItem::specialCards specialCard;
     PlayerItem::direction playerDirection;

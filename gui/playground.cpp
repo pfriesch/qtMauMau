@@ -43,9 +43,6 @@ void Playground::startGame()
     talon->setPos(layout.value("TALON_X"), layout.value("TALON_Y"));
     talon->getGraphicsItem()->setOpacity(0.7);
     this->addItem(talon->getGraphicsItem());
-
-    fakeInit();
-
 }
 
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -73,21 +70,20 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 // TODO: show starting player
-void Playground::initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card& topDepotCard, short startingPlayer)
+void Playground::initPlayground(const QVector<Card> humanPlayerCards, int *otherPlayerCardCount,const Card topDepotCard, int startingPlayer)
 {
 
     PlayerItem* human = new PlayerItem(PlayerItem::direction::BOTTOM, humanPlayerCards, this->sceneRect().center());
-    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(0), this->sceneRect().center());
-    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(1), this->sceneRect().center());
-    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(2), this->sceneRect().center());
+    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], this->sceneRect().center());
+    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], this->sceneRect().center());
+    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], this->sceneRect().center());
 
     players.append(human);
     players.append(p1);
     players.append(p2);
     players.append(p3);
 
-    Card c(Card::cardSuit::SPADES, Card::cardValue::ACE);
-    updateCard(talon,c);
+    updateCard(talon,topDepotCard);
 
     // set playercards for every player
     for (int i = 0; i < players.size(); ++i) {
@@ -103,7 +99,7 @@ void Playground::initPlayground(QVector<Card>* humanPlayerCards, QVector<short> 
     playerDoTurn(p);
 }
 
-void Playground::updateCard(CardItem *card,Card& newCard){
+void Playground::updateCard(CardItem *card,const Card newCard){
     removeItem(card->getGraphicsItem());
     card->setCard(newCard);
     addItem(card->getGraphicsItem());
@@ -117,7 +113,7 @@ void Playground::playerDoTurn(QVector<Card>* playableCards)
     players.at(0)->setPlayableCards(playableCards);
 }
 
-void Playground::playerPlaysCard(short player, Card& playedCard)
+void Playground::playerPlaysCard(int player, Card& playedCard)
 {
 }
 
@@ -130,12 +126,12 @@ void Playground::playerPlaysCard(short player, Card& playedCard)
 void Playground::addPlayerCard(const Card& card)
 {
 }
-*/
+
 /**
   * That are allllll fake methods
   *
  * @brief Playground::fakeInit
- */
+
 void Playground::fakeInit()
 {
     QVector<short> otherPlayerCardCount = QVector<short>();
@@ -155,3 +151,4 @@ void Playground::fakeInit()
     Card c(Card::cardSuit::SPADES, Card::cardValue::ACE);
     this->initPlayground(cards, otherPlayerCardCount, c, i);
 }
+*/

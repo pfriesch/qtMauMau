@@ -20,8 +20,8 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 private:
-    void fakeInit();
-    void fakeDoTurn();
+   // void fakeInit();
+
 
     QVector<CardItem*> graphicalItems;
     QVector<PlayerItem*> players;
@@ -29,7 +29,7 @@ private:
     CardItem *talon;
     CardItem *stack;
 
-    void updateCard(CardItem *card, Card& newCard);
+    void updateCard(CardItem *card, const Card newCard);
 
     //Layout entities
     void measureLayout();
@@ -42,13 +42,13 @@ private:
 public
 slots:
 
-    void initPlayground(QVector<Card>* humanPlayerCards, QVector<short> otherPlayerCardCount, Card& topDepotCard, short startingPlayer);
+    void initPlayground(const QVector<Card> humanPlayerCards, int *otherPlayerCardCount,const Card topDepotCard, int startingPlayer);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
     void playerDoTurn(QVector<Card>* playableCards);
     // bekomme alle Spielbaren Karten von Human player
 
-    void playerPlaysCard(short player, Card& playedCard);
+    void playerPlaysCard(int player, Card& playedCard);
     // Spieler spielt eine Karte und welche
 /*
     void playerDrawsCard(short player, Card& card);

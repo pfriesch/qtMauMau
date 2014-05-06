@@ -1,6 +1,6 @@
 #include "playeritem.h"
 
-PlayerItem::PlayerItem(direction dir, short cardCount, QPointF centerPoint, QObject* parent)
+PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QObject* parent)
     : QObject(parent)
 {
     this->centerPoint = centerPoint;
@@ -25,11 +25,11 @@ PlayerItem::PlayerItem(direction dir, short cardCount, QPointF centerPoint, QObj
     this->createCards(cardCount);
 }
 
-PlayerItem::PlayerItem(direction dir, QVector<Card> *humanCards, QPointF centerPoint){
+PlayerItem::PlayerItem(direction dir, QVector<Card> humanCards, QPointF centerPoint){
     this->centerPoint = centerPoint;
     this->playerDirection = dir;
     this->layoutKey = QString::number(playerDirection);
-    this->measureLayout(humanCards->size());
+    this->measureLayout(humanCards.size());
     this->createHumanCards(humanCards);
 }
 
@@ -37,7 +37,7 @@ PlayerItem::direction PlayerItem::getDirection(){
     return playerDirection;
 }
 
-void PlayerItem::createCards(short cardCount){
+void PlayerItem::createCards(int cardCount){
     for (int i = 0; i < cardCount; i++) {
         CardItem* card = new CardItem(specialCard);
 
@@ -59,9 +59,9 @@ void PlayerItem::createCards(short cardCount){
  * @brief PlayerItem::createHumanCards
  * @param humanCards
  */
-void PlayerItem::createHumanCards(QVector<Card> *humanCards){
-    for (int i = 0; i < humanCards->size(); i++) {
-        CardItem* card = new CardItem(humanCards->at(i));
+void PlayerItem::createHumanCards(QVector<Card> humanCards){
+    for (int i = 0; i < humanCards.size(); i++) {
+        CardItem* card = new CardItem(humanCards.at(i));
         card->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
         layout.insert(layoutKey + "X", layout.value(layoutKey + "X") + cardGap);
 
@@ -75,7 +75,7 @@ void PlayerItem::createHumanCards(QVector<Card> *humanCards){
  * @brief PlayerItem::measureLayout
  * @param cardCount
  */
-void PlayerItem::measureLayout(short cardCount)
+void PlayerItem::measureLayout(int cardCount)
 {
 
     if (playerDirection == direction::LEFT) {

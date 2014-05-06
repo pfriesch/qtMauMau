@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <QTime>
+#include <QObject>
+#include <gui/playground.h>
 
 //TODO TEST
 #include "gameLogic/Test/gamecontroller_test.h"
@@ -41,6 +43,11 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     ts << txt << endl;
 }
 
+void connectSignals(Playground *playground, GameController &gc){
+    QObject::connect(&gc, &GameController::initPlayground,playground,&Playground::initPlayground);
+
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
@@ -49,8 +56,6 @@ int main(int argc, char* argv[])
     std::time_t t;
     time(&t);
     srand((unsigned int)t);
-
-    GameController gc;
 
     if (QFile::exists("maumau-log.txt")) {
         QFile::remove("maumau-log.txt");
@@ -65,7 +70,17 @@ int main(int argc, char* argv[])
     qInstallMessageHandler(customMessageHandler);
 
     MainWindow window;
+
+    Playground *playground = window.getPlayground();
+    GameController gc;
+    connectSignals(playground,gc);
+
+
+
+
     window.show();
+
+
 
     //TODO TEST
     GameControllerTest* gcTest = new GameControllerTest();

@@ -1,6 +1,6 @@
 #include "carditem.h"
 
-CardItem::CardItem(const Card& _card, QWidget* parent) : QWidget(parent)
+CardItem::CardItem(const Card _card, QWidget* parent) : QWidget(parent)
 {
     card = _card;
 }
