@@ -42,7 +42,7 @@ void GameController::drawCard()
         Card drawnCard = cardStack.getLast(cardDepot);
         players[humanPlayer].reciveCard(drawnCard);
         currentPlayerDrewCard = true;
-        emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
+        emit playerDoTurn(QVector<Card>::fromStdVector(players[humanPlayer].getPlayableCards(cardDepot.back())));
     } else {
         //TODO error handling
     }
@@ -69,8 +69,8 @@ void GameController::gameInit()
     for (int i = 0; i < players.length(); ++i) {
         otherPlayerCardCount[i] = players[i].getCardCount();
     }
-    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
-    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
+    emit initPlayground(QVector<Card>::fromStdVector(players[humanPlayer].getHand()), otherPlayerCardCount, cardDepot.back(), currentPlayer);
+    emit playerDoTurn(QVector<Card>::fromStdVector(players[humanPlayer].getPlayableCards(cardDepot.back())));
 }
 //private
 void GameController::dealCards()
@@ -91,13 +91,13 @@ void GameController::nextTurn()
     }
     switch (players[currentPlayer].getType()) {
     case Player::human:
-        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back()));
+        emit playerDoTurn(QVector<Card>::fromStdVector(players[currentPlayer].getPlayableCards(cardDepot.back())));
         break;
     case Player::ai:
         aiDoTurn(currentPlayer);
         break;
     case Player::remote:
-        //TODO
+        //TODO add remote player action
         break;
     default:
         break;

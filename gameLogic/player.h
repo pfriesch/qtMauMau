@@ -1,8 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QVector>
+#include <vector>
+#include <string>
+#include <algorithm>
 #include "card.h"
+
+using namespace std;
 
 class Player {
 public:
@@ -14,17 +18,17 @@ public:
 
 private:
     Player::PlayerType playerType;
-    QVector<Card> hand;
-    QString name;
+    vector<Card> hand;
+    string name;
     int id;
 
 public:
-    explicit Player(Player::PlayerType playerType = Player::PlayerType(1), QString name = "");
+    explicit Player(Player::PlayerType playerType = Player::PlayerType(1), string name = "");
     void reciveCard(const Card& card);
     void dropCard(const Card& card);
-    QVector<Card>& getPlayableCards(const Card& card);
+    vector<Card>& getPlayableCards(const Card& card);
     int getId() const;
-    QVector<Card> getHand() const;
+    vector<Card> getHand() const;
     int getCardCount() const;
     Player::PlayerType getType() const;
 };

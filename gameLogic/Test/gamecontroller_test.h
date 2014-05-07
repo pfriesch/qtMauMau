@@ -1,5 +1,6 @@
 #ifndef GAMECONTROLLERTEST_H
 #define GAMECONTROLLERTEST_H
+#ifdef TEST
 
 #include <QObject>
 #include <QtTest/QTest>
@@ -27,4 +28,5 @@ slots:
 //    }
 };
 
+#endif
 #endif // GAMECONTROLLERTEST_H

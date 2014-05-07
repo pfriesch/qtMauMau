@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <exception>
 #include "gameLogic/Deck.h"
+#ifdef TEST
 
 class DeckTest : public QObject {
     Q_OBJECT
@@ -47,4 +48,5 @@ slots:
     }
 };
 
+#endif
 #endif // DECKTEST_H

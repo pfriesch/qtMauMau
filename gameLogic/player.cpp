@@ -5,14 +5,14 @@ int Player::getId() const
     return id;
 }
 
-QVector<Card> Player::getHand() const
+vector<Card> Player::getHand() const
 {
     return hand;
 }
 
 int Player::getCardCount() const
 {
-    return hand.length();
+    return hand.size();
 }
 
 Player::PlayerType Player::getType() const
@@ -20,7 +20,7 @@ Player::PlayerType Player::getType() const
     return playerType;
 }
 
-Player::Player(Player::PlayerType playerType, QString name)
+Player::Player(Player::PlayerType playerType, string name)
     : playerType(playerType)
     , name(name)
 {
@@ -28,20 +28,20 @@ Player::Player(Player::PlayerType playerType, QString name)
 
 void Player::reciveCard(const Card& card)
 {
-    hand.append(card);
+    hand.push_back(card);
 }
 
 void Player::dropCard(const Card& card)
 {
-    hand.remove(hand.indexOf(card));
+  hand.erase(remove(hand.begin(), hand.end(),card),hand.end());
 }
-//TODO
-QVector<Card>& Player::getPlayableCards(const Card& card)
+//TODO specify playable cards
+vector<Card>& Player::getPlayableCards(const Card& card)
 {
-    QVector<Card>* playableCards = new QVector<Card>;
+    vector<Card>* playableCards = new vector<Card>;
     for (int i = 0; i < hand.size(); ++i) {
         if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue()) {
-            playableCards->append(hand[i]);
+            playableCards->push_back(hand[i]);
         }
     }
     return *playableCards;

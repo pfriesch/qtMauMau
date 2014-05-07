@@ -23,7 +23,7 @@ void Deck::shuffle()
 {
 
     //    std::random_shuffle(cards.begin(), cards.end());
-    int m = cards.length();
+    int m = cards.size();
     Card temp;
     int i;
     while (m) {
@@ -33,10 +33,12 @@ void Deck::shuffle()
         cards[i] = temp;
     }
 }
-
-int Deck::size() const {
-  return cards.size();
+#ifdef TEST
+int Deck::size() const
+{
+    return cards.size();
 }
+#endif
 
 void Deck::pushCard(const Card card)
 {
@@ -79,18 +81,17 @@ Card Deck::getCard(int index) const
     return cards.at(index);
 }
 
-QVector<Card>& Deck::getUnderlyingCards()
+vector<Card>& Deck::getUnderlyingCards()
 {
-    QVector<Card>* underlying_cards = new QVector<Card>;
-    *underlying_cards << cards;
-    underlying_cards->pop_back();
+    vector<Card>* underlyingCards = new vector<Card>;
+    *underlyingCards = cards;
+    underlyingCards->pop_back();
     cards.erase(cards.begin(), cards.end() - 1);
-    return *underlying_cards;
+    return *underlyingCards;
 }
 
-void Deck::addCards(QVector<Card>& newCards)
+void Deck::addCards(vector<Card>& newCards)
 {
-    cards << newCards;
-
+    cards.insert(cards.end(), newCards.begin(), newCards.end());
     shuffle();
 }

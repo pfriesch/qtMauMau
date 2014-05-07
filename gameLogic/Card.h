@@ -1,8 +1,6 @@
 #ifndef CARD_H_
 #define CARD_H_
 
-#include <QString>
-
 class Card {
 public:
     enum cardSuit {
@@ -32,7 +30,6 @@ public:
     Card();
     cardSuit getSuit() const;
     cardValue getValue() const;
-    QString as_string() const;
     bool operator==(const Card& card) const;
 };
 
