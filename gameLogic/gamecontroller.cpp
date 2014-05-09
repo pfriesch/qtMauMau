@@ -1,22 +1,9 @@
 #include "gamecontroller.h"
 
-//void QGameController::playCard(Player& player, const Card& card)
-//{
-//    //TODO mb need to verify if this is a legal action
-//    player.dropCard(card);
-//    cardDepot.pushCard(card);
-//}
-
-//void QGameController::drawCard(Player& player)
-//{
-//    Card card(cardStack.getLast(cardDepot));
-//    player.reciveCard(card);
-//}
-
 GameController::GameController(int currentPlayer, int playerCount)
-    : currentPlayer(currentPlayer)
-    , cardStack(true)
+    : cardStack(true)
     , playerCount(playerCount)
+    , currentPlayer(currentPlayer)
 {
     if (playerCount < 2 || playerCount > 4) {
         throw std::invalid_argument("playercount has to be between 2 and 4");
@@ -42,7 +29,7 @@ void GameController::drawCard()
         Card drawnCard = cardStack.getLast(cardDepot);
         players[humanPlayer].reciveCard(drawnCard);
         currentPlayerDrewCard = true;
-        emit playerDoTurn(QVector<Card>::fromStdVector(players[humanPlayer].getPlayableCards(cardDepot.back())));
+        emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
     } else {
         //TODO error handling
     }
@@ -65,12 +52,12 @@ void GameController::gameInit()
     //kind of players unregarded
     dealCards();
     cardDepot.pushCard(cardStack.getLast(cardDepot));
-    int* otherPlayerCardCount = new int[playerCount - 1];
-    for (int i = 0; i < players.length(); ++i) {
-        otherPlayerCardCount[i] = players[i].getCardCount();
+    vector<int> otherPlayerCardCount;
+    for (int i = 0; i < players.size(); ++i) {
+        otherPlayerCardCount.push_back(players[i].getCardCount());
     }
-    emit initPlayground(QVector<Card>::fromStdVector(players[humanPlayer].getHand()), otherPlayerCardCount, cardDepot.back(), currentPlayer);
-    emit playerDoTurn(QVector<Card>::fromStdVector(players[humanPlayer].getPlayableCards(cardDepot.back())));
+    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
+    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
 }
 //private
 void GameController::dealCards()
@@ -91,7 +78,7 @@ void GameController::nextTurn()
     }
     switch (players[currentPlayer].getType()) {
     case Player::human:
-        emit playerDoTurn(QVector<Card>::fromStdVector(players[currentPlayer].getPlayableCards(cardDepot.back())));
+        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back()));
         break;
     case Player::ai:
         aiDoTurn(currentPlayer);

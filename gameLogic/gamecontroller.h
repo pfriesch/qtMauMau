@@ -1,7 +1,7 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
-#include <QVector>
+
 #include <QObject>
 #include <stdexcept>
 #include "deck.h"
@@ -11,7 +11,7 @@
 class GameController : public QObject {
     Q_OBJECT
 private:
-    QVector<Player> players;
+    vector<Player> players;
     //The stack of cards where cards are taken if a player has to draw.
     Deck cardStack;
     //The stack of cards where the played cards are dropped.
@@ -55,12 +55,12 @@ signals:
      * @param topDepotCard The top card of the Card Depot
      * @param startingPlayer The player who is the first to do his turn
      */
-    void initPlayground(const QVector<Card> humanPlayerCards, int* otherPlayerCardCount, const Card topDepotCard, int startingPlayer);
+    void initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
     /**
      * @brief playerDoTurn Sends a signal to the view with the cards the human player can play
      * @param playableCards
      */
-    void playerDoTurn(QVector<Card> playableCards);
+    void playerDoTurn(vector<Card>& playableCards);
     /**
      * @brief playerPlaysCard Sends a signal to the view that the given non human player has played the given card
      * @param player the player who played a card
