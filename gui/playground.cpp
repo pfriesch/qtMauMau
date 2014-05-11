@@ -8,31 +8,19 @@ Playground::Playground(QObject* parent)
     this->setBackgroundBrush(brush);
 }
 
-void Playground::measureLayout()
-{
-    //Center for the scene, but we need to include the card sizes
-    QPointF sceneCenterPointRaw = this->sceneRect().center();
-    //The real center for a Card
-    qreal sceneCenter_X = sceneCenterPointRaw.x() - cardWidth;
-    qreal sceneCenter_Y = sceneCenterPointRaw.y() - cardHeight;
-
-    layout.insert("STACK_X", sceneCenter_X);
-    layout.insert("STACK_Y", sceneCenter_Y);
-
-    layout.insert("depot_X", sceneCenter_X + cardWidth + horizontalCardGap);
-    layout.insert("depot_Y", sceneCenter_Y);
-}
-
 void Playground::startGame()
 {
 
-    measureLayout();
+    QPointF sceneCenterPointRaw = this->sceneRect().center();
+    qreal sceneCenter_X = sceneCenterPointRaw.x() - cardWidth;
+    qreal sceneCenter_Y = sceneCenterPointRaw.y() - cardHeight;
+    int depotX = sceneCenter_X + cardWidth + horizontalCardGap;
 
     stack = CardItem(CardItem::specialCards::RED_VERTICAL);
-    stack.setPos(layout.value("STACK_X"), layout.value("STACK_Y"));
+    stack.setPos(sceneCenter_X, sceneCenter_Y);
 
     depot = CardItem(CardItem::specialCards::DEPOT);
-    depot.setPos(layout.value("depot_X"), layout.value("depot_Y"));
+    depot.setPos(depotX, sceneCenter_Y);
 
     this->addItem(stack.createImg());
     this->addItem(depot.createImg());
@@ -45,6 +33,8 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
         //Clicked on Stack
         if (item == stack.createImg()) {
+            qDebug("VIEW: Sende drawCard()");
+            players.value(PlayerItem::direction::HUMAN)->unsetPlayableCards();
             emit drawCard();
         }
         //Clicked on Human Card
@@ -52,10 +42,11 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
         for (int j = 0; j < human->getCards()->size(); ++j) {
             CardItem* c = human->getCards()->at(j);
             if (c->createImg() == item && c->createImg()->isSelected()) {
-                removeItem(c->createImg());
                 updateCard(depot, c->getCard());
+                human->removeCard(c->getCard(), this);
                 human->unsetPlayableCards();
-                emit playCard(c->getCard());
+                emit playCard(depot.getCard());
+                qDebug("VIEW: sende playCard()");
             }
         }
     }
@@ -104,10 +95,10 @@ void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> 
     }
 }
 
-void Playground::updateCard(CardItem& card, const Card newCard)
+void Playground::updateCard(CardItem& card, const Card &newCard)
 {
     removeItem(card.createImg());
-    card.setCard(newCard);
+    card = CardItem(newCard);
     addItem(card.createImg());
     update(sceneRect());
 }
@@ -120,15 +111,49 @@ void Playground::playerDoTurn(vector<Card> playableCards)
 void Playground::playerPlaysCard(int player, const Card& playedCard)
 {
     updateCard(depot, playedCard);
+
+    switch (player) {
+    case 1: {
+        players.value(PlayerItem::direction::LEFT)->removeCard(playedCard, this);
+        break;
+    }
+    case 2: {
+        players.value(PlayerItem::direction::TOP)->removeCard(playedCard, this);
+        break;
+    }
+    case 3: {
+        players.value(PlayerItem::direction::RIGHT)->removeCard(playedCard, this);
+        break;
+    }
+    }
 }
 
-// Spieler zieht eine Karte
-/*void Playground::playerDrawsCard(short player, Card& card)
+void Playground::playerDrawsCard(short player)
 {
+    CardItem* cardItem = NULL;
+    Card dummyCard;
+    switch (player) {
+    case 1: {
+        cardItem = players.value(PlayerItem::direction::LEFT)->addCard(dummyCard);
+        break;
+    }
+    case 2: {
+        cardItem = players.value(PlayerItem::direction::TOP)->addCard(dummyCard);
+        break;
+    }
+    case 3: {
+        cardItem = players.value(PlayerItem::direction::RIGHT)->addCard(dummyCard);
+        break;
+    }
+    default: break;
+    }
+    addItem(cardItem->createImg());
 }
 
 // Human Spieler hat eine Karte gezogen
 void Playground::addPlayerCard(const Card& card)
 {
+    qDebug("VIEW: GET Signal - addPlayerCard");
+    CardItem* cardItem = players.value(PlayerItem::direction::HUMAN)->addCard(card);
+    addItem(cardItem->createImg());
 }
-*/

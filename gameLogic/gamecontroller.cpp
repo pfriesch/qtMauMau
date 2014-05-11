@@ -29,6 +29,7 @@ void GameController::drawCard()
         Card drawnCard = cardStack.getLast(cardDepot);
         players[humanPlayer].reciveCard(drawnCard);
         currentPlayerDrewCard = true;
+        emit addPlayerCard(drawnCard);
         emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
     } else {
         //TODO error handling
@@ -71,7 +72,7 @@ void GameController::dealCards()
 //private
 void GameController::nextTurn()
 {
-    if (currentPlayer < playerCount) {
+    if (currentPlayer < playerCount-1) {
         currentPlayer++;
     } else {
         currentPlayer = 0;

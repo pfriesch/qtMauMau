@@ -29,15 +29,17 @@ public:
     CardItem(const Card _card);
     CardItem(CardItem::specialCards _specialCode);
     CardItem(const CardItem& _cardItem);
-    CardItem& operator= (CardItem const& _cardItem);
+    CardItem& operator= (const CardItem & _cardItem);
+    void removeImg() const;
     QGraphicsPixmapItem* getGraphicsItem() const;
     QGraphicsPixmapItem* createImg();
     specialCards getSpecialCode() const;
-    void setCard(const Card &card);
-    Card& getCard();
+    //void setCard(const Card &card);
+    Card getCard() const;
     void setPos(qreal _x, qreal _y);
     qreal getX() const;
     qreal getY() const;
+    ~CardItem();
 
 
 private:

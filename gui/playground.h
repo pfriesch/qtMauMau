@@ -35,16 +35,14 @@ private:
     CardItem depot;
     CardItem stack;
 
-    void updateCard(CardItem& card, const Card newCard);
+    void updateCard(CardItem& card, const Card& newCard);
     void createPlayer(const vector<Card>& humanPlayerCards,vector<int> otherPlayerCardCount);
 
     //Layout entities
-    void measureLayout();
     int cardWidth = 71;
     int cardHeight = 96;
     int horizontalCardGap = 15;
     int verticalCardGap = 20;
-    QHash<QString, int> layout;
 
 public
 slots:
@@ -57,11 +55,11 @@ slots:
 
     void playerPlaysCard(int player, const Card& playedCard);
     // Spieler spielt eine Karte und welche
-/*
-    void playerDrawsCard(short player, Card& card);
+
+    void playerDrawsCard(short player);
     // Spieler zieht eine Karte
 
-    void addPlayerCard(const Card& card);*/
+    void addPlayerCard(const Card& card);
 // Human Spieler hat eine Karte gezogen
 
 signals:

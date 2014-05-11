@@ -33,6 +33,13 @@ bool Card::operator==(const Card& card) const
     return ((card.getSuit() == suit)) && (card.getValue() == value);
 }
 
+Card& Card::operator=(const Card& card)
+{
+    value = card.getValue();
+    suit = card.getSuit();
+    return *this;
+}
+
 //ostream& operator<<(ostream& output, const Card& card) {
 //	output << card.as_string();
 //	return output;

@@ -31,6 +31,7 @@ public:
     cardSuit getSuit() const;
     cardValue getValue() const;
     bool operator==(const Card& card) const;
+    Card& operator=(const Card& card);
 };
 
 #endif /* CARD_H_ */

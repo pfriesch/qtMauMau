@@ -5,8 +5,6 @@ PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QObjec
 {
     this->centerPoint = centerPoint;
     playerDirection = dir;
-    layoutKey = QString::number(playerDirection);
-
     specialCard = getSpecialCard();
 
     measureLayout(cardCount);
@@ -17,7 +15,6 @@ PlayerItem::PlayerItem(direction dir, std::vector<Card> humanCards, QPointF cent
 {
     this->centerPoint = centerPoint;
     this->playerDirection = dir;
-    this->layoutKey = QString::number(playerDirection);
     this->measureLayout(humanCards.size());
     this->createHumanCards(humanCards);
 }
@@ -30,17 +27,9 @@ PlayerItem::direction PlayerItem::getDirection()
 void PlayerItem::createCards(int cardCount)
 {
     for (int i = 0; i < cardCount; i++) {
-        CardItem* card = new CardItem(specialCard);
-
-        card->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
-
-        if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
-            layout.insert(layoutKey + "Y", layout.value(layoutKey + "Y") + cardGap);
-        } else {
-            layout.insert(layoutKey + "X", layout.value(layoutKey + "X") + cardGap);
-        }
-
-        cards->append(card);
+        //This card is just a dummy
+        const Card card;
+        addCard(card);
     }
 }
 
@@ -52,11 +41,7 @@ void PlayerItem::createCards(int cardCount)
 void PlayerItem::createHumanCards(std::vector<Card> humanCards)
 {
     for (unsigned int i = 0; i < humanCards.size(); i++) {
-        CardItem* card = new CardItem(humanCards.at(i));
-        card->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
-        layout.insert(layoutKey + "X", layout.value(layoutKey + "X") + cardGap);
-
-        cards->append(card);
+        addCard(humanCards.at(i));
     }
 }
 
@@ -68,45 +53,40 @@ void PlayerItem::createHumanCards(std::vector<Card> humanCards)
  */
 void PlayerItem::measureLayout(int cardCount)
 {
-
     if (playerDirection == direction::LEFT) {
         int playerCardsWidth = (cardCount - 1 * cardGap) + (cardWidth - cardGap) - cardWidth;
-        layout.insert(QString::number(direction::LEFT) + "X", cardWidth - 30);
-        layout.insert(QString::number(direction::LEFT) + "Y", ((centerPoint.y() / 2) - (playerCardsWidth / 2)));
+        x = cardWidth - borderMargin;
+        y = (centerPoint.y() / 2) - (playerCardsWidth / 2);
     }
     if (playerDirection == direction::TOP) {
         int playerCardsWidth = (cardCount * cardGap);
-        layout.insert(QString::number(direction::TOP) + "X", ((centerPoint.x()) - (playerCardsWidth / 2) - cardGap));
-        layout.insert(QString::number(direction::TOP) + "Y", cardHeight - 70);
+        x = (centerPoint.x() - (playerCardsWidth / 2) - cardGap);
+        y = cardHeight - 70;
     }
     if (playerDirection == direction::HUMAN) {
         int playerCardsWidth = cardCount * cardGap;
-        layout.insert(QString::number(direction::HUMAN) + "X", ((centerPoint.x()) - (playerCardsWidth / 2) - cardGap));
-        layout.insert(QString::number(direction::HUMAN) + "Y", centerPoint.y() * 2 - cardHeight - 30);
+        x = (centerPoint.x()) - (playerCardsWidth / 2) - cardGap;
+        y = centerPoint.y() * 2 - cardHeight - borderMargin;
     }
     if (playerDirection == direction::RIGHT) {
         int playerCardsWidth = (cardCount - 1 * cardGap) + (cardWidth - cardGap) - cardWidth;
-        layout.insert(QString::number(direction::RIGHT) + "X", centerPoint.x() * 2 - cardWidth - 30);
-        layout.insert(QString::number(direction::RIGHT) + "Y", ((centerPoint.y() / 2) - (playerCardsWidth / 2)));
+        x = centerPoint.x() * 2 - cardWidth - borderMargin;
+        y = (centerPoint.y() / 2) - (playerCardsWidth / 2);
     }
 }
 
 void PlayerItem::setPlayableCards(std::vector<Card> playableCards)
 {
     for (unsigned int i = 0; i < playableCards.size(); ++i) {
-        for (int j = 0; j < cards->size(); ++j) {
-            if (playableCards.at(i) == cards->at(j)->getCard()) {
-                CardItem* cardItem = cards->at(j);
-                cardItem->setPos(cardItem->getX(), cardItem->getY() - offsetPlayableCard);
-                cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        CardItem* cardItem = findCard(playableCards.at(i));
+        cardItem->setPos(cardItem->getX(), cardItem->getY() - offsetPlayableCard);
+        cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                /*QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+        /*QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
                 effect->setColor(QColor(0,0,0,0));
                 effect->setStrength(1);
                 cards->at(j)->getGraphicsItem()->setGraphicsEffect(effect);
                 */
-            }
-        }
     }
 }
 
@@ -121,22 +101,46 @@ void PlayerItem::unsetPlayableCards()
     }
 }
 
-void PlayerItem::addCard(Card& card)
+CardItem* PlayerItem::addCard(const Card& card)
 {
-    CardItem* cardItem = NULL;
+    CardItem *cardItem = NULL;
     if (this->playerDirection == PlayerItem::direction::HUMAN) {
         cardItem = new CardItem(card);
     } else {
         cardItem = new CardItem(getSpecialCard());
     }
+    cardItem->setPos(x, y);
+
+    if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
+        y += cardGap;
+    } else {
+        x += cardGap;
+    }
+
     cards->append(cardItem);
+    return cardItem;
 }
 
-void PlayerItem::removeCard(Card& card)
+void PlayerItem::removeCard(const Card& card, QGraphicsScene *scene)
 {
+    CardItem *cardItem = NULL;
+    if (this->playerDirection == PlayerItem::direction::HUMAN) {
+        cardItem = findCard(card);
+    } else {
+        cardItem = cards->last();
+    }
+
+    if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
+        y -= cardGap;
+    } else {
+        x -= cardGap;
+    }
+    scene->removeItem(cardItem->createImg());
+    cards->remove(cards->indexOf(cardItem));
+    cardItem->removeImg();
 }
 
-CardItem* PlayerItem::findCard(Card& card)
+CardItem* PlayerItem::findCard(const Card& card)
 {
     for (int i = 0; i < cards->size(); ++i) {
         if (card == cards->at(i)->getCard()) {

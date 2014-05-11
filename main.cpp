@@ -52,6 +52,8 @@ void connectSignals(Playground* playground, GameController& gc)
     QObject::connect(&gc, &GameController::initPlayground, playground, &Playground::initPlayground);
     QObject::connect(&gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
     QObject::connect(&gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(&gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(&gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
 
     //From Playground(View) ---> GameController(View)
     QObject::connect(playground, &Playground::playCard, &gc, &GameController::playCard);

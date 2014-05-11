@@ -4,9 +4,8 @@ CardItem::CardItem() : specialCode(specialCards::DEPOT){
 
 }
 
-CardItem::CardItem(const Card _card)
+CardItem::CardItem(const Card _card) : specialCode(CardItem::specialCards::NOT_USED),graphicsItem(NULL),card(_card)
 {
-    card = _card;
 }
 
 CardItem::CardItem(CardItem::specialCards _specialCode)
@@ -18,17 +17,14 @@ CardItem::CardItem(const CardItem& _cardItem): x(_cardItem.getX()), y(_cardItem.
 {
     specialCode = _cardItem.getSpecialCode();
     if(_cardItem.getGraphicsItem() != NULL){
-        graphicsItem = new QGraphicsPixmapItem(_cardItem.getGraphicsItem());
+        graphicsItem = NULL;
     }
 }
 
-CardItem& CardItem::operator= (CardItem const& _cardItem){
-        x = _cardItem.getX();
-        y = _cardItem.getY();
+CardItem& CardItem::operator= (const CardItem &_cardItem){
+        card = _cardItem.getCard();
         specialCode = _cardItem.getSpecialCode();
-        if(_cardItem.getGraphicsItem() != NULL){
-            graphicsItem = new QGraphicsPixmapItem(_cardItem.getGraphicsItem());
-        }
+        graphicsItem = NULL;
         return *this;
 }
 
@@ -40,8 +36,12 @@ void CardItem::setPos(qreal _x, qreal _y){
     }
 }
 
-Card& CardItem::getCard() {
+Card CardItem::getCard() const{
     return card;
+}
+
+void CardItem::removeImg() const{
+    delete graphicsItem;
 }
 
 CardItem::specialCards CardItem::getSpecialCode() const{
@@ -49,7 +49,7 @@ CardItem::specialCards CardItem::getSpecialCode() const{
 }
 
 QGraphicsPixmapItem* CardItem::getGraphicsItem() const{
-    return graphicsItem;
+    return this->graphicsItem;
 }
 
 QGraphicsPixmapItem* CardItem::createImg()
@@ -158,8 +158,13 @@ qreal CardItem::getY() const{
     return y;
 }
 
+CardItem::~CardItem(){
+    delete graphicsItem;
+}
+
+/*
 void CardItem::setCard(const Card &_card){
     specialCode = specialCards::NOT_USED;
     card = _card;
     graphicsItem = NULL;
-}
+}*/
