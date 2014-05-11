@@ -39,7 +39,7 @@ void Player::dropCard(const Card& card)
 vector<Card>& Player::getPlayableCards(const Card& card)
 {
     vector<Card>* playableCards = new vector<Card>;
-    for (int i = 0; i < hand.size(); ++i) {
+    for (unsigned int i = 0; i < hand.size(); ++i) {
         if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue()) {
             playableCards->push_back(hand[i]);
         }

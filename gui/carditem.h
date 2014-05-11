@@ -26,7 +26,7 @@ public:
     };
 
     CardItem();
-    CardItem(const Card _card);
+    CardItem(const Card& _card);
     CardItem(CardItem::specialCards _specialCode);
     CardItem(const CardItem& _cardItem);
     CardItem& operator= (const CardItem & _cardItem);

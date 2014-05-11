@@ -4,7 +4,7 @@ CardItem::CardItem() : specialCode(specialCards::DEPOT){
 
 }
 
-CardItem::CardItem(const Card _card) : specialCode(CardItem::specialCards::NOT_USED),graphicsItem(NULL),card(_card)
+CardItem::CardItem(const Card& _card) : specialCode(CardItem::specialCards::NOT_USED),graphicsItem(NULL),card(_card)
 {
 }
 

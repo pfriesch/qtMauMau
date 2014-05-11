@@ -54,7 +54,7 @@ void GameController::gameInit()
     dealCards();
     cardDepot.pushCard(cardStack.getLast(cardDepot));
     vector<int> otherPlayerCardCount;
-    for (int i = 0; i < players.size(); ++i) {
+    for (unsigned int i = 0; i < players.size(); ++i) {
         otherPlayerCardCount.push_back(players[i].getCardCount());
     }
     emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
