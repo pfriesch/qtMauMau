@@ -12,10 +12,11 @@
 #include <QPixmap>
 #include <QDebug>
 
-class CardItem : public QWidget {
-    Q_OBJECT
+class CardItem {
+
 public:
     enum specialCards {
+        NOT_USED = -1,
         TALON = 0,
         EMPTY_TALON = 1,
         BLUE_HORIZONTAL = 2,
@@ -24,14 +25,20 @@ public:
         RED_HORIZONTAL = 5,
     };
 
-    explicit CardItem(const Card _card, QWidget* parent = 0);
-    CardItem(int specialCode);
-    QGraphicsPixmapItem* getGraphicsItem();
+    CardItem();
+    CardItem(const Card _card);
+    CardItem(CardItem::specialCards _specialCode);
+    CardItem(const CardItem& _cardItem);
+    CardItem& operator= (CardItem const& _cardItem);
+    QGraphicsPixmapItem* getGraphicsItem() const;
+    QGraphicsPixmapItem* createImg();
+    specialCards getSpecialCode() const;
     void setCard(const Card &card);
     Card& getCard();
-    void setPos(qreal x, qreal y);
-    qreal getX();
-    qreal getY();
+    void setPos(qreal _x, qreal _y);
+    qreal getX() const;
+    qreal getY() const;
+
 
 private:
     std::string getSpecialCardName();
@@ -39,11 +46,8 @@ private:
 
     std::string imgExtension;
     std::string deckNumber;
-    bool specialCard = false;
-    int specialCode;
-    QGraphicsPixmapItem* graphicsItem = NULL;
-    Card::cardSuit suit;
-    Card::cardValue value;
+    CardItem::specialCards specialCode = specialCards::NOT_USED;
+    QGraphicsPixmapItem *graphicsItem = NULL;
     qreal x = 0;
     qreal y = 0;
     Card card;

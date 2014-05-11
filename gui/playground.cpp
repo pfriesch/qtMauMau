@@ -1,16 +1,8 @@
-#include <QImage>
-#include <QBrush>
-#include <QGraphicsItem>
-#include <QDebug>
-#include <QMouseEvent>
 #include "gui\playground.h"
 
-Playground::Playground(QObject* parent)
-    : QGraphicsScene(parent)
+Playground::Playground(QObject* parent) : QGraphicsScene(parent)
 {
     QImage img("img/green_background.jpg", "jpg");
-    cardWidth = 71;
-    cardHeight = 96;
     QBrush brush(img);
     this->setBackgroundBrush(brush);
 }
@@ -35,14 +27,13 @@ void Playground::startGame()
 
     measureLayout();
 
-    stack = new CardItem(CardItem::specialCards::RED_VERTICAL);
-    stack->setPos(layout.value("STACK_X"), layout.value("STACK_Y"));
-    this->addItem(stack->getGraphicsItem());
+    stack = CardItem(CardItem::specialCards::RED_VERTICAL);
+    stack.setPos(layout.value("STACK_X"), layout.value("STACK_Y"));
+    this->addItem(stack.createImg());
 
-    talon = new CardItem(CardItem::specialCards::TALON);
-    talon->setPos(layout.value("TALON_X"), layout.value("TALON_Y"));
-    talon->getGraphicsItem()->setOpacity(0.7);
-    this->addItem(talon->getGraphicsItem());
+    talon = CardItem(CardItem::specialCards::TALON);
+    talon.setPos(layout.value("TALON_X"), layout.value("TALON_Y"));
+    this->addItem(talon.createImg());
 }
 
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -56,8 +47,8 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
             if(p->getDirection() == PlayerItem::direction::BOTTOM){
                 for (int j = 0; j < p->getCards()->size(); ++j) {
                     CardItem *c = p->getCards()->at(j);
-                    if(c->getGraphicsItem() == item && c->getGraphicsItem()->isSelected()){
-                        removeItem(c->getGraphicsItem());
+                    if(c->createImg() == item && c->createImg()->isSelected()){
+                        removeItem(c->createImg());
                         updateCard(talon,c->getCard());
                         players.at(0)->unsetPlayableCards();
                         /// SIGNAL, DAS SPIELER GESPIELT HAT
@@ -70,9 +61,8 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 // TODO: show starting player
-void Playground::initPlayground(const QVector<Card> humanPlayerCards, int *otherPlayerCardCount,const Card topDepotCard, int startingPlayer)
+void Playground::initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer)
 {
-
     PlayerItem* human = new PlayerItem(PlayerItem::direction::BOTTOM, humanPlayerCards, this->sceneRect().center());
     PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], this->sceneRect().center());
     PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], this->sceneRect().center());
@@ -89,22 +79,22 @@ void Playground::initPlayground(const QVector<Card> humanPlayerCards, int *other
     for (int i = 0; i < players.size(); ++i) {
         PlayerItem* p(players.at(i));
         for (int j = 0; j < p->getCards()->size(); ++j) {
-            this->addItem(p->getCards()->at(j)->getGraphicsItem());
+            this->addItem(p->getCards()->at(j)->createImg());
         }
     }
 
 }
 
-void Playground::updateCard(CardItem *card,const Card newCard){
-    removeItem(card->getGraphicsItem());
-    card->setCard(newCard);
-    addItem(card->getGraphicsItem());
+void Playground::updateCard(CardItem& card,const Card newCard){
+    removeItem(card.createImg());
+    card.setCard(newCard);
+    addItem(card.createImg());
     update(sceneRect());
 }
 
 
 
-void Playground::playerDoTurn(QVector<Card> playableCards)
+void Playground::playerDoTurn(vector<Card> playableCards)
 {
     players.at(0)->setPlayableCards(playableCards);
 }

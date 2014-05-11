@@ -48,8 +48,8 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
 
 void connectSignals(Playground* playground, GameController& gc)
 {
-//    QObject::connect(&gc, &GameController::initPlayground, playground, &Playground::initPlayground);
-//    QObject::connect(&gc,&GameController::playerDoTurn,playground,&Playground::playerDoTurn);
+    QObject::connect(&gc, &GameController::initPlayground, playground, &Playground::initPlayground);
+    QObject::connect(&gc,&GameController::playerDoTurn,playground,&Playground::playerDoTurn);
 }
 
 int main(int argc, char* argv[])
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
     Playground* playground = window.getPlayground();
     GameController gc;
     connectSignals(playground, gc);
-//    gc.gameInit();
+    gc.gameInit();
 
     window.show();
 

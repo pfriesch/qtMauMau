@@ -25,7 +25,7 @@ PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QObjec
     this->createCards(cardCount);
 }
 
-PlayerItem::PlayerItem(direction dir, QVector<Card> humanCards, QPointF centerPoint){
+PlayerItem::PlayerItem(direction dir, std::vector<Card> humanCards, QPointF centerPoint){
     this->centerPoint = centerPoint;
     this->playerDirection = dir;
     this->layoutKey = QString::number(playerDirection);
@@ -59,8 +59,8 @@ void PlayerItem::createCards(int cardCount){
  * @brief PlayerItem::createHumanCards
  * @param humanCards
  */
-void PlayerItem::createHumanCards(QVector<Card> humanCards){
-    for (int i = 0; i < humanCards.size(); i++) {
+void PlayerItem::createHumanCards(std::vector<Card> humanCards){
+    for (unsigned int i = 0; i < humanCards.size(); i++) {
         CardItem* card = new CardItem(humanCards.at(i));
         card->setPos(layout.value(layoutKey + "X"), layout.value(layoutKey + "Y"));
         layout.insert(layoutKey + "X", layout.value(layoutKey + "X") + cardGap);
@@ -100,8 +100,8 @@ void PlayerItem::measureLayout(int cardCount)
     }
 }
 
-void PlayerItem::setPlayableCards(QVector<Card> playableCards){
-    for (int i = 0; i < playableCards.size(); ++i) {
+void PlayerItem::setPlayableCards(std::vector<Card> playableCards){
+    for (unsigned int i = 0; i < playableCards.size(); ++i) {
         for (int j = 0; j < cards->size(); ++j) {
             if(playableCards.at(i) == cards->at(j)->getCard()){
                 CardItem *cardItem = cards->at(j);

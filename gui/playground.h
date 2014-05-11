@@ -7,6 +7,12 @@
 #include <QPointF>
 #include <QHash>
 #include <QString>
+#include <vector>
+#include <QImage>
+#include <QBrush>
+#include <QGraphicsItem>
+#include <QDebug>
+#include <QMouseEvent>
 #include <gameLogic/gamecontroller.h>
 #include <gameLogic/Card.h>
 #include <gui/carditem.h>
@@ -26,15 +32,15 @@ private:
     QVector<CardItem*> graphicalItems;
     QVector<PlayerItem*> players;
 
-    CardItem *talon;
-    CardItem *stack;
+    CardItem talon;
+    CardItem stack;
 
-    void updateCard(CardItem *card, const Card newCard);
+    void updateCard(CardItem& card, const Card newCard);
 
     //Layout entities
     void measureLayout();
-    int cardWidth;
-    int cardHeight;
+    int cardWidth = 71;
+    int cardHeight = 96;
     int horizontalCardGap = 15;
     int verticalCardGap = 20;
     QHash<QString, int> layout;
@@ -42,10 +48,10 @@ private:
 public
 slots:
 
-    void initPlayground(const QVector<Card> humanPlayerCards, int *otherPlayerCardCount,const Card topDepotCard, int startingPlayer);
+    void initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
-    void playerDoTurn(QVector<Card> playableCards);
+    void playerDoTurn(vector<Card> playableCards);
     // bekomme alle Spielbaren Karten von Human player
 
     void playerPlaysCard(int player, Card& playedCard);

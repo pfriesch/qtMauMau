@@ -1,29 +1,58 @@
 #include "carditem.h"
 
-CardItem::CardItem(const Card _card, QWidget* parent) : QWidget(parent)
+CardItem::CardItem() : specialCode(specialCards::TALON){
+
+}
+
+CardItem::CardItem(const Card _card)
 {
     card = _card;
 }
 
-CardItem::CardItem(int specialCode)
+CardItem::CardItem(CardItem::specialCards _specialCode)
 {
-    specialCard = true;
-    this->specialCode = specialCode;
+    specialCode = _specialCode;
 }
 
-void CardItem::setPos(qreal x, qreal y){
-    this->x = x;
-    this->y = y;
+CardItem::CardItem(const CardItem& _cardItem): x(_cardItem.getX()), y(_cardItem.getY())
+{
+    specialCode = _cardItem.getSpecialCode();
+    if(_cardItem.getGraphicsItem() != NULL){
+        graphicsItem = new QGraphicsPixmapItem(_cardItem.getGraphicsItem());
+    }
+}
+
+CardItem& CardItem::operator= (CardItem const& _cardItem){
+        x = _cardItem.getX();
+        y = _cardItem.getY();
+        specialCode = _cardItem.getSpecialCode();
+        if(_cardItem.getGraphicsItem() != NULL){
+            graphicsItem = new QGraphicsPixmapItem(_cardItem.getGraphicsItem());
+        }
+        return *this;
+}
+
+void CardItem::setPos(qreal _x, qreal _y){
+    x = _x;
+    y = _y;
     if(graphicsItem != NULL){
         graphicsItem->setPos(x,y);
     }
 }
 
-Card& CardItem::getCard(){
+Card& CardItem::getCard() {
     return card;
 }
 
-QGraphicsPixmapItem* CardItem::getGraphicsItem()
+CardItem::specialCards CardItem::getSpecialCode() const{
+    return specialCode;
+}
+
+QGraphicsPixmapItem* CardItem::getGraphicsItem() const{
+    return graphicsItem;
+}
+
+QGraphicsPixmapItem* CardItem::createImg()
 {
     //TODO: make this variable, so we can use different card decks
     deckNumber = "1";
@@ -32,7 +61,7 @@ QGraphicsPixmapItem* CardItem::getGraphicsItem()
     if (graphicsItem == NULL) {
 
         std::string imgName("");
-        if (specialCard) {
+        if (specialCode != specialCards::NOT_USED) {
             imgName = getSpecialCardName();
         } else {
             imgName = getNormalCardName();
@@ -121,16 +150,16 @@ std::string CardItem::getNormalCardName()
     return imgName;
 }
 
-qreal CardItem::getX(){
+qreal CardItem::getX() const{
     return x;
 }
 
-qreal CardItem::getY(){
+qreal CardItem::getY() const{
     return y;
 }
 
 void CardItem::setCard(const Card &_card){
-    specialCard = false;
+    specialCode = specialCards::NOT_USED;
     card = _card;
     graphicsItem = NULL;
 }
