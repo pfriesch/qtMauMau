@@ -9,7 +9,6 @@
 #include <QColor>
 #include <QPainter>
 
-
 class PlayerItem : public QObject {
     Q_OBJECT
 public:
@@ -17,22 +16,25 @@ public:
         LEFT = 1,
         TOP = 2,
         RIGHT = 3,
-        BOTTOM = 4
+        HUMAN = 4
     };
 
     PlayerItem(direction dir, int cardCount, QPointF centerPoint, QObject* parent = 0);
     PlayerItem(direction dir, std::vector<Card> humanCards, QPointF centerPoint);
-    QVector<CardItem*>* getCards();
     void createCards(int cardCount);
-    void getCard();
-    direction getDirection();
     void setPlayableCards(std::vector<Card> playableCards);
     void unsetPlayableCards();
+    direction getDirection();
+    QVector<CardItem*>* getCards();
+    void removeCard(Card &card);
+    void addCard(Card &card);
 
 private:
+    CardItem* findCard(Card &card);
     void measureLayout(int cardCount);
+    CardItem::specialCards getSpecialCard();
     void createHumanCards(std::vector<Card> humanCards);
-    QVector<CardItem*> *cards = new QVector<CardItem*>();
+    QVector<CardItem*>* cards = new QVector<CardItem*>();
     CardItem::specialCards specialCard;
     PlayerItem::direction playerDirection;
     QString layoutKey;

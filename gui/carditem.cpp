@@ -1,6 +1,6 @@
 #include "carditem.h"
 
-CardItem::CardItem() : specialCode(specialCards::TALON){
+CardItem::CardItem() : specialCode(specialCards::DEPOT){
 
 }
 
@@ -80,7 +80,7 @@ std::string CardItem::getSpecialCardName()
 {
     std::string imgName("");
     switch (specialCode) {
-    case CardItem::specialCards::TALON:
+    case CardItem::specialCards::DEPOT:
         imgName += "talon";
         break;
     case CardItem::specialCards::RED_HORIZONTAL:

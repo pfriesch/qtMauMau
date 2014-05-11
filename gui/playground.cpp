@@ -1,6 +1,7 @@
 #include "gui\playground.h"
 
-Playground::Playground(QObject* parent) : QGraphicsScene(parent)
+Playground::Playground(QObject* parent)
+    : QGraphicsScene(parent)
 {
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
@@ -18,8 +19,8 @@ void Playground::measureLayout()
     layout.insert("STACK_X", sceneCenter_X);
     layout.insert("STACK_Y", sceneCenter_Y);
 
-    layout.insert("TALON_X", sceneCenter_X + cardWidth + horizontalCardGap);
-    layout.insert("TALON_Y", sceneCenter_Y);
+    layout.insert("depot_X", sceneCenter_X + cardWidth + horizontalCardGap);
+    layout.insert("depot_Y", sceneCenter_Y);
 }
 
 void Playground::startGame()
@@ -29,31 +30,32 @@ void Playground::startGame()
 
     stack = CardItem(CardItem::specialCards::RED_VERTICAL);
     stack.setPos(layout.value("STACK_X"), layout.value("STACK_Y"));
-    this->addItem(stack.createImg());
 
-    talon = CardItem(CardItem::specialCards::TALON);
-    talon.setPos(layout.value("TALON_X"), layout.value("TALON_Y"));
-    this->addItem(talon.createImg());
+    depot = CardItem(CardItem::specialCards::DEPOT);
+    depot.setPos(layout.value("depot_X"), layout.value("depot_Y"));
+
+    this->addItem(stack.createImg());
+    this->addItem(depot.createImg());
 }
 
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     QGraphicsItem* item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
-    if (item == NULL) {
-        // do stuff if not clicked on an item, probably do nothing
-    } else {
-        for (int i = 0; i < players.size(); ++i) {
-            PlayerItem *p = players.at(i);
-            if(p->getDirection() == PlayerItem::direction::BOTTOM){
-                for (int j = 0; j < p->getCards()->size(); ++j) {
-                    CardItem *c = p->getCards()->at(j);
-                    if(c->createImg() == item && c->createImg()->isSelected()){
-                        removeItem(c->createImg());
-                        updateCard(talon,c->getCard());
-                        players.at(0)->unsetPlayableCards();
-                        /// SIGNAL, DAS SPIELER GESPIELT HAT
-                    }
-                }
+    if (item != NULL) {
+
+        //Clicked on Stack
+        if (item == stack.createImg()) {
+            emit drawCard();
+        }
+        //Clicked on Human Card
+        PlayerItem* human = players.value(PlayerItem::direction::HUMAN);
+        for (int j = 0; j < human->getCards()->size(); ++j) {
+            CardItem* c = human->getCards()->at(j);
+            if (c->createImg() == item && c->createImg()->isSelected()) {
+                removeItem(c->createImg());
+                updateCard(depot, c->getCard());
+                human->unsetPlayableCards();
+                emit playCard(c->getCard());
             }
         }
     }
@@ -63,44 +65,61 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 // TODO: show starting player
 void Playground::initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer)
 {
-    PlayerItem* human = new PlayerItem(PlayerItem::direction::BOTTOM, humanPlayerCards, this->sceneRect().center());
-    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], this->sceneRect().center());
-    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], this->sceneRect().center());
-    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], this->sceneRect().center());
+    createPlayer(humanPlayerCards, otherPlayerCardCount);
+    updateCard(depot, topDepotCard);
+}
 
-    players.append(human);
-    players.append(p1);
-    players.append(p2);
-    players.append(p3);
+void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount)
+{
+    QPointF center = this->sceneRect().center();
+    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center);
+    players.insert(PlayerItem::direction::HUMAN, human);
 
-    updateCard(talon,topDepotCard);
+    for (unsigned int i = 0; i < otherPlayerCardCount.size(); i++) {
+        switch (i) {
+        case 0: {
+            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center);
+            players.insert(PlayerItem::direction::LEFT, p1);
+            break;
+        }
+        case 1: {
+            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center);
+            players.insert(PlayerItem::direction::TOP, p2);
+            break;
+        }
+        case 2: {
+            PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], center);
+            players.insert(PlayerItem::direction::RIGHT, p3);
+            break;
+        }
+        }
+    }
 
-    // set playercards for every player
-    for (int i = 0; i < players.size(); ++i) {
-        PlayerItem* p(players.at(i));
+    //Draw all Player Cards
+    for (PlayerItem::direction dir : players.keys()) {
+        PlayerItem* p = players.value(dir);
         for (int j = 0; j < p->getCards()->size(); ++j) {
             this->addItem(p->getCards()->at(j)->createImg());
         }
     }
-
 }
 
-void Playground::updateCard(CardItem& card,const Card newCard){
+void Playground::updateCard(CardItem& card, const Card newCard)
+{
     removeItem(card.createImg());
     card.setCard(newCard);
     addItem(card.createImg());
     update(sceneRect());
 }
 
-
-
 void Playground::playerDoTurn(vector<Card> playableCards)
 {
-    players.at(0)->setPlayableCards(playableCards);
+    players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }
 
-void Playground::playerPlaysCard(int player, Card& playedCard)
+void Playground::playerPlaysCard(int player, const Card& playedCard)
 {
+    updateCard(depot, playedCard);
 }
 
 // Spieler zieht eine Karte
@@ -111,30 +130,5 @@ void Playground::playerPlaysCard(int player, Card& playedCard)
 // Human Spieler hat eine Karte gezogen
 void Playground::addPlayerCard(const Card& card)
 {
-}
-
-/**
-  * That are allllll fake methods
-  *
- * @brief Playground::fakeInit
-
-void Playground::fakeInit()
-{
-    QVector<short> otherPlayerCardCount = QVector<short>();
-    for (int i = 0; i < 4; i++) {
-        otherPlayerCardCount += 5;
-    }
-
-    QVector<Card>* cards = new QVector<Card>();
-    cards->append(Card(Card::cardSuit::CLUBS, Card::cardValue::ACE));
-    cards->append(Card(Card::cardSuit::CLUBS, Card::cardValue::KING));
-    cards->append(Card(Card::cardSuit::DIAMONDS, Card::cardValue::SEVEN));
-    cards->append(Card(Card::cardSuit::HEARTS, Card::cardValue::TEN));
-    cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
-    cards->append(Card(Card::cardSuit::SPADES, Card::cardValue::QUEEN));
-
-    short i = 2;
-    Card c(Card::cardSuit::SPADES, Card::cardValue::ACE);
-    this->initPlayground(cards, otherPlayerCardCount, c, i);
 }
 */

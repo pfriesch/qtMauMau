@@ -30,12 +30,13 @@ private:
 
 
     QVector<CardItem*> graphicalItems;
-    QVector<PlayerItem*> players;
+    QHash<PlayerItem::direction,PlayerItem*> players;
 
-    CardItem talon;
+    CardItem depot;
     CardItem stack;
 
     void updateCard(CardItem& card, const Card newCard);
+    void createPlayer(const vector<Card>& humanPlayerCards,vector<int> otherPlayerCardCount);
 
     //Layout entities
     void measureLayout();
@@ -54,7 +55,7 @@ slots:
     void playerDoTurn(vector<Card> playableCards);
     // bekomme alle Spielbaren Karten von Human player
 
-    void playerPlaysCard(int player, Card& playedCard);
+    void playerPlaysCard(int player, const Card& playedCard);
     // Spieler spielt eine Karte und welche
 /*
     void playerDrawsCard(short player, Card& card);

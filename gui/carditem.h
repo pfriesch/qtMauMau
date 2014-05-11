@@ -17,7 +17,7 @@ class CardItem {
 public:
     enum specialCards {
         NOT_USED = -1,
-        TALON = 0,
+        DEPOT = 0,
         EMPTY_TALON = 1,
         BLUE_HORIZONTAL = 2,
         BLUE_VERTICAL = 3,
