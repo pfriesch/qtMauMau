@@ -13,12 +13,14 @@
 #include <QGraphicsItem>
 #include <QDebug>
 #include <QMouseEvent>
+#include <QEventLoop>
 #include <gameLogic/gamecontroller.h>
 #include <gameLogic/Card.h>
 #include <gui/carditem.h>
 #include <gui/playeritem.h>
+#include <gui/animatedgraphicsscene.h>
 
-class Playground : public QGraphicsScene {
+class Playground : public AnimatedGraphicsScene {
     Q_OBJECT
 public:
     explicit Playground(QObject* parent = 0);
@@ -26,8 +28,6 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 private:
-   // void fakeInit();
-
 
     QVector<CardItem*> graphicalItems;
     QHash<PlayerItem::direction,PlayerItem*> players;
@@ -35,7 +35,7 @@ private:
     CardItem depot;
     CardItem stack;
 
-    void updateCard(CardItem& card, const Card& newCard);
+    void updateCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
     void createPlayer(const vector<Card>& humanPlayerCards,vector<int> otherPlayerCardCount);
 
     //Layout entities

@@ -4,27 +4,32 @@ CardItem::CardItem() : specialCode(specialCards::DEPOT){
 
 }
 
-CardItem::CardItem(const Card& _card) : specialCode(CardItem::specialCards::NOT_USED),graphicsItem(NULL),card(_card)
+CardItem::CardItem(const Card& _card) : specialCode(CardItem::specialCards::NOT_USED),card(_card)
 {
+    createImg();
 }
 
 CardItem::CardItem(CardItem::specialCards _specialCode)
 {
     specialCode = _specialCode;
 }
-
-CardItem::CardItem(const CardItem& _cardItem): x(_cardItem.getX()), y(_cardItem.getY())
+/*
+CardItem::CardItem(const CardItem& _cardItem): graphicsItem(NULL),x(_cardItem.getX()),y(_cardItem.getY()),card(_cardItem.getCard())
 {
     specialCode = _cardItem.getSpecialCode();
-    if(_cardItem.getGraphicsItem() != NULL){
-        graphicsItem = NULL;
-    }
-}
+}*/
 
 CardItem& CardItem::operator= (const CardItem &_cardItem){
         card = _cardItem.getCard();
+        x = _cardItem.getX();
+        y = _cardItem.getY();
         specialCode = _cardItem.getSpecialCode();
+
+        //neu erstellen des Bildes
         graphicsItem = NULL;
+        createImg();
+
+        setPos(x,y);
         return *this;
 }
 

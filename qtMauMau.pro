@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     gui/carditem.cpp \
     gui/playeritem.cpp \
     gameLogic/Test/gamecontroller_test.cpp \
-    gameLogic/Test/decktest.cpp
+    gameLogic/Test/decktest.cpp \
+    gui/animatedgraphicsscene.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -48,7 +49,8 @@ HEADERS  += mainwindow.h \
     gui/playeritem.h \
     gameLogic/Deck.h \
     gameLogic/Test/gamecontroller_test.h \
-    gameLogic/Test/decktest.h
+    gameLogic/Test/decktest.h \
+    gui/animatedgraphicsscene.h
 
 
 

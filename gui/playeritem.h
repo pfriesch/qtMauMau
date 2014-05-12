@@ -8,7 +8,6 @@
 #include <QGraphicsColorizeEffect>
 #include <QColor>
 #include <QPainter>
-#include <QGraphicsScene>
 
 class PlayerItem : public QObject {
     Q_OBJECT
@@ -27,9 +26,10 @@ public:
     void unsetPlayableCards();
     direction getDirection();
     QVector<CardItem*>* getCards();
-    void removeCard(const Card& card, QGraphicsScene *scene);
+    void removeCard(const Card& card);
     CardItem* addCard(const Card& card);
     CardItem* findCard(const Card& card);
+    ~PlayerItem();
 
 private:
     void measureLayout(int cardCount);

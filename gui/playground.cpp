@@ -1,7 +1,7 @@
 #include "gui\playground.h"
 
 Playground::Playground(QObject* parent)
-    : QGraphicsScene(parent)
+    : AnimatedGraphicsScene(parent)
 {
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
@@ -42,8 +42,8 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
         for (int j = 0; j < human->getCards()->size(); ++j) {
             CardItem* c = human->getCards()->at(j);
             if (c->createImg() == item && c->createImg()->isSelected()) {
-                updateCard(depot, c->getCard());
-                human->removeCard(c->getCard(), this);
+                updateCard(*c,depot);
+                human->removeCard(c->getCard());
                 human->unsetPlayableCards();
                 emit playCard(depot.getCard());
                 qDebug("VIEW: sende playCard()");
@@ -57,7 +57,8 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 void Playground::initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer)
 {
     createPlayer(humanPlayerCards, otherPlayerCardCount);
-    updateCard(depot, topDepotCard);
+    CardItem depotCard(topDepotCard);
+    updateCard(depotCard, depot,false);
 }
 
 void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount)
@@ -95,11 +96,23 @@ void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> 
     }
 }
 
-void Playground::updateCard(CardItem& card, const Card &newCard)
+void Playground::updateCard(CardItem& fromCard, CardItem& toCard, bool withAnimation)
 {
-    removeItem(card.createImg());
-    card = CardItem(newCard);
-    addItem(card.createImg());
+    qreal x = toCard.getX();
+    qreal y = toCard.getY();
+    if (withAnimation) {
+        QEventLoop pause;
+        pause.connect(this, SIGNAL(complete()), SLOT(quit()));
+        prepareNewAnimation();
+        addPositionAnimation(fromCard.createImg(), toCard.createImg()->pos());
+        startAnimation();
+        pause.exec();
+    }
+    removeItem(toCard.createImg());
+    toCard = CardItem(fromCard.getCard());
+    toCard.setPos(x,y);
+    addItem(toCard.createImg());
+
     update(sceneRect());
 }
 
@@ -110,22 +123,30 @@ void Playground::playerDoTurn(vector<Card> playableCards)
 
 void Playground::playerPlaysCard(int player, const Card& playedCard)
 {
-    updateCard(depot, playedCard);
-
+    PlayerItem *p = NULL;
     switch (player) {
     case 1: {
-        players.value(PlayerItem::direction::LEFT)->removeCard(playedCard, this);
+        p = players.value(PlayerItem::direction::LEFT);
         break;
     }
     case 2: {
-        players.value(PlayerItem::direction::TOP)->removeCard(playedCard, this);
+        p = players.value(PlayerItem::direction::TOP);
         break;
     }
     case 3: {
-        players.value(PlayerItem::direction::RIGHT)->removeCard(playedCard, this);
+        p = players.value(PlayerItem::direction::RIGHT);
         break;
     }
     }
+
+    //TODO: ist irgendwie falsch, er wird die gespielte Karte nie finden, da die View die Karten nicht kennt und nur SpecialCards also Blaue Hintergründe hält
+    // für diesen Spieler, deshalb kommt einfach die last() Karte zurück
+    CardItem *dummyCard = p->findCard(playedCard);
+    CardItem _playedCard(playedCard);
+    addItem(_playedCard.createImg());
+    _playedCard.setPos(dummyCard->getX(),dummyCard->getY());
+    updateCard(_playedCard,depot);
+    p->removeCard(playedCard);
 }
 
 void Playground::playerDrawsCard(short player)
@@ -145,7 +166,8 @@ void Playground::playerDrawsCard(short player)
         cardItem = players.value(PlayerItem::direction::RIGHT)->addCard(dummyCard);
         break;
     }
-    default: break;
+    default:
+        break;
     }
     addItem(cardItem->createImg());
 }

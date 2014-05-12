@@ -103,7 +103,7 @@ void PlayerItem::unsetPlayableCards()
 
 CardItem* PlayerItem::addCard(const Card& card)
 {
-    CardItem *cardItem = NULL;
+    CardItem* cardItem = NULL;
     if (this->playerDirection == PlayerItem::direction::HUMAN) {
         cardItem = new CardItem(card);
     } else {
@@ -121,23 +121,18 @@ CardItem* PlayerItem::addCard(const Card& card)
     return cardItem;
 }
 
-void PlayerItem::removeCard(const Card& card, QGraphicsScene *scene)
+void PlayerItem::removeCard(const Card& card)
 {
-    CardItem *cardItem = NULL;
-    if (this->playerDirection == PlayerItem::direction::HUMAN) {
-        cardItem = findCard(card);
-    } else {
-        cardItem = cards->last();
-    }
+    CardItem *cardItem = findCard(card);
 
     if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
         y -= cardGap;
     } else {
         x -= cardGap;
     }
-    scene->removeItem(cardItem->createImg());
+
     cards->remove(cards->indexOf(cardItem));
-    cardItem->removeImg();
+    delete cardItem;
 }
 
 CardItem* PlayerItem::findCard(const Card& card)
@@ -147,8 +142,7 @@ CardItem* PlayerItem::findCard(const Card& card)
             return cards->at(i);
         }
     }
-    //TODO Maybe throw Exception?!?!
-    return NULL;
+    return cards->last();
 }
 
 CardItem::specialCards PlayerItem::getSpecialCard()
@@ -172,4 +166,8 @@ CardItem::specialCards PlayerItem::getSpecialCard()
 QVector<CardItem*>* PlayerItem::getCards()
 {
     return cards;
+}
+
+PlayerItem::~PlayerItem(){
+    delete[] cards;
 }
