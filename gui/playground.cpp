@@ -16,7 +16,7 @@ void Playground::startGame()
     qreal sceneCenter_Y = sceneCenterPointRaw.y() - cardHeight;
     int depotX = sceneCenter_X + cardWidth + horizontalCardGap;
 
-    stack = CardItem(CardItem::specialCards::RED_VERTICAL);
+    stack = (CardItem::specialCards::RED_VERTICAL);
     stack.setPos(sceneCenter_X, sceneCenter_Y);
 
     depot = CardItem(CardItem::specialCards::DEPOT);
@@ -42,7 +42,7 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
         for (int j = 0; j < human->getCards()->size(); ++j) {
             CardItem* c = human->getCards()->at(j);
             if (c->createImg() == item && c->createImg()->isSelected()) {
-                updateCard(*c,depot);
+                updateDepotCard(*c, depot);
                 human->removeCard(c->getCard());
                 human->unsetPlayableCards();
                 emit playCard(depot.getCard());
@@ -58,7 +58,7 @@ void Playground::initPlayground(const vector<Card>& humanPlayerCards, vector<int
 {
     createPlayer(humanPlayerCards, otherPlayerCardCount);
     CardItem depotCard(topDepotCard);
-    updateCard(depotCard, depot,false);
+    updateDepotCard(depotCard, depot);
 }
 
 void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount)
@@ -96,10 +96,11 @@ void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> 
     }
 }
 
-void Playground::updateCard(CardItem& fromCard, CardItem& toCard, bool withAnimation)
+void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool withAnimation)
 {
     qreal x = toCard.getX();
     qreal y = toCard.getY();
+
     if (withAnimation) {
         QEventLoop pause;
         pause.connect(this, SIGNAL(complete()), SLOT(quit()));
@@ -108,9 +109,35 @@ void Playground::updateCard(CardItem& fromCard, CardItem& toCard, bool withAnima
         startAnimation();
         pause.exec();
     }
+
     removeItem(toCard.createImg());
     toCard = CardItem(fromCard.getCard());
-    toCard.setPos(x,y);
+    toCard.setPos(x, y);
+    addItem(toCard.createImg());
+
+    update(sceneRect());
+}
+
+void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation)
+{
+    fromCard.setPos(stack.getX(),stack.getY());
+    addItem(fromCard.createImg());
+
+    qreal x = toCard.getX();
+    qreal y = toCard.getY();
+
+    if (withAnimation) {
+        QEventLoop pause;
+        pause.connect(this, SIGNAL(complete()), SLOT(quit()));
+        prepareNewAnimation();
+        addPositionAnimation(fromCard.createImg(), toCard.createImg()->pos());
+        startAnimation();
+        pause.exec();
+    }
+
+    toCard = CardItem(fromCard);
+    toCard.setPos(x, y);
+    toCard.createImg()->setZValue(1);
     addItem(toCard.createImg());
 
     update(sceneRect());
@@ -123,7 +150,8 @@ void Playground::playerDoTurn(vector<Card> playableCards)
 
 void Playground::playerPlaysCard(int player, const Card& playedCard)
 {
-    PlayerItem *p = NULL;
+    qDebug("VIEW: GET Signal - playerPlaysCard");
+    PlayerItem* p = NULL;
     switch (player) {
     case 1: {
         p = players.value(PlayerItem::direction::LEFT);
@@ -144,38 +172,54 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
     CardItem *dummyCard = p->findCard(playedCard);
     CardItem _playedCard(playedCard);
     addItem(_playedCard.createImg());
-    _playedCard.setPos(dummyCard->getX(),dummyCard->getY());
-    updateCard(_playedCard,depot);
+    _playedCard.setPos(dummyCard->getX(), dummyCard->getY());
     p->removeCard(playedCard);
+    updateDepotCard(_playedCard, depot);
 }
 
+/**
+ * Other Player zieht eine Karte
+ * @brief Playground::playerDrawsCard
+ * @param player
+ */
 void Playground::playerDrawsCard(short player)
 {
-    CardItem* cardItem = NULL;
-    Card dummyCard;
+    qDebug("VIEW: GET Signal - playerDrawsCard");
+    PlayerItem* p;
+
     switch (player) {
     case 1: {
-        cardItem = players.value(PlayerItem::direction::LEFT)->addCard(dummyCard);
+        p = players.value(PlayerItem::direction::LEFT);
         break;
     }
     case 2: {
-        cardItem = players.value(PlayerItem::direction::TOP)->addCard(dummyCard);
+        p = players.value(PlayerItem::direction::TOP);
         break;
     }
     case 3: {
-        cardItem = players.value(PlayerItem::direction::RIGHT)->addCard(dummyCard);
+        p = players.value(PlayerItem::direction::RIGHT);
         break;
     }
     default:
+        qFatal("Error in playerDrawsCard, bekomme anderen Wert als erwartet!");
         break;
     }
-    addItem(cardItem->createImg());
+
+    Card dummyCard;
+    CardItem *cardItem = p->addCard(dummyCard);
+    CardItem fakeStack(p->getSpecialCard());
+    updatePlayerCard(fakeStack, *cardItem);
 }
 
-// Human Spieler hat eine Karte gezogen
+/**
+ * Human Spieler hat eine Karte gezogen
+ * @brief Playground::addPlayerCard
+ * @param card
+ */
 void Playground::addPlayerCard(const Card& card)
 {
     qDebug("VIEW: GET Signal - addPlayerCard");
     CardItem* cardItem = players.value(PlayerItem::direction::HUMAN)->addCard(card);
-    addItem(cardItem->createImg());
+    CardItem cardFromStack(card);
+    updatePlayerCard(cardFromStack,*cardItem);
 }

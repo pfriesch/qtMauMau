@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <QTime>
 #include <QObject>
+#include <QDesktopWidget>
+#include <QStyle>
 #include <gui/playground.h>
 
 //#define TEST
@@ -82,12 +84,20 @@ int main(int argc, char* argv[])
     qInstallMessageHandler(customMessageHandler);
 
     MainWindow window;
+    //Center window
+    //QDesktopWidget *s = QApplication::desktop();
+    window.setGeometry(
+        QStyle::alignedRect(
+            Qt::LeftToRight,
+            Qt::AlignCenter,
+            window.size(),
+            app.desktop()->availableGeometry()
+        ));
 
     Playground* playground = window.getPlayground();
     GameController gc;
     connectSignals(playground, gc);
     gc.gameInit();
-
     window.show();
 
 #ifdef TEST

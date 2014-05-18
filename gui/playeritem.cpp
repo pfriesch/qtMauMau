@@ -41,6 +41,11 @@ void PlayerItem::createCards(int cardCount)
 void PlayerItem::createHumanCards(std::vector<Card> humanCards)
 {
     for (unsigned int i = 0; i < humanCards.size(); i++) {
+
+        Card c = ((Card)humanCards.at(i));
+        std::cout << c.getSuit() << std::endl;
+        std::cout << c.getValue() << std::endl;
+
         addCard(humanCards.at(i));
     }
 }
@@ -103,6 +108,12 @@ void PlayerItem::unsetPlayableCards()
 
 CardItem* PlayerItem::addCard(const Card& card)
 {
+    if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
+        y += cardGap;
+    } else {
+        x += cardGap;
+    }
+
     CardItem* cardItem = NULL;
     if (this->playerDirection == PlayerItem::direction::HUMAN) {
         cardItem = new CardItem(card);
@@ -110,12 +121,6 @@ CardItem* PlayerItem::addCard(const Card& card)
         cardItem = new CardItem(getSpecialCard());
     }
     cardItem->setPos(x, y);
-
-    if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
-        y += cardGap;
-    } else {
-        x += cardGap;
-    }
 
     cards->append(cardItem);
     return cardItem;
@@ -127,7 +132,7 @@ void PlayerItem::removeCard(const Card& card)
 
     if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
         y -= cardGap;
-    } else {
+    } if(playerDirection == direction::TOP) {
         x -= cardGap;
     }
 

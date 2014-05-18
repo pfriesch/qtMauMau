@@ -1,6 +1,5 @@
 #include "AnimatedGraphicsScene.h"
 #include <QTimeLine>
-#include <QGraphicsItemAnimation>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
 #include <QDebug>
@@ -30,9 +29,7 @@ void AnimatedGraphicsScene::startAnimation()
 
 void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem * item, QPointF destinationPoint )
 {
-    //    item->setPos ( destinationPoint );
-    //    return;
-    //srcPos = item->mapToScene( itemPos );
+    item->setZValue(1);
     QPointF srcPos = item->pos();
     if ( srcPos == destinationPoint )
     {
@@ -53,7 +50,7 @@ void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem * item, Q
 
     _destinationPositions[item] = destinationPoint;
 
-    QGraphicsItemAnimation * newAnimation = new QGraphicsItemAnimation ( _currentTimeLine );
+    newAnimation = new QGraphicsItemAnimation ( _currentTimeLine );
     newAnimation->setTimeLine ( _currentTimeLine );
     newAnimation->setItem ( item );
     newAnimation->setPosAt ( 0, srcPos );
@@ -71,7 +68,7 @@ void AnimatedGraphicsScene::prepareNewAnimation()
 
 
 
-    _currentTimeLine = new QTimeLine ( 500 );
+    _currentTimeLine = new QTimeLine ( 1500 );
     bool bOk = connect ( _currentTimeLine, SIGNAL ( finished() ), this, SLOT ( animationEnded() ) );
     Q_ASSERT ( bOk );
 }
@@ -83,6 +80,7 @@ void AnimatedGraphicsScene::animationEnded()
     {
         _animationActive = false;
         _destinationPositions.clear();
+        newAnimation->item()->setZValue(0);
         emit complete();
         return;
     }

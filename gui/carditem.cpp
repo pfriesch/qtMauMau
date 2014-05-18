@@ -13,11 +13,14 @@ CardItem::CardItem(CardItem::specialCards _specialCode)
 {
     specialCode = _specialCode;
 }
-/*
+
 CardItem::CardItem(const CardItem& _cardItem): graphicsItem(NULL),x(_cardItem.getX()),y(_cardItem.getY()),card(_cardItem.getCard())
 {
+    if(graphicsItem != NULL){
+        graphicsItem->setPos(_cardItem.getX(),_cardItem.getY());
+    }
     specialCode = _cardItem.getSpecialCode();
-}*/
+}
 
 CardItem& CardItem::operator= (const CardItem &_cardItem){
         card = _cardItem.getCard();
@@ -125,6 +128,7 @@ std::string CardItem::getNormalCardName()
         imgName += "s";
         break;
     default:
+        qDebug("Falsche Karte angegeben");
         break;
     }
 
@@ -144,6 +148,7 @@ std::string CardItem::getNormalCardName()
             imgName += "a";
             break;
         default:
+            qDebug("Falsche Karte angegeben");
             break;
         }
     } else {

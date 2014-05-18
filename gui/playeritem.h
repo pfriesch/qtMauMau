@@ -7,6 +7,12 @@
 #include <QString>
 #include <QGraphicsColorizeEffect>
 #include <QColor>
+#include <stdlib.h>
+#include <string>
+#include <iostream>
+#include <stdio.h>
+#include <sstream>
+#include <QString>
 #include <QPainter>
 
 class PlayerItem : public QObject {
@@ -29,11 +35,11 @@ public:
     void removeCard(const Card& card);
     CardItem* addCard(const Card& card);
     CardItem* findCard(const Card& card);
+    CardItem::specialCards getSpecialCard();
     ~PlayerItem();
 
 private:
     void measureLayout(int cardCount);
-    CardItem::specialCards getSpecialCard();
     void createHumanCards(std::vector<Card> humanCards);
     QVector<CardItem*>* cards = new QVector<CardItem*>();
     CardItem::specialCards specialCard;

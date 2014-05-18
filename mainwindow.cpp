@@ -9,6 +9,8 @@
 
 MainWindow::MainWindow(QWidget* parent)
 {
+    this->setFixedWidth(Settings::getInstance()->getProperty("common/width").toInt());
+    this->setFixedHeight(Settings::getInstance()->getProperty("common/height").toInt());
     setupMenuBar();
     setupGraphicsView();
 }
@@ -21,7 +23,7 @@ void MainWindow::setupGraphicsView()
 {
     playground = new Playground();
     QGraphicsView* view = new QGraphicsView(this);
-    playground->setSceneRect(0, 0, Settings::getInstance()->getProperty("common/width").toInt(), Settings::getInstance()->getProperty("common/height").toInt());
+    playground->setSceneRect(0,0, Settings::getInstance()->getProperty("common/width").toInt()-50, Settings::getInstance()->getProperty("common/height").toInt()-50);
     playground->startGame();
     view->setScene(playground);
     setCentralWidget(view);

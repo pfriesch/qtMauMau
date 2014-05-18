@@ -5,6 +5,7 @@
 #include <QQueue>
 #include <QMap>
 #include <QEventLoop>
+#include <QGraphicsItemAnimation>
 
 class QTimeLine;
 
@@ -25,6 +26,7 @@ protected:
     QQueue<QTimeLine *> _activeTimeLines;
     QTimeLine * _currentTimeLine;
     bool _animationActive;
+    QGraphicsItemAnimation *newAnimation;
 
     QMap<QGraphicsItem *, QPointF> _destinationPositions;
 };
