@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QEventLoop>
 #include <QGraphicsItemAnimation>
+#include <QEventLoop>
 
 class QTimeLine;
 
@@ -20,13 +21,14 @@ signals:
     void complete();
 public slots:
     void startAnimation();
-    void prepareNewAnimation();
+    void prepareNewAnimation(QEventLoop &loop);
     void animationEnded();
 protected:
     QQueue<QTimeLine *> _activeTimeLines;
-    QTimeLine * _currentTimeLine;
+    QTimeLine *timeLine;
     bool _animationActive;
     QGraphicsItemAnimation *newAnimation;
+    QEventLoop *eventLoop;
 
     QMap<QGraphicsItem *, QPointF> _destinationPositions;
 };

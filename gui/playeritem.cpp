@@ -41,11 +41,6 @@ void PlayerItem::createCards(int cardCount)
 void PlayerItem::createHumanCards(std::vector<Card> humanCards)
 {
     for (unsigned int i = 0; i < humanCards.size(); i++) {
-
-        Card c = ((Card)humanCards.at(i));
-        std::cout << c.getSuit() << std::endl;
-        std::cout << c.getValue() << std::endl;
-
         addCard(humanCards.at(i));
     }
 }

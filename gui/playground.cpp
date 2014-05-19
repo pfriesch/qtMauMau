@@ -10,7 +10,6 @@ Playground::Playground(QObject* parent)
 
 void Playground::startGame()
 {
-
     QPointF sceneCenterPointRaw = this->sceneRect().center();
     qreal sceneCenter_X = sceneCenterPointRaw.x() - cardWidth;
     qreal sceneCenter_Y = sceneCenterPointRaw.y() - cardHeight;
@@ -28,7 +27,7 @@ void Playground::startGame()
 
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    QGraphicsItem* item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
+    QGraphicsItem *item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
     if (item != NULL) {
 
         //Clicked on Stack
@@ -45,8 +44,8 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
                 updateDepotCard(*c, depot);
                 human->removeCard(c->getCard());
                 human->unsetPlayableCards();
-                emit playCard(depot.getCard());
                 qDebug("VIEW: sende playCard()");
+                emit playCard(depot.getCard());
             }
         }
     }
@@ -102,12 +101,12 @@ void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool with
     qreal y = toCard.getY();
 
     if (withAnimation) {
+        //TODO: Die QEventLoop geht glaub ich noch nicht richtig
         QEventLoop pause;
-        pause.connect(this, SIGNAL(complete()), SLOT(quit()));
-        prepareNewAnimation();
+        prepareNewAnimation(pause);
         addPositionAnimation(fromCard.createImg(), toCard.createImg()->pos());
         startAnimation();
-        pause.exec();
+        pause.exec(QEventLoop::AllEvents);
     }
 
     removeItem(toCard.createImg());
@@ -128,8 +127,7 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
 
     if (withAnimation) {
         QEventLoop pause;
-        pause.connect(this, SIGNAL(complete()), SLOT(quit()));
-        prepareNewAnimation();
+        prepareNewAnimation(pause);
         addPositionAnimation(fromCard.createImg(), toCard.createImg()->pos());
         startAnimation();
         pause.exec();

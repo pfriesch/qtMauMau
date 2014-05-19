@@ -4,27 +4,20 @@
 #include <QGraphicsItem>
 #include <QDebug>
 
-AnimatedGraphicsScene::AnimatedGraphicsScene ( QObject * parent ) :
-    QGraphicsScene ( parent )
-    , _activeTimeLines (  )
-    , _animationActive ( false )
+AnimatedGraphicsScene::AnimatedGraphicsScene ( QObject * parent ) : QGraphicsScene ( parent ), _activeTimeLines (  ), _animationActive ( false )
 {
 }
 
-void AnimatedGraphicsScene::startAnimation()
+/**
+ * Prepare the TimeLine with Signal
+ * @brief AnimatedGraphicsScene::prepareNewAnimation
+ */
+void AnimatedGraphicsScene::prepareNewAnimation(QEventLoop &loop)
 {
-    //_activeTimeLine->start();
-
-    if ( _animationActive == false )
-    {
-        _animationActive = true;
-        _currentTimeLine->start();
-    }
-    else
-    {
-        _activeTimeLines.enqueue ( _currentTimeLine );
-    }
-    _currentTimeLine = NULL;
+    eventLoop = &loop;
+    timeLine = new QTimeLine ( 1500 );
+    bool bOk = connect ( timeLine, SIGNAL ( finished() ), this, SLOT ( animationEnded() ) );
+    Q_ASSERT ( bOk );
 }
 
 void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem * item, QPointF destinationPoint )
@@ -50,38 +43,40 @@ void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem * item, Q
 
     _destinationPositions[item] = destinationPoint;
 
-    newAnimation = new QGraphicsItemAnimation ( _currentTimeLine );
-    newAnimation->setTimeLine ( _currentTimeLine );
+    newAnimation = new QGraphicsItemAnimation ( timeLine );
+    newAnimation->setTimeLine ( timeLine );
     newAnimation->setItem ( item );
     newAnimation->setPosAt ( 0, srcPos );
     newAnimation->setPosAt ( 1, destinationPoint );
 }
 
-void AnimatedGraphicsScene::prepareNewAnimation()
+
+
+void AnimatedGraphicsScene::startAnimation()
 {
-    //    if ( _activeTimeLine != NULL )
-    //    {
-    //        delete _activeTimeLine;
-    //    }
-    //Connect EventLoop
-  //  connect(this, SIGNAL(finished()), &pause, SLOT(quit()));
+    //_activeTimeLine->start();
 
-
-
-    _currentTimeLine = new QTimeLine ( 1500 );
-    bool bOk = connect ( _currentTimeLine, SIGNAL ( finished() ), this, SLOT ( animationEnded() ) );
-    Q_ASSERT ( bOk );
+    if ( _animationActive == false )
+    {
+        _animationActive = true;
+        timeLine->start();
+    }
+    else
+    {
+        _activeTimeLines.enqueue ( timeLine );
+    }
 }
 
 void AnimatedGraphicsScene::animationEnded()
 {
     // restart
-    if ( _activeTimeLines.isEmpty() )
+    if ( _activeTimeLines.size() == 0)
     {
         _animationActive = false;
         _destinationPositions.clear();
+        delete timeLine;
         newAnimation->item()->setZValue(0);
-        emit complete();
+        eventLoop->exit();
         return;
     }
     QTimeLine * x = _activeTimeLines.dequeue();
