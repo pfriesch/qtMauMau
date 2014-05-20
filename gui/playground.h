@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QEventLoop>
+#include <QDialog>
 #include <gameLogic/gamecontroller.h>
 #include <gameLogic/Card.h>
 #include <gui/carditem.h>
@@ -38,6 +39,7 @@ private:
     void updateDepotCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
     void updatePlayerCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
     void createPlayer(const vector<Card>& humanPlayerCards,vector<int> otherPlayerCardCount);
+    void chooseColor();
 
     //Layout entities
     int cardWidth = 71;

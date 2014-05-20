@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QString>
 #include <QGraphicsColorizeEffect>
+#include <QGraphicsTextItem>
 #include <QColor>
 #include <stdlib.h>
 #include <string>
@@ -25,8 +26,8 @@ public:
         HUMAN = 4
     };
 
-    PlayerItem(direction dir, int cardCount, QPointF centerPoint, QObject* parent = 0);
-    PlayerItem(direction dir, std::vector<Card> humanCards, QPointF centerPoint);
+    PlayerItem(direction dir, int cardCount, QPointF centerPoint, QString _playername, QObject* parent = 0);
+    PlayerItem(direction dir, std::vector<Card> humanCards, QPointF centerPoint, QString _playername);
     void createCards(int cardCount);
     void setPlayableCards(std::vector<Card> playableCards);
     void unsetPlayableCards();
@@ -36,6 +37,7 @@ public:
     CardItem* addCard(const Card& card);
     CardItem* findCard(const Card& card);
     CardItem::specialCards getSpecialCard();
+    QGraphicsTextItem* getPlayername();
     ~PlayerItem();
 
 private:
@@ -46,6 +48,10 @@ private:
     PlayerItem::direction playerDirection;
     QPointF centerPoint;
 
+    QGraphicsTextItem *playername;
+
+    int nameX;
+    int nameY;
     int x;
     int y;
 

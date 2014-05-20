@@ -63,23 +63,23 @@ void Playground::initPlayground(const vector<Card>& humanPlayerCards, vector<int
 void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount)
 {
     QPointF center = this->sceneRect().center();
-    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center);
+    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, "Icke");
     players.insert(PlayerItem::direction::HUMAN, human);
 
     for (unsigned int i = 0; i < otherPlayerCardCount.size(); i++) {
         switch (i) {
         case 0: {
-            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center);
+            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center, "Yoda");
             players.insert(PlayerItem::direction::LEFT, p1);
             break;
         }
         case 1: {
-            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center);
+            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center,"Anakin");
             players.insert(PlayerItem::direction::TOP, p2);
             break;
         }
         case 2: {
-            PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], center);
+            PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], center, "C3PO");
             players.insert(PlayerItem::direction::RIGHT, p3);
             break;
         }
@@ -90,8 +90,9 @@ void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> 
     for (PlayerItem::direction dir : players.keys()) {
         PlayerItem* p = players.value(dir);
         for (int j = 0; j < p->getCards()->size(); ++j) {
-            this->addItem(p->getCards()->at(j)->createImg());
+            addItem(p->getCards()->at(j)->createImg());
         }
+        addItem(p->getPlayername());
     }
 }
 
@@ -220,4 +221,21 @@ void Playground::addPlayerCard(const Card& card)
     CardItem* cardItem = players.value(PlayerItem::direction::HUMAN)->addCard(card);
     CardItem cardFromStack(card);
     updatePlayerCard(cardFromStack,*cardItem);
+}
+
+void Playground::chooseColor(){
+    /* To be continued TODO
+     * QDialog dialog;
+
+    QStringList items;
+    items << tr("Spring") << tr("Summer") << tr("Fall") << tr("Winter");
+
+    bool ok;
+    QString item = QInputDialog::getItem(this, tr("QInputDialog::getItem()"),
+                                         tr("Season:"), items, 0, false, &ok);
+    if (ok && !item.isEmpty())
+        itemLabel->setText(item);
+
+    dialog.set
+    */
 }
