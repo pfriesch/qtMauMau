@@ -45,6 +45,7 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
                 human->removeCard(c->getCard());
                 human->unsetPlayableCards();
                 qDebug("VIEW: sende playCard()");
+                human->setUnactive();
                 emit playCard(depot.getCard());
             }
         }
@@ -144,6 +145,7 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
 
 void Playground::playerDoTurn(vector<Card> playableCards)
 {
+    players.value(PlayerItem::direction::HUMAN)->setActive();
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }
 
@@ -165,7 +167,7 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
         break;
     }
     }
-
+    p->setActive();
     //TODO: ist irgendwie falsch, er wird die gespielte Karte nie finden, da die View die Karten nicht kennt und nur SpecialCards also Blaue Hintergründe hält
     // für diesen Spieler, deshalb kommt einfach die last() Karte zurück
     CardItem *dummyCard = p->findCard(playedCard);
@@ -174,6 +176,8 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
     _playedCard.setPos(dummyCard->getX(), dummyCard->getY());
     p->removeCard(playedCard);
     updateDepotCard(_playedCard, depot);
+
+    p->setUnactive();
 }
 
 /**
@@ -204,10 +208,14 @@ void Playground::playerDrawsCard(short player)
         break;
     }
 
+    p->setActive();
+
     Card dummyCard;
     CardItem *cardItem = p->addCard(dummyCard);
     CardItem fakeStack(p->getSpecialCard());
     updatePlayerCard(fakeStack, *cardItem);
+
+    p->setUnactive();
 }
 
 /**

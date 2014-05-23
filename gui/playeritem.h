@@ -15,6 +15,7 @@
 #include <sstream>
 #include <QString>
 #include <QPainter>
+#include <QTextCursor>
 
 class PlayerItem : public QObject {
     Q_OBJECT
@@ -38,6 +39,8 @@ public:
     CardItem* findCard(const Card& card);
     CardItem::specialCards getSpecialCard();
     QGraphicsTextItem* getPlayername();
+    void setActive();
+    void setUnactive();
     ~PlayerItem();
 
 private:

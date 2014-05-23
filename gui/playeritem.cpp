@@ -123,6 +123,15 @@ void PlayerItem::unsetPlayableCards()
     }
 }
 
+void PlayerItem::setActive(){
+    playername->setHtml("<p style='text-decoration:underline;font-style:oblique;'>"+playername->toPlainText()+"</p>");
+}
+
+void PlayerItem::setUnactive(){
+    playername->setHtml(playername->toPlainText());
+
+}
+
 CardItem* PlayerItem::addCard(const Card& card)
 {
     if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
