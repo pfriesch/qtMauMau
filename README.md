@@ -1,7 +1,7 @@
 qtMauMau
-========
-===================
-Custom Build Steps:
+
+
+==Custom Build Steps:==
 
 What you need is a custom build step.
 
@@ -9,7 +9,7 @@ What you need is a custom build step.
    - On Build Settings tab under Build Steps click on Add Build Step.
    - Choose Make from the menu.
    - Write install into Make arguments: text input box.
-===================
+
 
 
 Das Kartenspiel "MauMau" mit dem QT Framework
