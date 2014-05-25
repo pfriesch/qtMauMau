@@ -8,6 +8,8 @@
 #include "player.h"
 #include "card.h"
 
+#include <QDebug>
+
 class GameController : public QObject {
     Q_OBJECT
 private:
@@ -35,13 +37,13 @@ private:
 
     //special cards
     bool withDraw2xCard = true;
-    Card::cardValue draw2xCardValue = Card::SEVEN;
+    const Card::cardValue draw2xCard = Card::SEVEN;
     bool withWishedSuit = true;
-    Card::cardValue wishedSuitCardValue = Card::JACK;
+    const Card::cardValue wishSuitCard = Card::JACK;
     bool withSkipPlayer = true;
-    Card::cardValue skipNextPlayerCardValue = Card::EIGHT;
+    const Card::cardValue skipNextCard = Card::EIGHT;
     bool withChangeDirection = false;
-    Card::cardValue changedDirectionCardValue = Card::TEN;
+    const Card::cardValue changeDirectCard = Card::TEN;
 
 public:
     explicit GameController(int currentPlayer = 0, int playerCount = 4);
@@ -92,6 +94,8 @@ private:
     void dealCards();
     void nextTurn();
     void aiDoTurn(int aiPlayer);
+    void setFlags(const Card& card);
+    void setNextPlayer();
 };
 
 #endif // GAMECONTROLLER_H

@@ -16,10 +16,8 @@ GameController::GameController(int currentPlayer, int playerCount)
 
 void GameController::playCard(const Card& card)
 {
-    //TODO check if valid
     players[humanPlayer].dropCard(card);
     cardDepot.pushCard(card);
-    //TODO custom actions
     nextTurn();
 }
 
@@ -30,9 +28,10 @@ void GameController::drawCard()
         players[humanPlayer].reciveCard(drawnCard);
         currentPlayerDrewCard = true;
         emit addPlayerCard(drawnCard);
-        emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
+        emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
     } else {
-        //TODO error handling
+        qDebug() << "Player tried to play card, though he's not allowed to.";
+        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
     }
 }
 
@@ -40,8 +39,9 @@ void GameController::doNothing()
 {
     if (!currentPlayerDrewCard) {
         drawCard();
+        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
     } else {
-        //TODO continue game
+        nextTurn();
     }
 }
 
@@ -58,7 +58,7 @@ void GameController::gameInit()
         otherPlayerCardCount.push_back(players[i].getCardCount());
     }
     emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
-    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back()));
+    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
 }
 //private
 void GameController::dealCards()
@@ -72,14 +72,11 @@ void GameController::dealCards()
 //private
 void GameController::nextTurn()
 {
-    if (currentPlayer < playerCount-1) {
-        currentPlayer++;
-    } else {
-        currentPlayer = 0;
-    }
+    setFlags(cardDepot.back());
+    qDebug() << "Next Payer: " << currentPlayer;
     switch (players[currentPlayer].getType()) {
     case Player::human:
-        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back()));
+        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
         break;
     case Player::ai:
         aiDoTurn(currentPlayer);
@@ -94,14 +91,14 @@ void GameController::nextTurn()
 
 void GameController::aiDoTurn(int aiPlayer)
 {
-    if (players[aiPlayer].getPlayableCards(cardDepot.back()).size() == 0) {
+    if (players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard).size() == 0) {
         players[aiPlayer].reciveCard(cardStack.getLast(cardDepot));
         emit playerDrawsCard(aiPlayer);
-        if (players[aiPlayer].getPlayableCards(cardDepot.back()).size() == 0) {
+        if (players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard).size() == 0) {
             nextTurn();
         } else {
             //ai just plays the first playable card
-            Card card = players[aiPlayer].getPlayableCards(cardDepot.back())[0];
+            Card card = players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard)[0];
             players[aiPlayer].dropCard(card);
             cardDepot.pushCard(card);
             emit playerPlaysCard(aiPlayer, card);
@@ -109,11 +106,62 @@ void GameController::aiDoTurn(int aiPlayer)
             nextTurn();
         }
     } else {
-        Card card = players[aiPlayer].getPlayableCards(cardDepot.back())[0];
+        Card card = players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard)[0];
         players[aiPlayer].dropCard(card);
         cardDepot.pushCard(card);
         emit playerPlaysCard(aiPlayer, card);
         //TODO custom actions
         nextTurn();
+    }
+}
+
+void GameController::setFlags(const Card& card)
+{
+    currentPlayerDrewCard = false;
+    skipNextPlayer = false;
+
+    if (card.getValue() == changeDirectCard) {
+        if (changedDirection == true) {
+            changedDirection = false;
+        } else {
+            changedDirection = true;
+        }
+    } else if (card.getValue() == skipNextCard) {
+        skipNextPlayer = true;
+    } else if (card.getValue() == wishSuitCard) {
+        //TODO get wished suit
+    } else if (card.getValue() == draw2xCard) {
+        //TODO set draw 2
+    }
+
+    setNextPlayer();
+    if (skipNextPlayer) {
+        setNextPlayer();
+    }
+
+    //    bool draw2x = false;
+    //    int draw2xCount = 0;
+
+    //    //special cards
+    //    bool withDraw2xCard = true;
+    //    Card::cardValue draw2xCard = Card::SEVEN;
+    //    bool withWishedSuit = true;
+    //    Card::cardValue wishSuit = Card::JACK;
+}
+
+void GameController::setNextPlayer()
+{
+    if (changedDirection) {
+        if (currentPlayer > 0) {
+            currentPlayer--;
+        } else {
+            currentPlayer = playerCount - 1;
+        }
+    } else {
+        if (currentPlayer < playerCount - 1) {
+            currentPlayer++;
+        } else {
+            currentPlayer = 0;
+        }
     }
 }

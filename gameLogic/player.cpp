@@ -33,14 +33,14 @@ void Player::reciveCard(const Card& card)
 
 void Player::dropCard(const Card& card)
 {
-  hand.erase(remove(hand.begin(), hand.end(),card),hand.end());
+    hand.erase(remove(hand.begin(), hand.end(), card), hand.end());
 }
 //TODO specify playable cards
-vector<Card>& Player::getPlayableCards(const Card& card)
+vector<Card>& Player::getPlayableCards(const Card& card, Card::cardValue wishSuitCard)
 {
     vector<Card>* playableCards = new vector<Card>;
     for (unsigned int i = 0; i < hand.size(); ++i) {
-        if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue()) {
+        if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue() || card.getValue() == wishSuitCard) {
             playableCards->push_back(hand[i]);
         }
     }
