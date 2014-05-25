@@ -1,7 +1,7 @@
 qtMauMau
-========
-===================
-Custom Build Steps:
+
+
+==Custom Build Steps:==
 
 What you need is a custom build step.
 
@@ -9,7 +9,7 @@ What you need is a custom build step.
    - On Build Settings tab under Build Steps click on Add Build Step.
    - Choose Make from the menu.
    - Write install into Make arguments: text input box.
-===================
+
 
 
 Das Kartenspiel "MauMau" mit dem QT Framework
@@ -28,7 +28,7 @@ verknüpft werden können (zwei Karten ziehen, Richtungswechsel, Aussetzen,...).
 
 5) (1 point) Beim Sieg oder besonderen Aktionen soll ein Sound abgespielt werden können.
 
-6) (1 point) Die Anwendung lässt illegale Züge nicht zu und zeigt dieses an.
+6) ~~(1 point) Die Anwendung lässt illegale Züge nicht zu und zeigt dieses an.~~
 
 7) (1 point) Die Anwendung erkennt eine Gewinnposition und zeigt das Resultat an.
 
@@ -38,7 +38,7 @@ verknüpft werden können (zwei Karten ziehen, Richtungswechsel, Aussetzen,...).
 darf davon ausgegangen werden, dass die beiden Anwendungen im selben Subnetz
 sind, und die Ports erreichbar sind (keine Firewall, kein NAT, etc.).
 
-10) (2 point) Die Spielkarten sollen animiert abgelegt werden.
+10) ~~(2 point) Die Spielkarten sollen animiert abgelegt werden.~~
 
 11) (2 point) Das Spiel soll speicherbar sein und zu einem späteren Zeitpunkt (nach dem
 Neustart der Anwendung) wieder aufrufbar sein (Netzwerkspieler werden durch
@@ -65,11 +65,12 @@ implementiert werden.
 19) (2 point) Bei einem Netzwerkspiel können vorgegebene Chatnachrichten (Chatwheel)
 ausgetauscht werden
 
-20) (2 point) Es wird ein sinnvoller effizienter Mischalgorithmus implementiert z.b.
-(FisherYates)
+20) ~~(2 point) Es wird ein sinnvoller effizienter Mischalgorithmus implementiert z.b.
+(FisherYates)~~
 http://en.wikipedia.org/wiki/Knuth_shuffle
 
 Bonuspunkte:
+
 1) (1 point) Gewinnanimation für den Gewinner
 
 2) (1 point) Achivements
