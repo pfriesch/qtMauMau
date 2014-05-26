@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include "deck.h"
 #include "player.h"
+#include "humanplayer.h"
+#include "aiplayer.h"
 #include "card.h"
 
 #include <QDebug>
@@ -34,6 +36,7 @@ private:
     bool skipNextPlayer = false;
     //TODO always 4 players, 4+ players unregarded
     bool currentPlayerDrewCard = false;
+    bool currentPlayerPlayedCard = false;
 
     //special cards
     bool withDraw2xCard = true;

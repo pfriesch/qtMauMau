@@ -1,9 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <vector>
 #include <string>
-#include <algorithm>
+#include <vector>
 #include "card.h"
 
 using namespace std;
@@ -20,17 +19,14 @@ private:
     Player::PlayerType playerType;
     vector<Card> hand;
     string name;
-    int id;
 
 public:
-    explicit Player(Player::PlayerType playerType = Player::PlayerType(1), string name = "");
-    void reciveCard(const Card& card);
-    void dropCard(const Card& card);
-    vector<Card>& getPlayableCards(const Card& card, Card::cardValue wishSuitCard);
-    int getId() const;
-    vector<Card> getHand() const;
-    int getCardCount() const;
-    Player::PlayerType getType() const;
+    virtual void reciveCard(const Card& card);
+    virtual void dropCard(const Card& card);
+    virtual vector<Card>& getPlayableCards(const Card& card, Card::cardValue wishSuitCard);
+    virtual vector<Card> getHand() const;
+    virtual int getCardCount() const;
+    virtual Player::PlayerType getType() const;
 };
 
 #endif // PLAYER_H

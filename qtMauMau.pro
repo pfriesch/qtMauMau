@@ -23,7 +23,6 @@ SOURCES += main.cpp\
     network/server.cpp \
     network/client.cpp \
     gameLogic/gamecontroller.cpp \
-    gameLogic/player.cpp \
     gameLogic/deck.cpp \
     gameLogic/card.cpp \
     gui/playground.cpp \
@@ -32,7 +31,10 @@ SOURCES += main.cpp\
     gui/playeritem.cpp \
     gameLogic/Test/gamecontroller_test.cpp \
     gameLogic/Test/decktest.cpp \
-    gui/animatedgraphicsscene.cpp
+    gui/animatedgraphicsscene.cpp \
+    gameLogic/player.cpp \
+    gameLogic/humanplayer.cpp \
+    gameLogic/aiplayer.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -45,12 +47,14 @@ HEADERS  += mainwindow.h \
     gui/playground.h \
     gui/optiondialog.h \
     gui/carditem.h \
-    gameLogic/player.h \
     gui/playeritem.h \
     gameLogic/Deck.h \
     gameLogic/Test/gamecontroller_test.h \
     gameLogic/Test/decktest.h \
-    gui/animatedgraphicsscene.h
+    gui/animatedgraphicsscene.h \
+    gameLogic/player.h \
+    gameLogic/humanplayer.h \
+    gameLogic/aiplayer.h
 
 
 
