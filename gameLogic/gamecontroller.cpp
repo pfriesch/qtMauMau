@@ -1,16 +1,16 @@
 #include "gamecontroller.h"
 
 GameController::GameController(int currentPlayer, int playerCount)
-    : cardStack(true)
+    : cardStack(Deck::FULL)
     , playerCount(playerCount)
     , currentPlayer(currentPlayer)
 {
     if (playerCount < 2 || playerCount > 4) {
         throw std::invalid_argument("playercount has to be between 2 and 4");
     }
-    players.push_back(Player(Player::human, "Hans"));
+    players.push_back(HumanPlayer);
     for (int i = 0; i < playerCount; ++i) {
-        players.push_back(Player(Player::ai));
+        players.push_back(AIPlayer);
     }
 }
 
@@ -51,23 +51,27 @@ void GameController::gameInit()
     //TODO what players do we have ?? remote??
     cardStack.shuffle();
     //kind of players unregarded
-    dealCards();
+    vector<vector<Card> > playerCards;
+    for (int i = 0; i < playerCount; i++) {
+        playerCards.push_back(vecotr<Card>);
+        for (int j = 0; j < 5; j++) {
+            playerCards[i].push_back(cardStack.getLast(cardDepot));
+        }
+    }
     cardDepot.pushCard(cardStack.getLast(cardDepot));
     vector<int> otherPlayerCardCount;
     for (unsigned int i = 0; i < players.size(); ++i) {
         otherPlayerCardCount.push_back(players[i].getCardCount());
     }
-    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
-    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
-}
-//private
-void GameController::dealCards()
-{
-    for (int i = 0; i < playerCount; i++) {
-        for (int j = 0; j < 5; j++) {
-            players[i].reciveCard(cardStack.getLast(cardDepot));
-        }
+    int count = 0;
+    foreach(Player player, players)
+    {
+        player.gameInit(playerCards[count], cardDepot.back(), otherPlayerCardCount);
+        count++;
     }
+
+    //    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
+    //    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
 }
 //private
 void GameController::nextTurn()

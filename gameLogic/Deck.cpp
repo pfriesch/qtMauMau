@@ -3,9 +3,9 @@
 /**
  * Initializes a full cad deck
  */
-Deck::Deck(bool full_deck)
+Deck::Deck(Deck::InitStatus status)
 {
-    if (full_deck) {
+    if (status == Deck::f) {
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j <= 8; j++) {
                 cards.push_back(Card(Card::cardSuit(i), Card::cardValue(j)));

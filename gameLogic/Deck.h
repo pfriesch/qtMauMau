@@ -10,11 +10,16 @@
 using namespace std;
 
 class Deck {
+    enum InitStatus {
+        FULL,
+        EMPTY
+    };
+
 private:
     vector<Card> cards;
 
 public:
-    Deck(bool full_deck = false);
+    Deck(Deck::InitStatus staus = Deck::EMPTY);
     void shuffle();
     void pushCard(const Card card);
     Card getLast(Deck& deck);

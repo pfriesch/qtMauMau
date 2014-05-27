@@ -8,19 +8,12 @@
 using namespace std;
 
 class Player {
-public:
-    enum PlayerType {
-        human = 0,
-        ai = 1,
-        remote = 2
-    };
-
 private:
-    Player::PlayerType playerType;
     vector<Card> hand;
     string name;
 
 public:
+    virtual void gameInit(vector<Card>& hand, Card& topCard, vecotr<int> otherPlayerCardCount);
     virtual void reciveCard(const Card& card);
     virtual void dropCard(const Card& card);
     virtual vector<Card>& getPlayableCards(const Card& card, Card::cardValue wishSuitCard);
