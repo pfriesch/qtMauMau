@@ -22,7 +22,6 @@ SOURCES += main.cpp\
     settings.cpp \
     network/server.cpp \
     network/client.cpp \
-    gameLogic/gamecontroller.cpp \
     gameLogic/deck.cpp \
     gameLogic/card.cpp \
     gui/playground.cpp \
@@ -32,7 +31,7 @@ SOURCES += main.cpp\
     gameLogic/Test/gamecontroller_test.cpp \
     gameLogic/Test/decktest.cpp \
     gui/animatedgraphicsscene.cpp \
-    gameLogic/player.cpp \
+    gameLogic/gamecontroller.cpp \
     gameLogic/humanplayer.cpp \
     gameLogic/aiplayer.cpp
 

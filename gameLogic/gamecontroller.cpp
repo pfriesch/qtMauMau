@@ -8,52 +8,20 @@ GameController::GameController(int currentPlayer, int playerCount)
     if (playerCount < 2 || playerCount > 4) {
         throw std::invalid_argument("playercount has to be between 2 and 4");
     }
-    players.push_back(HumanPlayer);
+    players.push_back(new HumanPlayer());
     for (int i = 0; i < playerCount; ++i) {
-        players.push_back(AIPlayer);
+        players.push_back(new AIPlayer());
     }
 }
 
-void GameController::playCard(const Card& card)
-{
-    players[humanPlayer].dropCard(card);
-    cardDepot.pushCard(card);
-    nextTurn();
-}
-
-void GameController::drawCard()
-{
-    if (!currentPlayerDrewCard) {
-        Card drawnCard = cardStack.getLast(cardDepot);
-        players[humanPlayer].reciveCard(drawnCard);
-        currentPlayerDrewCard = true;
-        emit addPlayerCard(drawnCard);
-        emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
-    } else {
-        qDebug() << "Player tried to play card, though he's not allowed to.";
-        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
-    }
-}
-
-void GameController::doNothing()
-{
-    if (!currentPlayerDrewCard) {
-        drawCard();
-        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
-    } else {
-        nextTurn();
-    }
-}
-
-//private
 void GameController::gameInit()
 {
+    connectPlayerSignals();
     //TODO what players do we have ?? remote??
     cardStack.shuffle();
     //kind of players unregarded
     vector<vector<Card> > playerCards;
     for (int i = 0; i < playerCount; i++) {
-        playerCards.push_back(vecotr<Card>);
         for (int j = 0; j < 5; j++) {
             playerCards[i].push_back(cardStack.getLast(cardDepot));
         }
@@ -61,62 +29,62 @@ void GameController::gameInit()
     cardDepot.pushCard(cardStack.getLast(cardDepot));
     vector<int> otherPlayerCardCount;
     for (unsigned int i = 0; i < players.size(); ++i) {
-        otherPlayerCardCount.push_back(players[i].getCardCount());
+        otherPlayerCardCount.push_back(players[i]->getCardCount());
     }
-    int count = 0;
-    foreach(Player player, players)
-    {
-        player.gameInit(playerCards[count], cardDepot.back(), otherPlayerCardCount);
-        count++;
-    }
+    for (unsigned i = 0; i < players.size(); ++i) {
 
+        players[i]->gameInit(playerCards[i], cardDepot.back(), otherPlayerCardCount);
+    }
+    players.at(currentPlayer)->doTurn();
     //    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
     //    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
 }
-//private
+
+void GameController::playCard(int playerId, const Card& card, Card::cardSuit whishedSuit)
+{
+    if (currentPlayer == playerId) {
+        players[currentPlayer]->dropCard(card);
+        cardDepot.pushCard(card);
+        nextTurn();
+    }
+}
+
+void GameController::drawCard(int playerId)
+{
+    if (currentPlayer == playerId) {
+        if (!currentPlayerDrewCard) {
+            players[playerId]->reciveCard(cardStack.getLast(cardDepot));
+            players[playerId]->playerDoTurn();
+            currentPlayerDrewCard = true;
+        }
+    }
+}
+
+void GameController::doNothing(int playerId)
+{
+    if (currentPlayer == playerId) {
+        if (!currentPlayerDrewCard) {
+            players[playerId]->reciveCard(cardStack.getLast(cardDepot));
+            players[playerId]->playerDoTurn();
+            currentPlayerDrewCard = true;
+        } else {
+            nextTurn();
+        }
+    }
+}
+
+void GameController::connectPlayerSignals()
+{
+    for (int i = 0; i < playerCount; ++i) {
+        QObject::connect(players[i], &Player::playCard, this, &GameController::playCard);
+    }
+}
+
 void GameController::nextTurn()
 {
     setFlags(cardDepot.back());
     qDebug() << "Next Payer: " << currentPlayer;
-    switch (players[currentPlayer].getType()) {
-    case Player::human:
-        emit playerDoTurn(players[currentPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
-        break;
-    case Player::ai:
-        aiDoTurn(currentPlayer);
-        break;
-    case Player::remote:
-        //TODO add remote player action
-        break;
-    default:
-        break;
-    }
-}
-
-void GameController::aiDoTurn(int aiPlayer)
-{
-    if (players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard).size() == 0) {
-        players[aiPlayer].reciveCard(cardStack.getLast(cardDepot));
-        emit playerDrawsCard(aiPlayer);
-        if (players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard).size() == 0) {
-            nextTurn();
-        } else {
-            //ai just plays the first playable card
-            Card card = players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard)[0];
-            players[aiPlayer].dropCard(card);
-            cardDepot.pushCard(card);
-            emit playerPlaysCard(aiPlayer, card);
-            //TODO custom actions
-            nextTurn();
-        }
-    } else {
-        Card card = players[aiPlayer].getPlayableCards(cardDepot.back(), wishSuitCard)[0];
-        players[aiPlayer].dropCard(card);
-        cardDepot.pushCard(card);
-        emit playerPlaysCard(aiPlayer, card);
-        //TODO custom actions
-        nextTurn();
-    }
+    players[currentPlayer]->doTurn();
 }
 
 void GameController::setFlags(const Card& card)

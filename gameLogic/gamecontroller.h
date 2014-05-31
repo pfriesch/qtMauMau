@@ -1,6 +1,7 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
+#include <QObject>
 #include <stdexcept>
 #include "deck.h"
 #include "player.h"
@@ -10,10 +11,10 @@
 
 #include <QDebug>
 
-class GameController {
-
+class GameController : public QObject {
+    Q_OBJECT
 private:
-    vector<Player> players;
+    vector<Player*> players;
     //The stack of cards where cards are taken if a player has to draw.
     Deck cardStack;
     //The stack of cards where the played cards are dropped.
@@ -21,7 +22,6 @@ private:
 
     //flags
     int playerCount;
-    int humanPlayer = 0;
     //default start player is 0
 
     //every turn flags
@@ -46,13 +46,23 @@ private:
     bool withChangeDirection = false;
     const Card::cardValue changeDirectCard = Card::TEN;
 
+public
+slots:
+    void playCard(int playerId, const Card& card, Card::cardSuit whishedSuit);
+    void drawCard(int playerId);
+    void doNothing(int playerId);
+
+signals:
+    void playerPlaysCard(int playerId, const Card& playedCard);
+    void playerDrawsCard(int playerId);
+
 public:
     explicit GameController(int currentPlayer = 0, int playerCount = 4);
     void gameInit();
 
 private:
+    void connectPlayerSignals();
     void nextTurn();
-    void aiDoTurn(int aiPlayer);
     void setFlags(const Card& card);
     void setNextPlayer();
 };

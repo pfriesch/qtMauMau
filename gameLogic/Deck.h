@@ -10,6 +10,7 @@
 using namespace std;
 
 class Deck {
+public:
     enum InitStatus {
         FULL,
         EMPTY

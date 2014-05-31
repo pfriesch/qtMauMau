@@ -48,19 +48,19 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     ts << txt << endl;
 }
 
-void connectSignals(Playground* playground, GameController& gc)
-{
-    // From GameController(Logic) ----> Playground(View)
-    QObject::connect(&gc, &GameController::initPlayground, playground, &Playground::initPlayground);
-    QObject::connect(&gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
-    QObject::connect(&gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
-    QObject::connect(&gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
-    QObject::connect(&gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
+//void connectSignals(Playground* playground, GameController& gc)
+//{
+//    // From GameController(Logic) ----> Playground(View)
+//    QObject::connect(&gc, &GameController::initPlayground, playground, &Playground::initPlayground);
+//    QObject::connect(&gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
+//    QObject::connect(&gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
+//    QObject::connect(&gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
+//    QObject::connect(&gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
 
-    //From Playground(View) ---> GameController(View)
-    QObject::connect(playground, &Playground::playCard, &gc, &GameController::playCard);
-    QObject::connect(playground, &Playground::drawCard, &gc, &GameController::drawCard);
-}
+//    //From Playground(View) ---> GameController(View)
+//    QObject::connect(playground, &Playground::playCard, &gc, &GameController::playCard);
+//    QObject::connect(playground, &Playground::drawCard, &gc, &GameController::drawCard);
+//}
 
 int main(int argc, char* argv[])
 {
@@ -96,8 +96,8 @@ int main(int argc, char* argv[])
 
     Playground* playground = window.getPlayground();
     GameController gc;
-    connectSignals(playground, gc);
-    gc.gameInit();
+//    connectSignals(playground, gc);
+//    gc.gameInit();
     window.show();
 
 #ifdef TEST
