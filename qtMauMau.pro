@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     gui/playeritem.cpp \
     gameLogic/Test/gamecontroller_test.cpp \
     gameLogic/Test/decktest.cpp \
-    gui/animatedgraphicsscene.cpp
+    gui/animatedgraphicsscene.cpp \
+    gui/choosecolordialog.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -50,12 +51,14 @@ HEADERS  += mainwindow.h \
     gameLogic/Deck.h \
     gameLogic/Test/gamecontroller_test.h \
     gameLogic/Test/decktest.h \
-    gui/animatedgraphicsscene.h
+    gui/animatedgraphicsscene.h \
+    gui/choosecolordialog.h
 
 
 
 FORMS    += \
-    gui/optiondialog.ui
+    gui/optiondialog.ui \
+    gui/choosecolordialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \

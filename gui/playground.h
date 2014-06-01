@@ -20,6 +20,7 @@
 #include <gui/carditem.h>
 #include <gui/playeritem.h>
 #include <gui/animatedgraphicsscene.h>
+#include <gui/choosecolordialog.h>
 
 class Playground : public AnimatedGraphicsScene {
     Q_OBJECT
@@ -39,7 +40,7 @@ private:
     void updateDepotCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
     void updatePlayerCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
     void createPlayer(const vector<Card>& humanPlayerCards,vector<int> otherPlayerCardCount);
-    void chooseColor();
+    Card::cardSuit chooseColor();
 
     //Layout entities
     int cardWidth = 71;

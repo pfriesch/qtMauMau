@@ -41,6 +41,12 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
         for (int j = 0; j < human->getCards()->size(); ++j) {
             CardItem* c = human->getCards()->at(j);
             if (c->createImg() == item && c->createImg()->isSelected()) {
+
+                // TODO: Sometimes the Jack isnt the card you can choose a color, we wanted it to let the player modify the action cards
+                if(c->getCard().getValue() == Card::cardValue::JACK){
+                    Card::cardSuit chosenColor(chooseColor());
+                }
+
                 updateDepotCard(*c, depot);
                 human->removeCard(c->getCard());
                 human->unsetPlayableCards();
@@ -231,19 +237,10 @@ void Playground::addPlayerCard(const Card& card)
     updatePlayerCard(cardFromStack,*cardItem);
 }
 
-void Playground::chooseColor(){
-    /* To be continued TODO
-     * QDialog dialog;
+Card::cardSuit Playground::chooseColor(){
 
-    QStringList items;
-    items << tr("Spring") << tr("Summer") << tr("Fall") << tr("Winter");
-
-    bool ok;
-    QString item = QInputDialog::getItem(this, tr("QInputDialog::getItem()"),
-                                         tr("Season:"), items, 0, false, &ok);
-    if (ok && !item.isEmpty())
-        itemLabel->setText(item);
-
-    dialog.set
-    */
+    ChooseColorDialog dialog;
+    int p = dialog.exec();
+    qDebug("Card Farbe: "+ dialog.result() +Card::cardSuit(dialog.result()));
+    return Card::cardSuit(dialog.result());
 }
