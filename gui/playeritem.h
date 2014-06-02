@@ -41,6 +41,7 @@ public:
     QGraphicsTextItem* getPlayername();
     void setActive();
     void setUnactive();
+    void rearrangePlayer(QPointF centerPoint);
     ~PlayerItem();
 
 private:
@@ -62,7 +63,7 @@ private:
     int cardWidth = 71;
     int cardHeight = 96;
     int cardGap = 20;
-    int borderMargin = 30;
+    int borderMargin = 50;
     int offsetPlayableCard = 20;
 
 signals:

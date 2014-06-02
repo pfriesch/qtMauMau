@@ -28,6 +28,8 @@ public:
     explicit Playground(QObject* parent = 0);
     void startGame();
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    void rearrangeLayout();
+    void setDepotNStack();
 
 private:
 

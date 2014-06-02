@@ -10,24 +10,28 @@ Playground::Playground(QObject* parent)
 
 void Playground::startGame()
 {
-    QPointF sceneCenterPointRaw = this->sceneRect().center();
-    qreal sceneCenter_X = sceneCenterPointRaw.x() - cardWidth;
-    qreal sceneCenter_Y = sceneCenterPointRaw.y() - cardHeight;
-    int depotX = sceneCenter_X + cardWidth + horizontalCardGap;
-
     stack = (CardItem::specialCards::RED_VERTICAL);
-    stack.setPos(sceneCenter_X, sceneCenter_Y);
-
     depot = CardItem(CardItem::specialCards::DEPOT);
-    depot.setPos(depotX, sceneCenter_Y);
+
+    this->setDepotNStack();
 
     this->addItem(stack.createImg());
     this->addItem(depot.createImg());
 }
 
+void Playground::setDepotNStack()
+{
+    QPointF sceneCenterPointRaw = this->sceneRect().center();
+    qreal sceneCenter_X = sceneCenterPointRaw.x() - cardWidth;
+    qreal sceneCenter_Y = sceneCenterPointRaw.y() - cardHeight;
+    int depotX = sceneCenter_X + cardWidth + horizontalCardGap;
+    depot.setPos(depotX, sceneCenter_Y);
+    stack.setPos(sceneCenter_X, sceneCenter_Y);
+}
+
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    QGraphicsItem *item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
+    QGraphicsItem* item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
     if (item != NULL) {
 
         //Clicked on Stack
@@ -43,7 +47,7 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
             if (c->createImg() == item && c->createImg()->isSelected()) {
 
                 // TODO: Sometimes the Jack isnt the card you can choose a color, we wanted it to let the player modify the action cards
-                if(c->getCard().getValue() == Card::cardValue::JACK){
+                if (c->getCard().getValue() == Card::cardValue::JACK) {
                     Card::cardSuit chosenColor(chooseColor());
                 }
 
@@ -81,7 +85,7 @@ void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> 
             break;
         }
         case 1: {
-            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center,"Anakin");
+            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center, "Anakin");
             players.insert(PlayerItem::direction::TOP, p2);
             break;
         }
@@ -127,7 +131,7 @@ void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool with
 
 void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation)
 {
-    fromCard.setPos(stack.getX(),stack.getY());
+    fromCard.setPos(stack.getX(), stack.getY());
     addItem(fromCard.createImg());
 
     qreal x = toCard.getX();
@@ -176,7 +180,7 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
     p->setActive();
     //TODO: ist irgendwie falsch, er wird die gespielte Karte nie finden, da die View die Karten nicht kennt und nur SpecialCards also Blaue Hintergründe hält
     // für diesen Spieler, deshalb kommt einfach die last() Karte zurück
-    CardItem *dummyCard = p->findCard(playedCard);
+    CardItem* dummyCard = p->findCard(playedCard);
     CardItem _playedCard(playedCard);
     addItem(_playedCard.createImg());
     _playedCard.setPos(dummyCard->getX(), dummyCard->getY());
@@ -217,7 +221,7 @@ void Playground::playerDrawsCard(short player)
     p->setActive();
 
     Card dummyCard;
-    CardItem *cardItem = p->addCard(dummyCard);
+    CardItem* cardItem = p->addCard(dummyCard);
     CardItem fakeStack(p->getSpecialCard());
     updatePlayerCard(fakeStack, *cardItem);
 
@@ -234,13 +238,23 @@ void Playground::addPlayerCard(const Card& card)
     qDebug("VIEW: GET Signal - addPlayerCard");
     CardItem* cardItem = players.value(PlayerItem::direction::HUMAN)->addCard(card);
     CardItem cardFromStack(card);
-    updatePlayerCard(cardFromStack,*cardItem);
+    updatePlayerCard(cardFromStack, *cardItem);
 }
 
-Card::cardSuit Playground::chooseColor(){
+Card::cardSuit Playground::chooseColor()
+{
 
     ChooseColorDialog dialog;
-    int p = dialog.exec();
-    qDebug("Card Farbe: "+ dialog.result() +Card::cardSuit(dialog.result()));
-    return Card::cardSuit(dialog.result());
+    return Card::cardSuit(dialog.exec());
+}
+
+void Playground::rearrangeLayout()
+{
+
+    QHash<PlayerItem::direction, PlayerItem*>::iterator i = players.begin();
+    for (i = players.begin(); i != players.end(); ++i) {
+        PlayerItem* p = players.value(i.key());
+        p->rearrangePlayer(this->sceneRect().center());
+    }
+    this->setDepotNStack();
 }

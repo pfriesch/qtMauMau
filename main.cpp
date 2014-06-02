@@ -14,6 +14,7 @@
 #include <QDesktopWidget>
 #include <QStyle>
 #include <gui/playground.h>
+#include <settings.h>
 
 //#define TEST
 
@@ -90,7 +91,7 @@ int main(int argc, char* argv[])
         QStyle::alignedRect(
             Qt::LeftToRight,
             Qt::AlignCenter,
-            window.size(),
+            QSize(Settings::getInstance()->getProperty("common/width").toInt(),Settings::getInstance()->getProperty("common/height").toInt()),
             app.desktop()->availableGeometry()
         ));
 
