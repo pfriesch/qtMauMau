@@ -1,11 +1,15 @@
-#ifndef HUMANPLAYER_H
-#define HUMANPLAYER_H
+#ifndef REMOTEPLAYER_H
+#define REMOTEPLAYER_H
 
 #include "player.h"
+#include "network/server.h"
 
-class HumanPlayer : public Player {
+using namespace std;
+
+class RemotePlayer : public Player
+{
 public:
-    explicit HumanPlayer(int playerId);
+    explicit RemotePlayer(Server *server, int playerId);
     void playerPlaysCard(int playerId, const Card& playedCard);
     void playerDrawsCard(int playerId);
 
@@ -18,5 +22,9 @@ public:
     int getCardCount() const;
     void dropCard(const Card& card);
 
+private:
+    Server *server;
+    int playerId;
 };
-#endif // HUMANPLAYER_H
+
+#endif // REMOTEPLAYER_H

@@ -8,9 +8,9 @@ GameController::GameController(int currentPlayer, int playerCount)
     if (playerCount < 2 || playerCount > 4) {
         throw std::invalid_argument("playercount has to be between 2 and 4");
     }
-    players.push_back(new HumanPlayer());
+    players.push_back(new HumanPlayer(0));
     for (int i = 0; i < playerCount; ++i) {
-        players.push_back(new AIPlayer());
+        //players.push_back(new AIPlayer());
     }
 }
 
@@ -37,7 +37,7 @@ void GameController::gameInit()
     }
     players.at(currentPlayer)->doTurn();
     //    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
-    //    emit playerDoTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
+    //    emit doTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
 }
 
 void GameController::playCard(int playerId, const Card& card, Card::cardSuit whishedSuit)
@@ -54,7 +54,7 @@ void GameController::drawCard(int playerId)
     if (currentPlayer == playerId) {
         if (!currentPlayerDrewCard) {
             players[playerId]->reciveCard(cardStack.getLast(cardDepot));
-            players[playerId]->playerDoTurn();
+            players[playerId]->doTurn();
             currentPlayerDrewCard = true;
         }
     }
@@ -65,7 +65,7 @@ void GameController::doNothing(int playerId)
     if (currentPlayer == playerId) {
         if (!currentPlayerDrewCard) {
             players[playerId]->reciveCard(cardStack.getLast(cardDepot));
-            players[playerId]->playerDoTurn();
+            players[playerId]->doTurn();
             currentPlayerDrewCard = true;
         } else {
             nextTurn();

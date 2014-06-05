@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include <QTranslator>
 #include <QTime>
-#include "gameLogic/gamecontroller.h"
+#include <gameLogic/gamecontroller.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +14,9 @@
 #include <QDesktopWidget>
 #include <QStyle>
 #include <gui/playground.h>
+#include <gameLogic/remoteplayer.h>
+#include <network/server.h>
+#include <network/client.h>
 
 //#define TEST
 
@@ -94,8 +97,19 @@ int main(int argc, char* argv[])
             app.desktop()->availableGeometry()
         ));
 
-    Playground* playground = window.getPlayground();
-    GameController gc;
+    // Anfang Server
+    Server *server = new Server();
+    RemotePlayer *player = new RemotePlayer(server,1);
+
+    Client *client = new Client();
+    client->write();
+
+
+
+    // Ende Server
+
+    //Playground* playground = window.getPlayground();
+    //GameController gc;
 //    connectSignals(playground, gc);
 //    gc.gameInit();
     window.show();

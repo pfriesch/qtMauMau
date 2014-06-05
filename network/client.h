@@ -1,3 +1,6 @@
+#ifndef CLIENT_H
+#define CLIENT_H
+
 #include <QtNetwork>
 #include <QObject>
 #include <QString>
@@ -12,7 +15,9 @@ public:
 public
 slots:
     void write();
+    void read();
 
 private:
     QTcpSocket client;
 };
+#endif

@@ -6,6 +6,7 @@ Client::Client(QObject* parent)
     : QObject(parent)
 {
     connect(&client, SIGNAL(connected()), this, SLOT(write()));
+    connect(&client, SIGNAL(readyRead()), this, SLOT(read()));
 }
 
 void Client::setupConnection(QHostAddress address)
@@ -24,6 +25,14 @@ void Client::write()
 {
     //write HelloWorld is just a dummy
     client.write("Hello, world", 13);
+}
+
+void Client::read(){
+    qDebug() << "start reading from Server";
+
+    char buffer[1024] = { 0 };
+    client.read(buffer, client.bytesAvailable());
+    qDebug() << buffer;
 }
 
 Client::~Client()

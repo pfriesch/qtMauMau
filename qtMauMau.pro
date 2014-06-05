@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     gui/animatedgraphicsscene.cpp \
     gameLogic/gamecontroller.cpp \
     gameLogic/humanplayer.cpp \
-    gameLogic/aiplayer.cpp
+    gameLogic/aiplayer.cpp \
+    gameLogic/remoteplayer.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS  += mainwindow.h \
     gui/animatedgraphicsscene.h \
     gameLogic/player.h \
     gameLogic/humanplayer.h \
-    gameLogic/aiplayer.h
+    gameLogic/aiplayer.h \
+    gameLogic/remoteplayer.h
 
 
 
