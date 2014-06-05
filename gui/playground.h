@@ -41,7 +41,7 @@ private:
 
     void updateDepotCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
     void updatePlayerCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
-    void createPlayer(const vector<Card>& humanPlayerCards,vector<int> otherPlayerCardCount);
+    void createPlayer(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount);
     Card::cardSuit chooseColor();
 
     //Layout entities

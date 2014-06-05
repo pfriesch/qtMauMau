@@ -20,21 +20,21 @@ void GameController::gameInit()
     //TODO what players do we have ?? remote??
     cardStack.shuffle();
     //kind of players unregarded
-    std::vector<std::vector<Card> > playerCards;
+    std::vector<std::vector<Card> > *playerCards = new std::vector<std::vector<Card> >;
     for (int i = 0; i < playerCount; i++) {
-        playerCards.push_back(std::vector<Card>());
+        playerCards->push_back(std::vector<Card>());
         for (int j = 0; j < 5; j++) {
-            playerCards[i].push_back(cardStack.getLast(cardDepot));
+            playerCards->at(i).push_back(cardStack.getLast(cardDepot));
         }
     }
     cardDepot.pushCard(cardStack.getLast(cardDepot));
-    std::vector<int> otherPlayerCardCount;
+    std::vector<int> *otherPlayerCardCount = new std::vector<int>;
     for (unsigned int i = 0; i < players.size(); ++i) {
-        otherPlayerCardCount.push_back(players[i]->getCardCount());
+        otherPlayerCardCount->push_back(players[i]->getCardCount());
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[i]->gameInit(playerCards[i], cardDepot.back(), otherPlayerCardCount, currentPlayer);
+        players[i]->gameInit(playerCards->at(i), cardDepot.back(), *otherPlayerCardCount, currentPlayer);
     }
   //  players.at(currentPlayer)->doTurn();
 }
