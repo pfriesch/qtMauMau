@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-using namespace std;
+
 
 long read_long(int min, int max);
 long read_long();

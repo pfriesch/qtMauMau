@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     gameLogic/gamecontroller.cpp \
     gameLogic/humanplayer.cpp \
     gameLogic/aiplayer.cpp \
-    gameLogic/remoteplayer.cpp
+    gameLogic/remoteplayer.cpp \
+    gameLogic/player.cpp
 
 
 HEADERS  += mainwindow.h \

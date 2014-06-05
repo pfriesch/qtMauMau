@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <stdexcept>
+#include <vector>
 #include "deck.h"
-#include "player.h"
 #include "humanplayer.h"
 #include "aiplayer.h"
 #include "card.h"
@@ -14,7 +14,7 @@
 class GameController : public QObject {
     Q_OBJECT
 private:
-    vector<Player*> players;
+    std::vector<Player*> players;
     //The stack of cards where cards are taken if a player has to draw.
     Deck cardStack;
     //The stack of cards where the played cards are dropped.
@@ -53,12 +53,13 @@ slots:
     void doNothing(int playerId);
 
 signals:
-    void playerPlaysCard(int playerId, const Card& playedCard);
-    void playerDrawsCard(int playerId);
+    void otherPlaysCard(int playerId, const Card& playedCard);
+    void otherDrawsCard(int playerId);
 
 public:
     explicit GameController(int currentPlayer = 0, int playerCount = 4);
     void gameInit();
+    HumanPlayer *getHumanPlayer();
 
 private:
     void connectPlayerSignals();

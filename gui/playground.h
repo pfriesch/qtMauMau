@@ -38,7 +38,7 @@ private:
 
     void updateDepotCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
     void updatePlayerCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
-    void createPlayer(const vector<Card>& humanPlayerCards,vector<int> otherPlayerCardCount);
+    void createPlayer(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount);
     void chooseColor();
 
     //Layout entities
@@ -50,10 +50,10 @@ private:
 public
 slots:
 
-    void initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
+    void initPlayground(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
-    void playerDoTurn(vector<Card> playableCards);
+    void playerDoTurn(std::vector<Card> playableCards);
     // bekomme alle Spielbaren Karten von Human player
 
     void playerPlaysCard(int player, const Card& playedCard);

@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include "card.h"
 
-using namespace std;
+//
 
 class Deck {
 public:
@@ -17,7 +17,7 @@ public:
     };
 
 private:
-    vector<Card> cards;
+    std::vector<Card> cards;
 
 public:
     Deck(Deck::InitStatus staus = Deck::EMPTY);
@@ -26,8 +26,8 @@ public:
     Card getLast(Deck& deck);
     Card back() const;
     Card getCard(int index) const;
-    void addCards(vector<Card>& newCards);
-    vector<Card>& getUnderlyingCards();
+    void addCards(std::vector<Card>& newCards);
+    std::vector<Card>& getUnderlyingCards();
     bool empty() const;
 #ifdef TEST
     int size() const;

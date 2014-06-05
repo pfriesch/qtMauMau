@@ -9,8 +9,8 @@ GameController::GameController(int currentPlayer, int playerCount)
         throw std::invalid_argument("playercount has to be between 2 and 4");
     }
     players.push_back(new HumanPlayer(0));
-    for (int i = 0; i < playerCount; ++i) {
-        //players.push_back(new AIPlayer());
+    for (int i = 1; i < playerCount; ++i) {
+        players.push_back(new AIPlayer(i));
     }
 }
 
@@ -20,30 +20,35 @@ void GameController::gameInit()
     //TODO what players do we have ?? remote??
     cardStack.shuffle();
     //kind of players unregarded
-    vector<vector<Card> > playerCards;
+    std::vector<std::vector<Card> > playerCards;
     for (int i = 0; i < playerCount; i++) {
+        playerCards.push_back(std::vector<Card>());
         for (int j = 0; j < 5; j++) {
             playerCards[i].push_back(cardStack.getLast(cardDepot));
         }
     }
     cardDepot.pushCard(cardStack.getLast(cardDepot));
-    vector<int> otherPlayerCardCount;
+    std::vector<int> otherPlayerCardCount;
     for (unsigned int i = 0; i < players.size(); ++i) {
         otherPlayerCardCount.push_back(players[i]->getCardCount());
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[i]->gameInit(playerCards[i], cardDepot.back(), otherPlayerCardCount);
+        players[i]->gameInit(playerCards[i], cardDepot.back(), otherPlayerCardCount, currentPlayer);
     }
-    players.at(currentPlayer)->doTurn();
-    //    emit initPlayground(players[humanPlayer].getHand(), otherPlayerCardCount, cardDepot.back(), currentPlayer);
-    //    emit doTurn(players[humanPlayer].getPlayableCards(cardDepot.back(), wishSuitCard));
+  //  players.at(currentPlayer)->doTurn();
+}
+
+HumanPlayer* GameController::getHumanPlayer()
+{
+    HumanPlayer* player = qobject_cast<HumanPlayer*>(players[0]);
+    qDebug() << "";
+    return player;
 }
 
 void GameController::playCard(int playerId, const Card& card, Card::cardSuit whishedSuit)
 {
     if (currentPlayer == playerId) {
-        players[currentPlayer]->dropCard(card);
         cardDepot.pushCard(card);
         nextTurn();
     }
@@ -77,6 +82,10 @@ void GameController::connectPlayerSignals()
 {
     for (int i = 0; i < playerCount; ++i) {
         QObject::connect(players[i], &Player::playCard, this, &GameController::playCard);
+        QObject::connect(players[i], &Player::drawCard, this, &GameController::drawCard);
+        QObject::connect(players[i], &Player::doNothing, this, &GameController::doNothing);
+        QObject::connect(this, &GameController::otherPlaysCard, players[i], &Player::otherPlaysCard);
+        QObject::connect(this, &GameController::otherDrawsCard, players[i], &Player::otherDrawsCard);
     }
 }
 

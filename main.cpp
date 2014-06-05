@@ -5,7 +5,6 @@
 #include <QTextStream>
 #include <QTranslator>
 #include <QTime>
-#include <gameLogic/gamecontroller.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,8 +12,6 @@
 #include <QObject>
 #include <QDesktopWidget>
 #include <QStyle>
-#include <gui/playground.h>
-#include <gameLogic/remoteplayer.h>
 #include <network/server.h>
 #include <network/client.h>
 
@@ -53,19 +50,19 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     ts << txt << endl;
 }
 
-//void connectSignals(Playground* playground, GameController& gc)
-//{
-//    // From GameController(Logic) ----> Playground(View)
-//    QObject::connect(&gc, &GameController::initPlayground, playground, &Playground::initPlayground);
-//    QObject::connect(&gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
-//    QObject::connect(&gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
-//    QObject::connect(&gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
-//    QObject::connect(&gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
+void connectSignals(Playground* playground, HumanPlayer* player)
+{
+    // From GameController(Logic) ----> Playground(View)
+    QObject::connect(player, &HumanPlayer::initPlayground, playground, &Playground::initPlayground);
+    QObject::connect(player, &HumanPlayer::playerDoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(player, &HumanPlayer::playerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(player, &HumanPlayer::addPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(player, &HumanPlayer::playerDrawsCard, playground, &Playground::playerDrawsCard);
 
-//    //From Playground(View) ---> GameController(View)
-//    QObject::connect(playground, &Playground::playCard, &gc, &GameController::playCard);
-//    QObject::connect(playground, &Playground::drawCard, &gc, &GameController::drawCard);
-//}
+    //From Playground(View) ---> GameController(View)
+    QObject::connect(playground, &Playground::playCard, player, &HumanPlayer::playCard);
+    QObject::connect(playground, &Playground::drawCard, player, &HumanPlayer::drawCard);
+}
 
 int main(int argc, char* argv[])
 {
@@ -103,18 +100,19 @@ int main(int argc, char* argv[])
     //Server *server = new Server();
     //RemotePlayer *player = new RemotePlayer(server,1);
 
-    client = new Client();
-    client->setupConnection(QHostAddress("192.168.0.150"));
+    //client = new Client();
+    //client->setupConnection(QHostAddress("192.168.0.150"));
     //client->write();
 
 
 
     // Ende Server
 
-    //Playground* playground = window.getPlayground();
-    //GameController gc;
-//    connectSignals(playground, gc);
-//    gc.gameInit();
+    Playground* playground = window.getPlayground();
+    GameController gc;
+    HumanPlayer* player = gc.getHumanPlayer();
+    connectSignals(playground, player);
+    gc.gameInit();
     window.show();
 
 #ifdef TEST

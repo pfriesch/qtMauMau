@@ -4,19 +4,27 @@
 #include "player.h"
 
 class HumanPlayer : public Player {
+  Q_OBJECT
 public:
     explicit HumanPlayer(int playerId);
-    void playerPlaysCard(int playerId, const Card& playedCard);
-    void playerDrawsCard(int playerId);
-
-    void addCard(const Card& card);
+    void otherPlaysCard(int playerId, const Card& playedCard);
+    void otherDrawsCard(int playerId);
     void doTurn();
-    void gameInit(const vector<Card>& hand, const Card& topCard, vector<int> otherPlayerCardCount);
+    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, int startingPlayer);
     void reciveCard(const Card& card);
-    vector<Card> &getPlayableCards(const Card& card, Card::cardValue wishSuitCard);
-    vector<Card> getHand() const;
     int getCardCount() const;
-    void dropCard(const Card& card);
+    //void dropCard(const Card& card);
 
+signals:
+    void initPlayground(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
+    void playerDoTurn(std::vector<Card> playableCards);
+    void playerPlaysCard(int player, const Card& playedCard);
+    void playerDrawsCard(int player);
+    void addPlayerCard(const Card& card);
+
+public
+slots:
+    void playCard(const Card& card);
+    void drawCard();
 };
 #endif // HUMANPLAYER_H

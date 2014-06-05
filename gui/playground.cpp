@@ -54,14 +54,14 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 // TODO: show starting player
-void Playground::initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer)
+void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer)
 {
     createPlayer(humanPlayerCards, otherPlayerCardCount);
     CardItem depotCard(topDepotCard);
     updateDepotCard(depotCard, depot);
 }
 
-void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount)
+void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount)
 {
     QPointF center = this->sceneRect().center();
     PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, "Icke");
@@ -143,7 +143,7 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
     update(sceneRect());
 }
 
-void Playground::playerDoTurn(vector<Card> playableCards)
+void Playground::playerDoTurn(std::vector<Card> playableCards)
 {
     players.value(PlayerItem::direction::HUMAN)->setActive();
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);

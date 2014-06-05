@@ -75,7 +75,7 @@ void AnimatedGraphicsScene::animationEnded()
         _animationActive = false;
         _destinationPositions.clear();
         delete timeLine;
-        newAnimation->item()->setZValue(0);
+      //  newAnimation->item()->setZValue(0);
         eventLoop->exit();
         return;
     }

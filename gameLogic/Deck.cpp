@@ -1,5 +1,6 @@
 #include "deck.h"
 
+//
 /**
  * Initializes a full cad deck
  */
@@ -81,16 +82,16 @@ Card Deck::getCard(int index) const
     return cards.at(index);
 }
 
-vector<Card>& Deck::getUnderlyingCards()
+std::vector<Card>& Deck::getUnderlyingCards()
 {
-    vector<Card>* underlyingCards = new vector<Card>;
+    std::vector<Card>* underlyingCards = new std::vector<Card>;
     *underlyingCards = cards;
     underlyingCards->pop_back();
     cards.erase(cards.begin(), cards.end() - 1);
     return *underlyingCards;
 }
 
-void Deck::addCards(vector<Card>& newCards)
+void Deck::addCards(std::vector<Card>& newCards)
 {
     cards.insert(cards.end(), newCards.begin(), newCards.end());
     shuffle();
