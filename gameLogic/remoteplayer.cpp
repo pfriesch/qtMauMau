@@ -9,7 +9,6 @@ RemotePlayer::RemotePlayer(Server *server, int playerId)
 
 void RemotePlayer::playerPlaysCard(int playerId, const Card &playedCard)
 {
-
 }
 
 void RemotePlayer::playerDrawsCard(int playerId)

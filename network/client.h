@@ -15,9 +15,10 @@ public:
 public
 slots:
     void write();
-    void read();
+   // void read();
+    void OnError();
 
 private:
-    QTcpSocket client;
+    QTcpSocket *client = new QTcpSocket();
 };
 #endif

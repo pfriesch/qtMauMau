@@ -25,6 +25,8 @@
 #include "gameLogic/Test/decktest.h"
 #endif
 
+Client *client;
+
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
     QString txt;
@@ -98,11 +100,12 @@ int main(int argc, char* argv[])
         ));
 
     // Anfang Server
-    Server *server = new Server();
-    RemotePlayer *player = new RemotePlayer(server,1);
+    //Server *server = new Server();
+    //RemotePlayer *player = new RemotePlayer(server,1);
 
-    Client *client = new Client();
-    client->write();
+    client = new Client();
+    client->setupConnection(QHostAddress("192.168.0.150"));
+    //client->write();
 
 
 
