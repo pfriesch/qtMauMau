@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 
     //This should be changeable in the option menu
     QTranslator translator;
-    translator.load("qtmaumau_de");
+    translator.load(Settings::getInstance()->getProperty("common/language"));
     app.installTranslator(&translator);
 
     //Lets register our custom debug handler, before we start

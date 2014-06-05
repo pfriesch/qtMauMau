@@ -37,9 +37,8 @@ Playground *MainWindow::getPlayground() const
 
 void MainWindow::resizeEvent (QResizeEvent *event)
 {
-
-    playground->setSceneRect(0,0, event->size().width()-50, event->size().height()-50);
-    playground->rearrangeLayout();
+        playground->setSceneRect(0,0, event->size().width()-50, event->size().height()-50);
+        playground->rearrangeLayout();
 }
 
 

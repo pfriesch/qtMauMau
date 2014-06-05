@@ -36,7 +36,7 @@ public:
     QVector<CardItem*>* getCards();
     void removeCard(const Card& card);
     CardItem* addCard(const Card& card);
-    CardItem* findCard(const Card& card);
+    CardItem* findCard(const Card& card, bool returnLastCard = false);
     CardItem::specialCards getSpecialCard();
     QGraphicsTextItem* getPlayername();
     void setActive();

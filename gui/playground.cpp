@@ -1,7 +1,6 @@
 #include "gui\playground.h"
 
-Playground::Playground(QObject* parent)
-    : AnimatedGraphicsScene(parent)
+Playground::Playground(QObject* parent) : AnimatedGraphicsScene(parent)
 {
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
@@ -77,19 +76,19 @@ void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> 
     PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, "Icke");
     players.insert(PlayerItem::direction::HUMAN, human);
 
-    for (unsigned int i = 0; i < otherPlayerCardCount.size(); i++) {
+    for (unsigned int i = 0; i < otherPlayerCardCount.size()+1; i++) {
         switch (i) {
-        case 0: {
+        case 1: {
             PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center, "Yoda");
             players.insert(PlayerItem::direction::LEFT, p1);
             break;
         }
-        case 1: {
+        case 2: {
             PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center, "Anakin");
             players.insert(PlayerItem::direction::TOP, p2);
             break;
         }
-        case 2: {
+        case 3: {
             PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], center, "C3PO");
             players.insert(PlayerItem::direction::RIGHT, p3);
             break;
@@ -155,6 +154,7 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
 
 void Playground::playerDoTurn(vector<Card> playableCards)
 {
+    qDebug("Player do Turn");
     players.value(PlayerItem::direction::HUMAN)->setActive();
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }
@@ -180,7 +180,7 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
     p->setActive();
     //TODO: ist irgendwie falsch, er wird die gespielte Karte nie finden, da die View die Karten nicht kennt und nur SpecialCards also Blaue Hintergründe hält
     // für diesen Spieler, deshalb kommt einfach die last() Karte zurück
-    CardItem* dummyCard = p->findCard(playedCard);
+    CardItem* dummyCard = p->findCard(playedCard,true);
     CardItem _playedCard(playedCard);
     addItem(_playedCard.createImg());
     _playedCard.setPos(dummyCard->getX(), dummyCard->getY());

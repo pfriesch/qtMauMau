@@ -113,15 +113,22 @@ void PlayerItem::rearrangePlayer(QPointF centerPoint)
         } else {
             x += cardGap;
         }
-
-        this->getCards()->at(i)->setPos(x, y);
+        if(this->getCards()->at(i)->getGraphicsItem()->flags() == QGraphicsItem::ItemIsSelectable){
+            std::vector<Card> v;
+            this->getCards()->at(i)->setPos(x, y);
+            v.push_back(this->getCards()->at(i)->getCard());
+            setPlayableCards(v);
+        }
+        else{
+            this->getCards()->at(i)->setPos(x, y);
+        }
     }
 }
 
 void PlayerItem::setPlayableCards(std::vector<Card> playableCards)
 {
     for (unsigned int i = 0; i < playableCards.size(); ++i) {
-        CardItem* cardItem = findCard(playableCards.at(i));
+        CardItem *cardItem = findCard(playableCards.at(i));
         cardItem->setPos(cardItem->getX(), cardItem->getY() - offsetPlayableCard);
         cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
@@ -132,7 +139,7 @@ void PlayerItem::unsetPlayableCards()
     for (int i = 0; i < cards->size(); ++i) {
         if (cards->at(i)->getGraphicsItem()->flags() == QGraphicsItem::ItemIsSelectable) {
             CardItem* cardItem = cards->at(i);
-            cardItem->setPos(cards->at(i)->getX(), cards->at(i)->getY() + offsetPlayableCard);
+            cardItem->setPos(cardItem->getX(), cardItem->getY() + offsetPlayableCard);
             cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, false);
         }
     }
@@ -170,7 +177,7 @@ CardItem* PlayerItem::addCard(const Card& card)
 
 void PlayerItem::removeCard(const Card& card)
 {
-    CardItem* cardItem = findCard(card);
+    CardItem* cardItem = findCard(card,true);
 
     if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
         y -= cardGap;
@@ -183,14 +190,18 @@ void PlayerItem::removeCard(const Card& card)
     delete cardItem;
 }
 
-CardItem* PlayerItem::findCard(const Card& card)
+CardItem* PlayerItem::findCard(const Card& card, bool returnLastCard)
 {
     for (int i = 0; i < cards->size(); ++i) {
         if (card == cards->at(i)->getCard()) {
             return cards->at(i);
         }
     }
-    return cards->last();
+    if(returnLastCard){
+        qDebug("Couldnt find Card, return last");
+        return cards->last();
+    }
+    return NULL;
 }
 
 CardItem::specialCards PlayerItem::getSpecialCard()
