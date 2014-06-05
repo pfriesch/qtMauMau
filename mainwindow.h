@@ -16,7 +16,7 @@ public:
     explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
     Playground *getPlayground() const;
-
+    void resizeEvent (QResizeEvent *event);
     private
     slots:
 

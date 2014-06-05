@@ -14,6 +14,8 @@
 #include <QStyle>
 #include <network/server.h>
 #include <network/client.h>
+#include <gui/playground.h>
+#include <settings.h>
 
 //#define TEST
 
@@ -79,7 +81,7 @@ int main(int argc, char* argv[])
 
     //This should be changeable in the option menu
     QTranslator translator;
-    translator.load("qtmaumau_de");
+    translator.load(Settings::getInstance()->getProperty("common/language"));
     app.installTranslator(&translator);
 
     //Lets register our custom debug handler, before we start
@@ -92,7 +94,7 @@ int main(int argc, char* argv[])
         QStyle::alignedRect(
             Qt::LeftToRight,
             Qt::AlignCenter,
-            window.size(),
+            QSize(Settings::getInstance()->getProperty("common/width").toInt(),Settings::getInstance()->getProperty("common/height").toInt()),
             app.desktop()->availableGeometry()
         ));
 

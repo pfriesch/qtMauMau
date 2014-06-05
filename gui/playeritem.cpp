@@ -1,6 +1,7 @@
 #include "playeritem.h"
 
-PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QString _playername, QObject* parent) : QObject(parent)
+PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QString _playername, QObject* parent)
+    : QObject(parent)
 {
 
     this->centerPoint = centerPoint;
@@ -12,8 +13,8 @@ PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QStrin
 
     playername = new QGraphicsTextItem(_playername);
     playername->setScale(2);
-    playername->setDefaultTextColor(QColor(255,255,255));
-    playername->setPos(nameX,nameY);
+    playername->setDefaultTextColor(QColor(255, 255, 255));
+    playername->setPos(nameX, nameY);
 }
 
 /**
@@ -31,12 +32,10 @@ PlayerItem::PlayerItem(direction dir, std::vector<Card> humanCards, QPointF cent
     measureLayout(humanCards.size());
     createHumanCards(humanCards);
 
-
     playername = new QGraphicsTextItem(_playername);
     playername->setScale(2);
-    playername->setDefaultTextColor(QColor(255,255,255));
-    playername->setPos(nameX,nameY);
-
+    playername->setDefaultTextColor(QColor(255, 255, 255));
+    playername->setPos(nameX, nameY);
 }
 
 PlayerItem::direction PlayerItem::getDirection()
@@ -78,35 +77,58 @@ void PlayerItem::measureLayout(int cardCount)
         x = cardWidth - borderMargin;
         y = (centerPoint.y() / 2) - (playerCardsWidth / 2);
         nameX = x;
-        nameY = y-20;
+        nameY = y - 20;
     }
     if (playerDirection == direction::TOP) {
         int playerCardsWidth = (cardCount * cardGap);
         x = (centerPoint.x() - (playerCardsWidth / 2) - cardGap);
         y = cardHeight - 70;
-        nameX = x-70;
+        nameX = x - 70;
         nameY = y;
     }
     if (playerDirection == direction::HUMAN) {
         int playerCardsWidth = cardCount * cardGap;
         x = (centerPoint.x()) - (playerCardsWidth / 2) - cardGap;
         y = centerPoint.y() * 2 - cardHeight - borderMargin;
-        nameX = x-70;
-        nameY = y-60;
+        nameX = x - 70;
+        nameY = y - 60;
     }
     if (playerDirection == direction::RIGHT) {
         int playerCardsWidth = (cardCount - 1 * cardGap) + (cardWidth - cardGap) - cardWidth;
         x = centerPoint.x() * 2 - cardWidth - borderMargin;
         y = (centerPoint.y() / 2) - (playerCardsWidth / 2);
         nameX = x;
-        nameY = y-20;
+        nameY = y - 20;
+    }
+}
+
+void PlayerItem::rearrangePlayer(QPointF centerPoint)
+{
+    this->centerPoint = centerPoint;
+    this->measureLayout(this->getCards()->size());
+    playername->setPos(nameX, nameY);
+    for (int i = 0; i < this->getCards()->size(); ++i) {
+        if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
+            y += cardGap;
+        } else {
+            x += cardGap;
+        }
+        if(this->getCards()->at(i)->getGraphicsItem()->flags() == QGraphicsItem::ItemIsSelectable){
+            std::vector<Card> v;
+            this->getCards()->at(i)->setPos(x, y);
+            v.push_back(this->getCards()->at(i)->getCard());
+            setPlayableCards(v);
+        }
+        else{
+            this->getCards()->at(i)->setPos(x, y);
+        }
     }
 }
 
 void PlayerItem::setPlayableCards(std::vector<Card> playableCards)
 {
     for (unsigned int i = 0; i < playableCards.size(); ++i) {
-        CardItem* cardItem = findCard(playableCards.at(i));
+        CardItem *cardItem = findCard(playableCards.at(i));
         cardItem->setPos(cardItem->getX(), cardItem->getY() - offsetPlayableCard);
         cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
@@ -117,19 +139,20 @@ void PlayerItem::unsetPlayableCards()
     for (int i = 0; i < cards->size(); ++i) {
         if (cards->at(i)->getGraphicsItem()->flags() == QGraphicsItem::ItemIsSelectable) {
             CardItem* cardItem = cards->at(i);
-            cardItem->setPos(cards->at(i)->getX(), cards->at(i)->getY() + offsetPlayableCard);
+            cardItem->setPos(cardItem->getX(), cardItem->getY() + offsetPlayableCard);
             cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, false);
         }
     }
 }
 
-void PlayerItem::setActive(){
-    playername->setHtml("<p style='text-decoration:underline;font-style:oblique;'>"+playername->toPlainText()+"</p>");
+void PlayerItem::setActive()
+{
+    playername->setHtml("<p style='text-decoration:underline;font-style:oblique;'>" + playername->toPlainText() + "</p>");
 }
 
-void PlayerItem::setUnactive(){
+void PlayerItem::setUnactive()
+{
     playername->setHtml(playername->toPlainText());
-
 }
 
 CardItem* PlayerItem::addCard(const Card& card)
@@ -154,11 +177,12 @@ CardItem* PlayerItem::addCard(const Card& card)
 
 void PlayerItem::removeCard(const Card& card)
 {
-    CardItem *cardItem = findCard(card);
+    CardItem* cardItem = findCard(card,true);
 
     if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
         y -= cardGap;
-    } if(playerDirection == direction::TOP) {
+    }
+    if (playerDirection == direction::TOP) {
         x -= cardGap;
     }
 
@@ -166,14 +190,18 @@ void PlayerItem::removeCard(const Card& card)
     delete cardItem;
 }
 
-CardItem* PlayerItem::findCard(const Card& card)
+CardItem* PlayerItem::findCard(const Card& card, bool returnLastCard)
 {
     for (int i = 0; i < cards->size(); ++i) {
         if (card == cards->at(i)->getCard()) {
             return cards->at(i);
         }
     }
-    return cards->last();
+    if(returnLastCard){
+        qDebug("Couldnt find Card, return last");
+        return cards->last();
+    }
+    return NULL;
 }
 
 CardItem::specialCards PlayerItem::getSpecialCard()
@@ -199,10 +227,12 @@ QVector<CardItem*>* PlayerItem::getCards()
     return cards;
 }
 
-QGraphicsTextItem* PlayerItem::getPlayername(){
+QGraphicsTextItem* PlayerItem::getPlayername()
+{
     return playername;
 }
 
-PlayerItem::~PlayerItem(){
+PlayerItem::~PlayerItem()
+{
     delete[] cards;
 }

@@ -100,7 +100,7 @@
     <string>Port:</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="languageEdit">
+  <widget class="QLineEdit" name="portEdit">
    <property name="geometry">
     <rect>
      <x>80</x>

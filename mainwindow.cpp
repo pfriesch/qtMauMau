@@ -9,8 +9,9 @@
 
 MainWindow::MainWindow(QWidget* parent)
 {
-    this->setFixedWidth(Settings::getInstance()->getProperty("common/width").toInt());
-    this->setFixedHeight(Settings::getInstance()->getProperty("common/height").toInt());
+    //this->setWidth(Settings::getInstance()->getProperty("common/width").toInt());
+    //this->setHeight(Settings::getInstance()->getProperty("common/height").toInt());
+
     setupMenuBar();
     setupGraphicsView();
 }
@@ -23,15 +24,23 @@ void MainWindow::setupGraphicsView()
 {
     playground = new Playground();
     QGraphicsView* view = new QGraphicsView(this);
-    playground->setSceneRect(0,0, Settings::getInstance()->getProperty("common/width").toInt()-50, Settings::getInstance()->getProperty("common/height").toInt()-50);
+    playground->setSceneRect(0,0, this->width()-50, this->height()-50);
     playground->startGame();
     view->setScene(playground);
     setCentralWidget(view);
+
 }
 Playground *MainWindow::getPlayground() const
 {
     return playground;
 }
+
+void MainWindow::resizeEvent (QResizeEvent *event)
+{
+        playground->setSceneRect(0,0, event->size().width()-50, event->size().height()-50);
+        playground->rearrangeLayout();
+}
+
 
 /**
  * Setup the Menubar for the MainWindow

@@ -36,6 +36,8 @@ SOURCES += main.cpp\
     gameLogic/aiplayer.cpp \
     gameLogic/remoteplayer.cpp \
     gameLogic/player.cpp
+    gui/choosecolordialog.cpp
+
 
 
 HEADERS  += mainwindow.h \
@@ -57,11 +59,12 @@ HEADERS  += mainwindow.h \
     gameLogic/humanplayer.h \
     gameLogic/aiplayer.h \
     gameLogic/remoteplayer.h
-
+    gui/choosecolordialog.h
 
 
 FORMS    += \
-    gui/optiondialog.ui
+    gui/optiondialog.ui \
+    gui/choosecolordialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \
