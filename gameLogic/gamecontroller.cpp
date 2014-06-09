@@ -29,8 +29,8 @@ void GameController::gameInit()
     }
     cardDepot.pushCard(cardStack.getLast(cardDepot));
     std::vector<int> *otherPlayerCardCount = new std::vector<int>;
-    for (unsigned int i = 0; i < players.size(); ++i) {
-        otherPlayerCardCount->push_back(players[i]->getCardCount());
+    for (unsigned int i = 1; i < players.size(); ++i) {
+        otherPlayerCardCount->push_back(playerCards->at(i).size());
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
