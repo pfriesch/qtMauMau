@@ -78,17 +78,17 @@ void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::ve
 
     for (unsigned int i = 0; i < otherPlayerCardCount.size(); i++) {
         switch (i) {
-        case 1: {
+        case 0: {
             PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center, "Yoda");
             players.insert(PlayerItem::direction::LEFT, p1);
             break;
         }
-        case 2: {
+        case 1: {
             PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center, "Anakin");
             players.insert(PlayerItem::direction::TOP, p2);
             break;
         }
-        case 3: {
+        case 2: {
             PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], center, "C3PO");
             players.insert(PlayerItem::direction::RIGHT, p3);
             break;
