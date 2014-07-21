@@ -1,18 +1,15 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
-#include <QObject>
 #include <stdexcept>
 #include <vector>
 #include "deck.h"
-#include "humanplayer.h"
-#include "aiplayer.h"
+
+#include "player.h"
 #include "card.h"
 
-#include <QDebug>
+class GameController {
 
-class GameController : public QObject {
-    Q_OBJECT
 private:
     std::vector<Player*> players;
     //The stack of cards where cards are taken if a player has to draw.
@@ -25,7 +22,7 @@ private:
     //default start player is 0
 
     //every turn flags
-    int currentPlayer;
+    Player::playerName currentPlayer;
     bool changedDirection = false;
     bool colorWished = false;
     Card::cardSuit wishedSuit = Card::cardSuit(0);
@@ -46,26 +43,23 @@ private:
     bool withChangeDirection = false;
     const Card::cardValue changeDirectCard = Card::TEN;
 
-public
-slots:
-    void playCard(int playerId, const Card& card, Card::cardSuit whishedSuit);
-    void drawCard(int playerId);
-    void doNothing(int playerId);
-
-signals:
-    void otherPlaysCard(int playerId, const Card& playedCard);
-    void otherDrawsCard(int playerId);
-
 public:
-    explicit GameController(int currentPlayer = 0, int playerCount = 4);
+    explicit GameController(Player::playerName currentPlayer = Player::BOTTOM, int playerCount = 4);
     void gameInit();
-    HumanPlayer *getHumanPlayer();
+
+    void playCard(Player::playerName pName, const Card& card, Card::cardSuit whishedSuit);
+    void drawCard(Player::playerName pName);
+    void doNothing(Player::playerName pName);
+
+    //    void otherPlaysCard(Player::playerName pName, const Card& playedCard);
+    //    void otherDrawsCard(Player::playerName pName);
 
 private:
-    void connectPlayerSignals();
     void nextTurn();
     void setFlags(const Card& card);
     void setNextPlayer();
+    void otherPlayerDrawsCard(Player::playerName pName);
+    void otherPlayerPlaysCard(Player::playerName pName, const Card& card);
 };
 
 #endif // GAMECONTROLLER_H

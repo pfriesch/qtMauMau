@@ -1,25 +1,25 @@
-#ifndef REMOTEPLAYER_H
-#define REMOTEPLAYER_H
+//#ifndef REMOTEPLAYER_H
+//#define REMOTEPLAYER_H
 
-#include "player.h"
-#include "network/server.h"
+//#include "player.h"
+//#include "network/server.h"
 
-//
+////
 
-class RemotePlayer : public Player {
-private:
-    Server* server;
-    int playerId;
+//class RemotePlayer : public Player {
+//private:
+//    Server* server;
+//    int playerId;
 
-public:
-    explicit RemotePlayer(Server* server, int playerId);
-    void otherPlaysCard(int playerId, const Card& playedCard);
-    void otherDrawsCard(int playerId);
+//public:
+//    explicit RemotePlayer(Server* server, int playerId);
+//    void otherPlaysCard(int playerId, const Card& playedCard);
+//    void otherDrawsCard(int playerId);
 
-    void doTurn();
-    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, int startingPlayer);
-    void reciveCard(const Card& card);
-    int getCardCount() const;
-};
+//    void doTurn(Card::cardSuit wishSuitCard = Card::NONE);
+//    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, int startingPlayer);
+//    void reciveCard(const Card& card);
+//    int getCardCount() const;
+//};
 
-#endif // REMOTEPLAYER_H
+//#endif // REMOTEPLAYER_H

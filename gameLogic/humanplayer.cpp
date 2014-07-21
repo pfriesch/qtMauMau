@@ -1,35 +1,40 @@
 #include "humanplayer.h"
 
-HumanPlayer::HumanPlayer(int playerId)
-
-{
-    this->playerId = playerId;
-}
-
-void HumanPlayer::otherPlaysCard(int playerId, const Card& playedCard)
-{
-    emit otherPlaysCard(playerId, playedCard);
-}
-
-void HumanPlayer::otherDrawsCard(int playerId)
-{
-    otherDrawsCard(playerId);
-}
-
-void HumanPlayer::doTurn()
+HumanPlayer::HumanPlayer(Player::playerName pName)
+    : Player(pName)
 {
 }
 
-void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, int startingPlayer)
+void HumanPlayer::otherPlaysCard(Player::playerName pName, const Card& playedCard)
+{
+    topCard = playedCard;
+    emit UIplayerPlaysCard(pName, playedCard);
+}
+
+void HumanPlayer::otherDrawsCard(Player::playerName pName)
+{
+    emit UIplayerDrawsCard(pName);
+}
+
+void HumanPlayer::doTurn(Card::cardSuit wishSuitCard, GameControllerProxy gcProxy)
+{
+}
+
+void HumanPlayer::doTurn(GameControllerProxy gcProxy)
+{
+}
+
+void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, Player::playerName startingPlayer)
 {
     this->hand = hand;
-    emit initPlayground(hand, otherPlayerCardCount, topCard, startingPlayer);
+    this->topCard = topCard;
+    emit UIinitPlayground(hand, otherPlayerCardCount, topCard, startingPlayer);
 }
 
 void HumanPlayer::reciveCard(const Card& card)
 {
     hand.push_back(card);
-    emit addPlayerCard(card);
+    emit UIaddPlayerCard(card);
 }
 
 //vector<Card> HumanPlayer::getHand() const
@@ -45,15 +50,26 @@ int HumanPlayer::getCardCount() const
 //void HumanPlayer::dropCard(const Card& card)
 //{
 //  hand.erase(remove(hand.begin(), hand.end(), card), hand.end());
-
 //}
 
-void HumanPlayer::playCard(const Card& card)
+void HumanPlayer::UIplaysCard(const Card& card)
 {
-    emit playerPlaysCard(playerId, card);
+    gameController->playCard(card);
+    drewCard = false;
 }
 
-void HumanPlayer::drawCard()
+void HumanPlayer::UIdoesNothing()
 {
-    emit playerDrawsCard(playerId);
+    gameController->doNothing();
+    drewCard = false;
+}
+
+void HumanPlayer::UIdrawsCard()
+{
+    if (!drewCard) {
+        gameController->drawCard();
+        drewCard = true;
+    } else {
+        //cant draw card
+    }
 }

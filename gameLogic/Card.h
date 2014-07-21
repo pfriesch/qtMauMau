@@ -8,7 +8,9 @@ public:
         DIAMONDS = 1,
         CLUBS = 2,
         SPADES = 3,
+        NONE = 0
     };
+
     enum cardValue {
         SEVEN = 1,
         EIGHT = 2,

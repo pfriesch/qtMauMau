@@ -52,19 +52,19 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     ts << txt << endl;
 }
 
-void connectSignals(Playground* playground, HumanPlayer* player)
-{
-    // From GameController(Logic) ----> Playground(View)
-    QObject::connect(player, &HumanPlayer::initPlayground, playground, &Playground::initPlayground);
-    QObject::connect(player, &HumanPlayer::playerDoTurn, playground, &Playground::playerDoTurn);
-    QObject::connect(player, &HumanPlayer::playerPlaysCard, playground, &Playground::playerPlaysCard);
-    QObject::connect(player, &HumanPlayer::addPlayerCard, playground, &Playground::addPlayerCard);
-    QObject::connect(player, &HumanPlayer::playerDrawsCard, playground, &Playground::playerDrawsCard);
+//void connectSignals(Playground* playground, HumanPlayer* player)
+//{
+//    // From GameController(Logic) ----> Playground(View)
+//    QObject::connect(player, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
+//    QObject::connect(player, &HumanPlayer::UIplayerDoTurn, playground, &Playground::playerDoTurn);
+//    QObject::connect(player, &HumanPlayer::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
+//    QObject::connect(player, &HumanPlayer::UIaddPlayerCard, playground, &Playground::addPlayerCard);
+//    QObject::connect(player, &HumanPlayer::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
 
-    //From Playground(View) ---> GameController(View)
-    QObject::connect(playground, &Playground::playCard, player, &HumanPlayer::playCard);
-    QObject::connect(playground, &Playground::drawCard, player, &HumanPlayer::drawCard);
-}
+//    //From Playground(View) ---> GameController(View)
+//    QObject::connect(playground, &Playground::playCard, player, &HumanPlayer::UIplaysCard);
+//    QObject::connect(playground, &Playground::drawCard, player, &HumanPlayer::UIdrawsCard);
+//}
 
 int main(int argc, char* argv[])
 {
@@ -112,8 +112,8 @@ int main(int argc, char* argv[])
 
     Playground* playground = window.getPlayground();
     GameController gc;
-    HumanPlayer* player = gc.getHumanPlayer();
-    connectSignals(playground, player);
+//    HumanPlayer* player = gc.getHumanPlayer();
+//    connectSignals(playground, player);
     gc.gameInit();
     window.show();
 
