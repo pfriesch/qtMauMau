@@ -18,7 +18,7 @@ GameController::GameController(Player::playerName currentPlayer, int playerCount
 
 void GameController::gameInit()
 {
-    //    connectPlayerSignals();
+
     //TODO what players do we have ?? remote??
     cardStack.shuffle();
     //kind of players unregarded
@@ -38,7 +38,7 @@ void GameController::gameInit()
 
         players[Player::playerName(i)]->gameInit(playerCards->at(i), cardDepot.back(), *otherPlayerCardCount, currentPlayer);
     }
-    players.at(currentPlayer)->doTurn(GameControllerProxy(this, currentPlayer));
+    players.at(currentPlayer)->doTurn(Card::NONE, GameControllerProxy(this, currentPlayer));
 }
 
 //HumanPlayer* GameController::getHumanPlayer()
@@ -61,7 +61,7 @@ void GameController::drawCard(Player::playerName pName)
     if (currentPlayer == pName) {
         if (!currentPlayerDrewCard) {
             players[pName]->reciveCard(cardStack.getLast(cardDepot));
-            players[pName]->doTurn(GameControllerProxy(this, currentPlayer));
+            players[pName]->doTurn(wishedSuit, GameControllerProxy(this, currentPlayer));
             currentPlayerDrewCard = true;
             foreach(Player * player, players)
             {
@@ -78,7 +78,7 @@ void GameController::doNothing(Player::playerName pName)
     if (currentPlayer == pName) {
         if (!currentPlayerDrewCard) {
             players[pName]->reciveCard(cardStack.getLast(cardDepot));
-            players[pName]->doTurn(GameControllerProxy(this, currentPlayer));
+            players[pName]->doTurn(wishedSuit,GameControllerProxy(this, currentPlayer));
             currentPlayerDrewCard = true;
         } else {
             nextTurn();
@@ -90,7 +90,7 @@ void GameController::nextTurn()
 {
     setFlags(cardDepot.back());
     qDebug() << "Next Payer: " << currentPlayer;
-    players[currentPlayer]->doTurn(GameControllerProxy(this, currentPlayer));
+    players[currentPlayer]->doTurn(wishedSuit, GameControllerProxy(this, currentPlayer));
 }
 
 void GameController::setFlags(const Card& card)

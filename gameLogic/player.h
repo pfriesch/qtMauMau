@@ -30,13 +30,11 @@ public:
     virtual void otherDrawsCard(Player::playerName pName) = 0;
 
     virtual void doTurn(Card::cardSuit wishSuitCard, GameControllerProxy gcProxy) = 0;
-    virtual void doTurn(GameControllerProxy gcProxy) = 0;
     virtual void gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, Player::playerName startingPlayer) = 0;
     virtual void reciveCard(const Card& card) = 0;
     virtual int getCardCount() const = 0;
 
     Player::playerName getPName() const;
-
 
 protected:
     std::vector<Card>& getPlayableCards(const Card& card, Card::cardSuit wishSuitCard = Card::NONE);

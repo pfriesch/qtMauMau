@@ -11,14 +11,13 @@ public:
     void otherPlaysCard(Player::playerName pName, const Card& playedCard);
     void otherDrawsCard(Player::playerName pName);
     void doTurn(Card::cardSuit wishSuitCard, GameControllerProxy gcProxy);
-    void doTurn(GameControllerProxy gcProxy);
     void gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, Player::playerName startingPlayer);
     void reciveCard(const Card& card);
     int getCardCount() const;
 
 signals:
     void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount, const Card& topDepotCard, Player::playerName startingPlayer);
-    void UIplayerDoTurn(std::vector<Card> playableCards);
+    void UIdoTurn(std::vector<Card> playableCards, Card::cardSuit wishSuitCard);
     void UIplayerPlaysCard(Player::playerName pName, const Card& playedCard);
     void UIplayerDrawsCard(Player::playerName pName);
     void UIaddPlayerCard(const Card& card);
