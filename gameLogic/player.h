@@ -33,6 +33,7 @@ public:
 
 protected:
     std::vector<Card>& getPlayableCards(const Card& card, Card::cardSuit wishSuitCard = Card::NONE);
+    void dropCard(const Card& card);
 };
 
 #endif // PLAYER_H

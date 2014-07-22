@@ -13,7 +13,7 @@ GameController::GameController(playerName currentPlayer, int playerCount)
     if (playerCount < 2 || playerCount > 4) {
         throw std::invalid_argument("playercount has to be between 2 and 4");
     }
-
+    //TODO what players do we have ?? remote??
     players.push_back(new HumanPlayer(BOTTOM, GameControllerProxy(this, BOTTOM)));
     for (int i = 1; i < playerCount; ++i) {
         players.push_back(new AIPlayer(playerName(i), GameControllerProxy(this, playerName(i))));
@@ -22,10 +22,7 @@ GameController::GameController(playerName currentPlayer, int playerCount)
 
 void GameController::gameInit()
 {
-
-    //TODO what players do we have ?? remote??
     cardStack.shuffle();
-    //kind of players unregarded
     std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >();
     for (int i = 0; i < playerCount; i++) {
         playerCards->push_back(std::vector<Card>());
@@ -36,11 +33,9 @@ void GameController::gameInit()
     cardDepot.pushCard(cardStack.getLast(cardDepot));
 
     std::map<playerName, int> otherPlayerCardCount;
-
     for (unsigned int i = 0; i < players.size(); ++i) {
         otherPlayerCardCount.insert(std::pair<playerName, int>(playerName(i), playerCards->at(i).size()));
     }
-
     for (unsigned i = 0; i < players.size(); ++i) {
 
         players[playerName(i)]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, currentPlayer);
@@ -63,15 +58,17 @@ void GameController::playCard(playerName pName, const Card& card, Card::cardSuit
 
 void GameController::drawCard(playerName pName)
 {
-    players[pName]->reciveCard(cardStack.getLast(cardDepot));
-    players[pName]->doTurn(wishedSuit);
-    currentPlayerDrewCard = true;
-    foreach(Player * player, players)
-    {
-        if (player->getPName() != pName) {
-            player->otherDrawsCard(pName);
+    if (!currentPlayerDrewCard) {
+        players[pName]->reciveCard(cardStack.getLast(cardDepot));
+        currentPlayerDrewCard = true;
+        foreach(Player * player, players)
+        {
+            if (player->getPName() != pName) {
+                player->otherDrawsCard(pName);
+            }
         }
     }
+    players[pName]->doTurn(wishedSuit);
 }
 
 void GameController::doNothing(playerName pName)

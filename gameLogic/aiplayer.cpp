@@ -19,6 +19,7 @@ void AIPlayer::doTurn(Card::cardSuit wishSuitCard)
     std::vector<Card> playableCards = getPlayableCards(topCard, wishSuitCard);
     if (playableCards.size() > 0) {
         gameController.playCard(playableCards.at(0));
+        dropCard(playableCards[0]);
         drewCard = false;
     } else if (!drewCard) {
         gameController.drawCard();

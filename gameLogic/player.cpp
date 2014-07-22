@@ -1,5 +1,6 @@
 #include "player.h"
-
+#include <algorithm>
+#include <stdexcept>
 
 playerName Player::getPName() const
 {
@@ -21,4 +22,15 @@ std::vector<Card>& Player::getPlayableCards(const Card& card, Card::cardSuit wis
         }
     }
     return *playableCards;
+}
+
+void Player::dropCard(const Card& card)
+{
+    std::vector<Card>::iterator pos = std::find(hand.begin(), hand.end(), card);
+
+    if (pos != hand.end()) {
+        hand.erase(pos);
+    } else {
+        throw std::range_error("Card not found in hand.");
+    }
 }

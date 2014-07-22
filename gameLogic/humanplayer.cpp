@@ -18,7 +18,11 @@ void HumanPlayer::otherDrawsCard(playerName pName)
 
 void HumanPlayer::doTurn(Card::cardSuit wishSuitCard)
 {
-    emit UIdoTurn(this->getPlayableCards(topCard, wishSuitCard), wishSuitCard);
+    if (this->getPlayableCards(topCard, wishSuitCard).size() == 0) {
+        gameController.doNothing();
+    } else {
+        emit UIdoTurn(this->getPlayableCards(topCard, wishSuitCard), wishSuitCard);
+    }
 }
 
 void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, playerName startingPlayer)
@@ -42,6 +46,7 @@ int HumanPlayer::getCardCount() const
 void HumanPlayer::UIplaysCard(const Card& card)
 {
     gameController.playCard(card);
+    dropCard(card);
     drewCard = false;
 }
 
