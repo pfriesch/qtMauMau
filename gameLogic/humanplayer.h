@@ -2,24 +2,25 @@
 #define HUMANPLAYER_H
 
 #include "player.h"
+#include "PlayerNames.h"
 #include <QObject>
 
 class HumanPlayer : public QObject, public Player {
     Q_OBJECT
 public:
-    explicit HumanPlayer(Player::playerName pName);
-    void otherPlaysCard(Player::playerName pName, const Card& playedCard);
-    void otherDrawsCard(Player::playerName pName);
-    void doTurn(Card::cardSuit wishSuitCard, GameControllerProxy gcProxy);
-    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, Player::playerName startingPlayer);
+    explicit HumanPlayer(playerName pName, GameControllerProxy _gameController);
+    void otherPlaysCard(playerName pName, const Card& playedCard);
+    void otherDrawsCard(playerName pName);
+    void doTurn(Card::cardSuit wishSuitCard);
+    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, playerName startingPlayer);
     void reciveCard(const Card& card);
     int getCardCount() const;
 
 signals:
-    void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount, const Card& topDepotCard, Player::playerName startingPlayer);
+    void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::map<playerName, int> otherPlayerCardCount, const Card& topDepotCard, playerName startingPlayer);
     void UIdoTurn(std::vector<Card> playableCards, Card::cardSuit wishSuitCard);
-    void UIplayerPlaysCard(Player::playerName pName, const Card& playedCard);
-    void UIplayerDrawsCard(Player::playerName pName);
+    void UIplayerPlaysCard(playerName pName, const Card& playedCard);
+    void UIplayerDrawsCard(playerName pName);
     void UIaddPlayerCard(const Card& card);
 
 public

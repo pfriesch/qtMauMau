@@ -17,7 +17,7 @@
 //    void otherDrawsCard(int playerId);
 
 //    void doTurn(Card::cardSuit wishSuitCard = Card::NONE);
-//    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, int startingPlayer);
+//    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, int startingPlayer);
 //    void reciveCard(const Card& card);
 //    int getCardCount() const;
 //};

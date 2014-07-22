@@ -1,8 +1,11 @@
 #include "gamecontroller.h"
 #include "gamecontrollerproxy.h"
+#include "humanplayer.h"
+#include "aiplayer.h"
+
 #include <QDebug>
 
-GameController::GameController(Player::playerName currentPlayer, int playerCount)
+GameController::GameController(playerName currentPlayer, int playerCount)
     : cardStack(Deck::FULL)
     , playerCount(playerCount)
     , currentPlayer(currentPlayer)
@@ -10,10 +13,11 @@ GameController::GameController(Player::playerName currentPlayer, int playerCount
     if (playerCount < 2 || playerCount > 4) {
         throw std::invalid_argument("playercount has to be between 2 and 4");
     }
-    //    players.push_back(new HumanPlayer(0));
-    //    for (int i = 1; i < playerCount; ++i) {
-    //        players.push_back(new AIPlayer(i));
-    //    }
+
+    players.push_back(new HumanPlayer(BOTTOM, GameControllerProxy(this, BOTTOM)));
+    for (int i = 1; i < playerCount; ++i) {
+        players.push_back(new AIPlayer(playerName(i), GameControllerProxy(this, playerName(i))));
+    }
 }
 
 void GameController::gameInit()
@@ -22,7 +26,7 @@ void GameController::gameInit()
     //TODO what players do we have ?? remote??
     cardStack.shuffle();
     //kind of players unregarded
-    std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >;
+    std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >();
     for (int i = 0; i < playerCount; i++) {
         playerCards->push_back(std::vector<Card>());
         for (int j = 0; j < 5; j++) {
@@ -30,67 +34,66 @@ void GameController::gameInit()
         }
     }
     cardDepot.pushCard(cardStack.getLast(cardDepot));
-    std::vector<int>* otherPlayerCardCount = new std::vector<int>;
-    for (unsigned int i = 1; i < players.size(); ++i) {
-        otherPlayerCardCount->push_back(playerCards->at(i).size());
+
+    std::map<playerName, int> otherPlayerCardCount;
+
+    for (unsigned int i = 0; i < players.size(); ++i) {
+        otherPlayerCardCount.insert(std::pair<playerName, int>(playerName(i), playerCards->at(i).size()));
     }
+
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[Player::playerName(i)]->gameInit(playerCards->at(i), cardDepot.back(), *otherPlayerCardCount, currentPlayer);
+        players[playerName(i)]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, currentPlayer);
     }
-    players.at(currentPlayer)->doTurn(Card::NONE, GameControllerProxy(this, currentPlayer));
+    players.at(currentPlayer)->doTurn(Card::NONE);
 }
 
-//HumanPlayer* GameController::getHumanPlayer()
-//{
-//    HumanPlayer* player = qobject_cast<HumanPlayer*>(players[0]);
-//    qDebug() << "";
-//    return player;
-//}
-
-void GameController::playCard(Player::playerName pName, const Card& card, Card::cardSuit whishedSuit)
+void GameController::playCard(playerName pName, const Card& card, Card::cardSuit whishedSuit)
 {
-    if (currentPlayer == pName) {
-        cardDepot.pushCard(card);
+    this->wishedSuit = whishedSuit;
+    cardDepot.pushCard(card);
+    foreach(Player * player, players)
+    {
+        if (player->getPName() != pName) {
+            player->otherPlaysCard(pName, cardDepot.back());
+        }
+    }
+    nextTurn();
+}
+
+void GameController::drawCard(playerName pName)
+{
+    players[pName]->reciveCard(cardStack.getLast(cardDepot));
+    players[pName]->doTurn(wishedSuit);
+    currentPlayerDrewCard = true;
+    foreach(Player * player, players)
+    {
+        if (player->getPName() != pName) {
+            player->otherDrawsCard(pName);
+        }
+    }
+}
+
+void GameController::doNothing(playerName pName)
+{
+
+    if (!currentPlayerDrewCard) {
+        drawCard(pName);
+    } else {
         nextTurn();
     }
 }
 
-void GameController::drawCard(Player::playerName pName)
+Player* GameController::getBottomPlayer()
 {
-    if (currentPlayer == pName) {
-        if (!currentPlayerDrewCard) {
-            players[pName]->reciveCard(cardStack.getLast(cardDepot));
-            players[pName]->doTurn(wishedSuit, GameControllerProxy(this, currentPlayer));
-            currentPlayerDrewCard = true;
-            foreach(Player * player, players)
-            {
-                if (player->getPName() != pName) {
-                    player->otherDrawsCard(pName);
-                }
-            }
-        }
-    }
-}
-
-void GameController::doNothing(Player::playerName pName)
-{
-    if (currentPlayer == pName) {
-        if (!currentPlayerDrewCard) {
-            players[pName]->reciveCard(cardStack.getLast(cardDepot));
-            players[pName]->doTurn(wishedSuit,GameControllerProxy(this, currentPlayer));
-            currentPlayerDrewCard = true;
-        } else {
-            nextTurn();
-        }
-    }
+    return players.at(BOTTOM);
 }
 
 void GameController::nextTurn()
 {
     setFlags(cardDepot.back());
     qDebug() << "Next Payer: " << currentPlayer;
-    players[currentPlayer]->doTurn(wishedSuit, GameControllerProxy(this, currentPlayer));
+    players[currentPlayer]->doTurn(wishedSuit);
 }
 
 void GameController::setFlags(const Card& card)
@@ -131,32 +134,32 @@ void GameController::setNextPlayer()
 {
     if (changedDirection) {
         switch (currentPlayer) {
-        case Player::BOTTOM:
-            currentPlayer = Player::RIGHT;
+        case BOTTOM:
+            currentPlayer = RIGHT;
             break;
-        case Player::LEFT:
-            currentPlayer = Player::BOTTOM;
+        case LEFT:
+            currentPlayer = BOTTOM;
             break;
-        case Player::TOP:
-            currentPlayer = Player::LEFT;
+        case TOP:
+            currentPlayer = LEFT;
             break;
-        case Player::RIGHT:
-            currentPlayer = Player::RIGHT;
+        case RIGHT:
+            currentPlayer = RIGHT;
             break;
         }
     } else {
         switch (currentPlayer) {
-        case Player::BOTTOM:
-            currentPlayer = Player::LEFT;
+        case BOTTOM:
+            currentPlayer = LEFT;
             break;
-        case Player::LEFT:
-            currentPlayer = Player::TOP;
+        case LEFT:
+            currentPlayer = TOP;
             break;
-        case Player::TOP:
-            currentPlayer = Player::RIGHT;
+        case TOP:
+            currentPlayer = RIGHT;
             break;
-        case Player::RIGHT:
-            currentPlayer = Player::BOTTOM;
+        case RIGHT:
+            currentPlayer = BOTTOM;
             break;
         }
     }

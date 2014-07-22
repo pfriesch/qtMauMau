@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     gameLogic/remoteplayer.cpp \
     gameLogic/player.cpp \
     gui/choosecolordialog.cpp \
-    gameLogic/gamecontrollerproxy.cpp
+    gameLogic/gamecontrollerproxy.cpp \
+    gameLogic/gamestate.cpp
     gui/choosecolordialog.cpp
 
 
@@ -62,7 +63,9 @@ HEADERS  += mainwindow.h \
     gameLogic/aiplayer.h \
     gameLogic/remoteplayer.h \
     gui/choosecolordialog.h \
-    gameLogic/gamecontrollerproxy.h
+    gameLogic/gamecontrollerproxy.h \
+    gameLogic/gamestate.h \
+    gameLogic/PlayerNames.h
     gui/choosecolordialog.h
 
 

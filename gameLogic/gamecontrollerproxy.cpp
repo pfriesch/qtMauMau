@@ -1,20 +1,23 @@
 #include "gamecontrollerproxy.h"
 #include "gamecontroller.h"
 
-GameControllerProxy::GameControllerProxy(GameController* _gameContr, int _playerID)
+GameControllerProxy::GameControllerProxy(GameController* _gameContr, playerName _pName)
     : gameContr(_gameContr)
-    , playerID(_playerID)
+    , pName(_pName)
 {
 }
 
 void GameControllerProxy::playCard(const Card& card, Card::cardSuit whishedSuit)
 {
+    gameContr->playCard(pName, card, whishedSuit);
 }
 
 void GameControllerProxy::drawCard()
 {
+    gameContr->drawCard(pName);
 }
 
 void GameControllerProxy::doNothing()
 {
+    gameContr->doNothing(pName);
 }

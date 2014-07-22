@@ -8,6 +8,7 @@
 #include <QHash>
 #include <QString>
 #include <vector>
+#include <map>
 #include <QImage>
 #include <QBrush>
 #include <QGraphicsItem>
@@ -21,6 +22,7 @@
 #include <gui/playeritem.h>
 #include <gui/animatedgraphicsscene.h>
 #include <gui/choosecolordialog.h>
+#include <gameLogic/PlayerNames.h>
 
 class Playground : public AnimatedGraphicsScene {
     Q_OBJECT
@@ -32,16 +34,15 @@ public:
     void setDepotNStack();
 
 private:
-
     QVector<CardItem*> graphicalItems;
-    QHash<PlayerItem::direction,PlayerItem*> players;
+    QHash<PlayerItem::direction, PlayerItem*> players;
 
     CardItem depot;
     CardItem stack;
 
-    void updateDepotCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
-    void updatePlayerCard(CardItem &fromCard, CardItem &toCard, bool withAnimation = true);
-    void createPlayer(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount);
+    void updateDepotCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
+    void updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
+    void createPlayer(const std::vector<Card>& humanPlayerCards, std::map<playerName, int> otherPlayerCardCount);
     Card::cardSuit chooseColor();
 
     //Layout entities
@@ -53,7 +54,7 @@ private:
 public
 slots:
 
-    void initPlayground(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer);
+    void initPlayground(const std::vector<Card>& humanPlayerCards, std::map<playerName, int> otherPlayerCardCount, const Card& topDepotCard, playerName startingPlayer);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
     void playerDoTurn(std::vector<Card> playableCards);

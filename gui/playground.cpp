@@ -1,6 +1,7 @@
 #include "gui\playground.h"
 
-Playground::Playground(QObject* parent) : AnimatedGraphicsScene(parent)
+Playground::Playground(QObject* parent)
+    : AnimatedGraphicsScene(parent)
 {
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
@@ -63,38 +64,27 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 // TODO: show starting player
-void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer)
+void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<playerName, int> otherPlayerCardCount, const Card& topDepotCard, playerName startingPlayer)
 {
     createPlayer(humanPlayerCards, otherPlayerCardCount);
     CardItem depotCard(topDepotCard);
     updateDepotCard(depotCard, depot);
 }
 
-void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::vector<int> otherPlayerCardCount)
+void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::map<playerName, int> otherPlayerCardCount)
 {
     QPointF center = this->sceneRect().center();
     PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, "Icke");
     players.insert(PlayerItem::direction::HUMAN, human);
 
-    for (unsigned int i = 0; i < otherPlayerCardCount.size(); i++) {
-        switch (i) {
-        case 0: {
-            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center, "Yoda");
-            players.insert(PlayerItem::direction::LEFT, p1);
-            break;
-        }
-        case 1: {
-            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center, "Anakin");
-            players.insert(PlayerItem::direction::TOP, p2);
-            break;
-        }
-        case 2: {
-            PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], center, "C3PO");
-            players.insert(PlayerItem::direction::RIGHT, p3);
-            break;
-        }
-        }
-    }
+    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(LEFT), center, "Yoda");
+    players.insert(PlayerItem::direction::LEFT, p1);
+
+    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(TOP), center, "Anakin");
+    players.insert(PlayerItem::direction::TOP, p2);
+
+    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(RIGHT), center, "C3PO");
+    players.insert(PlayerItem::direction::RIGHT, p3);
 
     //Draw all Player Cards
     for (PlayerItem::direction dir : players.keys()) {
@@ -180,7 +170,7 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
     p->setActive();
     //TODO: ist irgendwie falsch, er wird die gespielte Karte nie finden, da die View die Karten nicht kennt und nur SpecialCards also Blaue Hintergründe hält
     // für diesen Spieler, deshalb kommt einfach die last() Karte zurück
-    CardItem* dummyCard = p->findCard(playedCard,true);
+    CardItem* dummyCard = p->findCard(playedCard, true);
     CardItem _playedCard(playedCard);
     addItem(_playedCard.createImg());
     _playedCard.setPos(dummyCard->getX(), dummyCard->getY());

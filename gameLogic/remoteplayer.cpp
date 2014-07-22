@@ -17,7 +17,7 @@
 
 //}
 
-//void RemotePlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, int playerId)
+//void RemotePlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, int playerId)
 //{
 //}
 

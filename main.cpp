@@ -17,6 +17,8 @@
 #include <gui/playground.h>
 #include <settings.h>
 
+#include "gameLogic/humanplayer.h"
+
 //#define TEST
 
 #ifdef TEST
@@ -24,7 +26,7 @@
 #include "gameLogic/Test/decktest.h"
 #endif
 
-Client *client;
+Client* client;
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
@@ -52,19 +54,19 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext& context, con
     ts << txt << endl;
 }
 
-//void connectSignals(Playground* playground, HumanPlayer* player)
-//{
-//    // From GameController(Logic) ----> Playground(View)
-//    QObject::connect(player, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
-//    QObject::connect(player, &HumanPlayer::UIplayerDoTurn, playground, &Playground::playerDoTurn);
-//    QObject::connect(player, &HumanPlayer::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
-//    QObject::connect(player, &HumanPlayer::UIaddPlayerCard, playground, &Playground::addPlayerCard);
-//    QObject::connect(player, &HumanPlayer::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
+void connectSignals(Playground* playground, HumanPlayer* player)
+{
+    // From GameController(Logic) ----> Playground(View)
+    QObject::connect(player, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
+    QObject::connect(player, &HumanPlayer::UIdoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(player, &HumanPlayer::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(player, &HumanPlayer::UIaddPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(player, &HumanPlayer::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
 
-//    //From Playground(View) ---> GameController(View)
-//    QObject::connect(playground, &Playground::playCard, player, &HumanPlayer::UIplaysCard);
-//    QObject::connect(playground, &Playground::drawCard, player, &HumanPlayer::UIdrawsCard);
-//}
+    //From Playground(View) ---> GameController(View)
+    QObject::connect(playground, &Playground::playCard, player, &HumanPlayer::UIplaysCard);
+    QObject::connect(playground, &Playground::drawCard, player, &HumanPlayer::UIdrawsCard);
+}
 
 int main(int argc, char* argv[])
 {
@@ -94,9 +96,8 @@ int main(int argc, char* argv[])
         QStyle::alignedRect(
             Qt::LeftToRight,
             Qt::AlignCenter,
-            QSize(Settings::getInstance()->getProperty("common/width").toInt(),Settings::getInstance()->getProperty("common/height").toInt()),
-            app.desktop()->availableGeometry()
-        ));
+            QSize(Settings::getInstance()->getProperty("common/width").toInt(), Settings::getInstance()->getProperty("common/height").toInt()),
+            app.desktop()->availableGeometry()));
 
     // Anfang Server
     //Server *server = new Server();
@@ -106,14 +107,12 @@ int main(int argc, char* argv[])
     //client->setupConnection(QHostAddress("192.168.0.150"));
     //client->write();
 
-
-
     // Ende Server
 
     Playground* playground = window.getPlayground();
     GameController gc;
-//    HumanPlayer* player = gc.getHumanPlayer();
-//    connectSignals(playground, player);
+    HumanPlayer* player = static_cast<HumanPlayer*>(gc.getBottomPlayer());
+    connectSignals(playground, player);
     gc.gameInit();
     window.show();
 

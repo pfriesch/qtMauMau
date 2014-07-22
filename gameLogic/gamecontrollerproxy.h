@@ -2,15 +2,17 @@
 #define GAMECONTROLLERPROXY_H
 
 #include "card.h"
+#include "PlayerNames.h"
 
 class GameController;
+
 class GameControllerProxy {
 private:
     GameController* gameContr;
-    int playerID;
+    playerName pName;
 
 public:
-    explicit GameControllerProxy(GameController* _gameContr, int _playerID);
+    explicit GameControllerProxy(GameController* _gameContr, playerName _pName);
     void playCard(const Card& card, Card::cardSuit whishedSuit = Card::NONE);
     void drawCard();
     void doNothing();

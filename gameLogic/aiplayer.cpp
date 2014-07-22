@@ -1,35 +1,35 @@
 #include "aiplayer.h"
 
-AIPlayer::AIPlayer(Player::Player::playerName pName)
-    : Player(pName)
+AIPlayer::AIPlayer(playerName pName, GameControllerProxy _gameController)
+    : Player(pName, _gameController)
 {
 }
 
-void AIPlayer::otherPlaysCard(Player::playerName pName, const Card& playedCard)
+void AIPlayer::otherPlaysCard(playerName pName, const Card& playedCard)
 {
     topCard = playedCard;
 }
 
-void AIPlayer::otherDrawsCard(Player::playerName pName)
+void AIPlayer::otherDrawsCard(playerName pName)
 {
 }
 
-void AIPlayer::doTurn(Card::cardSuit wishSuitCard, GameControllerProxy gcProxy)
+void AIPlayer::doTurn(Card::cardSuit wishSuitCard)
 {
     std::vector<Card> playableCards = getPlayableCards(topCard, wishSuitCard);
     if (playableCards.size() > 0) {
-        gcProxy.playCard(playableCards.at(0));
+        gameController.playCard(playableCards.at(0));
         drewCard = false;
     } else if (!drewCard) {
-        gcProxy.drawCard();
+        gameController.drawCard();
         drewCard = true;
     } else {
-        gcProxy.doNothing();
+        gameController.doNothing();
         drewCard = false;
     }
 }
 
-void AIPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, Player::playerName pName)
+void AIPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, playerName pName)
 {
     this->hand = hand;
     this->topCard = topCard;

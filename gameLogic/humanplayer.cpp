@@ -1,28 +1,27 @@
 #include "humanplayer.h"
 
-HumanPlayer::HumanPlayer(Player::playerName pName)
-    : Player(pName)
+HumanPlayer::HumanPlayer(playerName pName, GameControllerProxy _gameController)
+    : Player(pName, _gameController)
 {
 }
 
-void HumanPlayer::otherPlaysCard(Player::playerName pName, const Card& playedCard)
+void HumanPlayer::otherPlaysCard(playerName pName, const Card& playedCard)
 {
     topCard = playedCard;
     emit UIplayerPlaysCard(pName, playedCard);
 }
 
-void HumanPlayer::otherDrawsCard(Player::playerName pName)
+void HumanPlayer::otherDrawsCard(playerName pName)
 {
     emit UIplayerDrawsCard(pName);
 }
 
-void HumanPlayer::doTurn(Card::cardSuit wishSuitCard, GameControllerProxy gcProxy)
+void HumanPlayer::doTurn(Card::cardSuit wishSuitCard)
 {
-
     emit UIdoTurn(this->getPlayableCards(topCard, wishSuitCard), wishSuitCard);
 }
 
-void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::vector<int> otherPlayerCardCount, Player::playerName startingPlayer)
+void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, playerName startingPlayer)
 {
     this->hand = hand;
     this->topCard = topCard;
@@ -42,20 +41,20 @@ int HumanPlayer::getCardCount() const
 
 void HumanPlayer::UIplaysCard(const Card& card)
 {
-    gameController->playCard(card);
+    gameController.playCard(card);
     drewCard = false;
 }
 
 void HumanPlayer::UIdoesNothing()
 {
-    gameController->doNothing();
+    gameController.doNothing();
     drewCard = false;
 }
 
 void HumanPlayer::UIdrawsCard()
 {
     if (!drewCard) {
-        gameController->drawCard();
+        gameController.drawCard();
         drewCard = true;
     } else {
         //cant draw card
