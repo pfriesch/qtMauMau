@@ -7,14 +7,6 @@
 
 class HumanPlayer : public QObject, public Player {
     Q_OBJECT
-
-//    std::vector<Card> hand;
-//    std::string name;
-//    PLAYER::Name pName;
-//    Card topCard;
-//    bool drewCard = false;
-//    GameControllerProxy gameController;
-
 public:
     explicit HumanPlayer(PLAYER::Name pName, GameControllerProxy _gameController);
     void otherPlaysCard(PLAYER::Name pName, const Card& playedCard);

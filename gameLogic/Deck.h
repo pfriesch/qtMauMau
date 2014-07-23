@@ -7,8 +7,6 @@
 #include <stdexcept>
 #include "card.h"
 
-//
-
 class Deck {
 public:
     enum InitStatus {

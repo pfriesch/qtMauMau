@@ -53,9 +53,6 @@ public:
 
     Player* getBottomPlayer();
 
-    //    void otherPlaysCard(PLAYER::Name pName, const Card& playedCard);
-    //    void otherDrawsCard(PLAYER::Name pName);
-
 private:
     void nextTurn();
     void setFlags(const Card& card);
