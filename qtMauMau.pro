@@ -65,7 +65,7 @@ HEADERS  += mainwindow.h \
     gui/choosecolordialog.h \
     gameLogic/gamecontrollerproxy.h \
     gameLogic/gamestate.h \
-    gameLogic/PlayerNames.h
+    gameLogic/PlayerName.h
     gui/choosecolordialog.h
 
 

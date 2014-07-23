@@ -2,12 +2,12 @@
 #include <algorithm>
 #include <stdexcept>
 
-playerName Player::getPName() const
+PLAYER::Name Player::getPName() const
 {
     return pName;
 }
 
-Player::Player(playerName pName, GameControllerProxy _gameController)
+Player::Player(PLAYER::Name pName, GameControllerProxy _gameController)
     : pName(pName)
     , gameController(_gameController)
 {

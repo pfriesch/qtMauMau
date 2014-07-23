@@ -1,7 +1,7 @@
 #include "gamecontrollerproxy.h"
 #include "gamecontroller.h"
 
-GameControllerProxy::GameControllerProxy(GameController* _gameContr, playerName _pName)
+GameControllerProxy::GameControllerProxy(GameController* _gameContr, PLAYER::Name _pName)
     : gameContr(_gameContr)
     , pName(_pName)
 {

@@ -1,17 +1,17 @@
 #include "humanplayer.h"
 
-HumanPlayer::HumanPlayer(playerName pName, GameControllerProxy _gameController)
+HumanPlayer::HumanPlayer(PLAYER::Name pName, GameControllerProxy _gameController)
     : Player(pName, _gameController)
 {
 }
 
-void HumanPlayer::otherPlaysCard(playerName pName, const Card& playedCard)
+void HumanPlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
     topCard = playedCard;
     emit UIplayerPlaysCard(pName, playedCard);
 }
 
-void HumanPlayer::otherDrawsCard(playerName pName)
+void HumanPlayer::otherDrawsCard(PLAYER::Name pName)
 {
     emit UIplayerDrawsCard(pName);
 }
@@ -25,7 +25,7 @@ void HumanPlayer::doTurn(Card::cardSuit wishSuitCard)
     }
 }
 
-void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, playerName startingPlayer)
+void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer)
 {
     this->hand = hand;
     this->topCard = topCard;

@@ -6,7 +6,7 @@
 #include "deck.h"
 
 #include "player.h"
-#include "PlayerNames.h"
+#include "PlayerName.h"
 #include "card.h"
 
 class GameController {
@@ -23,7 +23,7 @@ private:
     //default start player is 0
 
     //every turn flags
-    playerName currentPlayer;
+    PLAYER::Name currentPlayer;
     bool changedDirection = false;
     Card::cardSuit wishedSuit = Card::cardSuit(0);
     bool draw2x = false;
@@ -44,24 +44,24 @@ private:
     const Card::cardValue changeDirectCard = Card::TEN;
 
 public:
-    explicit GameController(playerName currentPlayer = BOTTOM, int playerCount = 4);
+    explicit GameController(PLAYER::Name currentPlayer = PLAYER::Name::BOTTOM, int playerCount = 4);
     void gameInit();
 
-    void playCard(playerName pName, const Card& card, Card::cardSuit whishedSuit);
-    void drawCard(playerName pName);
-    void doNothing(playerName pName);
+    void playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit);
+    void drawCard(PLAYER::Name pName);
+    void doNothing(PLAYER::Name pName);
 
     Player* getBottomPlayer();
 
-    //    void otherPlaysCard(playerName pName, const Card& playedCard);
-    //    void otherDrawsCard(playerName pName);
+    //    void otherPlaysCard(PLAYER::Name pName, const Card& playedCard);
+    //    void otherDrawsCard(PLAYER::Name pName);
 
 private:
     void nextTurn();
     void setFlags(const Card& card);
     void setNextPlayer();
-    void otherPlayerDrawsCard(playerName pName);
-    void otherPlayerPlaysCard(playerName pName, const Card& card);
+    void otherPlayerDrawsCard(PLAYER::Name pName);
+    void otherPlayerPlaysCard(PLAYER::Name pName, const Card& card);
 };
 
 #endif // GAMECONTROLLER_H

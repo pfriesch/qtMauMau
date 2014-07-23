@@ -1,16 +1,16 @@
 #include "aiplayer.h"
 
-AIPlayer::AIPlayer(playerName pName, GameControllerProxy _gameController)
+AIPlayer::AIPlayer(PLAYER::Name pName, GameControllerProxy _gameController)
     : Player(pName, _gameController)
 {
 }
 
-void AIPlayer::otherPlaysCard(playerName pName, const Card& playedCard)
+void AIPlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
     topCard = playedCard;
 }
 
-void AIPlayer::otherDrawsCard(playerName pName)
+void AIPlayer::otherDrawsCard(PLAYER::Name pName)
 {
 }
 
@@ -30,7 +30,7 @@ void AIPlayer::doTurn(Card::cardSuit wishSuitCard)
     }
 }
 
-void AIPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<playerName, int> otherPlayerCardCount, playerName pName)
+void AIPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name pName)
 {
     this->hand = hand;
     this->topCard = topCard;
