@@ -33,7 +33,9 @@ SOURCES += main.cpp\
     gameLogic/Test/gamecontroller_test.cpp \
     gameLogic/Test/decktest.cpp \
     gui/animatedgraphicsscene.cpp \
-    gui/choosecolordialog.cpp
+    gui/choosecolordialog.cpp \
+    gui/connecttoserver.cpp \
+    gui/createserverdialog.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -52,13 +54,17 @@ HEADERS  += mainwindow.h \
     gameLogic/Test/gamecontroller_test.h \
     gameLogic/Test/decktest.h \
     gui/animatedgraphicsscene.h \
-    gui/choosecolordialog.h
+    gui/choosecolordialog.h \
+    gui/connecttoserver.h \
+    gui/createserverdialog.h
 
 
 
 FORMS    += \
     gui/optiondialog.ui \
-    gui/choosecolordialog.ui
+    gui/choosecolordialog.ui \
+    gui/connecttoserver.ui \
+    gui/createserverdialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \
