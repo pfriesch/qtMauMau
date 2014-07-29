@@ -19,11 +19,8 @@ private:
     Deck cardDepot;
 
     //flags
-    int playerCount;
-    //default start player is 0
-
-    //every turn flags
     PLAYER::Name currentPlayer;
+
     bool changedDirection = false;
     Card::cardSuit wishedSuit = Card::cardSuit(0);
     bool draw2x = false;
@@ -31,16 +28,15 @@ private:
     bool skipNextPlayer = false;
     //TODO always 4 players, 4+ players unregarded
     bool currentPlayerDrewCard = false;
-    bool currentPlayerPlayedCard = false;
 
     //special cards
-    bool withDraw2xCard = true;
+
     const Card::cardValue draw2xCard = Card::SEVEN;
-    bool withWishedSuit = true;
+
     const Card::cardValue wishSuitCard = Card::JACK;
-    bool withSkipPlayer = true;
+
     const Card::cardValue skipNextCard = Card::EIGHT;
-    bool withChangeDirection = false;
+
     const Card::cardValue changeDirectCard = Card::TEN;
 
 public:

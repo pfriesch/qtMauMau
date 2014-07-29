@@ -7,7 +7,6 @@
 
 GameController::GameController(PLAYER::Name currentPlayer, int playerCount)
     : cardStack(Deck::FULL)
-    , playerCount(playerCount)
     , currentPlayer(currentPlayer)
 {
     if (playerCount < 2 || playerCount > 4) {
@@ -24,7 +23,7 @@ void GameController::gameInit()
 {
     cardStack.shuffle();
     std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >();
-    for (int i = 0; i < playerCount; i++) {
+    for (int i = 0; i < players.size(); i++) {
         playerCards->push_back(std::vector<Card>());
         for (int j = 0; j < 5; j++) {
             playerCards->at(i).push_back(cardStack.getLast(cardDepot));
@@ -96,7 +95,6 @@ void GameController::nextTurn()
 void GameController::setFlags(const Card& card)
 {
     currentPlayerDrewCard = false;
-    skipNextPlayer = false;
 
     if (card.getValue() == changeDirectCard) {
         if (changedDirection == true) {
@@ -107,14 +105,30 @@ void GameController::setFlags(const Card& card)
     } else if (card.getValue() == skipNextCard) {
         skipNextPlayer = true;
     } else if (card.getValue() == wishSuitCard) {
-        //TODO get wished suit
-    } else if (card.getValue() == draw2xCard) {
-        //TODO set draw 2
+        //TODO already handeld by play card. need to change?
+    } else if (card.getValue() == draw2xCard || draw2x) {
+        //TODO draw2x not rly working since u usually draw befor u play
+        if (draw2x) {
+            if (card.getValue() == draw2xCard) {
+                draw2xCount = draw2xCount + 2;
+            } else {
+                for (int i = 0; i < draw2xCount; ++i) {
+                    drawCard(currentPlayer);
+                    currentPlayerDrewCard = false;
+                }
+                draw2x = false;
+                draw2xCount = 0;
+            }
+        } else {
+            draw2x = true;
+            draw2xCount = 2;
+        }
     }
 
     setNextPlayer();
     if (skipNextPlayer) {
         setNextPlayer();
+        skipNextPlayer = false;
     }
 
     //    bool draw2x = false;
