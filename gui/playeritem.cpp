@@ -129,8 +129,10 @@ void PlayerItem::setPlayableCards(std::vector<Card> playableCards)
 {
     for (unsigned int i = 0; i < playableCards.size(); ++i) {
         CardItem *cardItem = findCard(playableCards.at(i));
-        cardItem->setPos(cardItem->getX(), cardItem->getY() - offsetPlayableCard);
-        cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        if(cardItem != NULL){
+            cardItem->setPos(cardItem->getX(), cardItem->getY() - offsetPlayableCard);
+            cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        }
     }
 }
 
