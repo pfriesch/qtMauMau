@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <gui/playground.h>
 #include "gui/optiondialog.h"
+#include "gui/connecttoserver.h"
+#include "gui/createserverdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +27,8 @@ private:
     void setupGraphicsView();
     Playground *playground;
     OptionDialog* optionDialog;
+    ConnectToServer* connectToServer;
+    CreateServerDialog* createServerDialog;
 };
 
 #endif // MAINWINDOW_H

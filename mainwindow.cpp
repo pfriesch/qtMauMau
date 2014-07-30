@@ -9,9 +9,6 @@
 
 MainWindow::MainWindow(QWidget* parent)
 {
-    //this->setWidth(Settings::getInstance()->getProperty("common/width").toInt());
-    //this->setHeight(Settings::getInstance()->getProperty("common/height").toInt());
-
     setupMenuBar();
     setupGraphicsView();
 }
@@ -57,7 +54,17 @@ void MainWindow::setupMenuBar()
     QAction* startGameMenu = new QAction(QAction::tr("Start Game"), this);
     fileMenu->addAction(startGameMenu);
 
-    QAction* optionsMenu = new QAction(QAction::tr("Options"), this);
+    QAction* connectToServerMenu = new QAction(QAction::tr("Connect to Server..."), this);
+    fileMenu->addAction(connectToServerMenu);
+    connectToServer = new ConnectToServer;
+    connect(connectToServerMenu, SIGNAL(triggered()), connectToServer, SLOT(show()));
+
+    QAction* createServerMenu = new QAction(QAction::tr("Create Server..."), this);
+    createServerDialog = new CreateServerDialog;
+    connect(createServerMenu, SIGNAL(triggered()), createServerDialog, SLOT(show()));
+    fileMenu->addAction(createServerMenu);
+
+    QAction* optionsMenu = new QAction(QAction::tr("Options..."), this);
 
     optionDialog = new OptionDialog;
     connect(optionsMenu, SIGNAL(triggered()), optionDialog, SLOT(show()));

@@ -36,10 +36,12 @@ SOURCES += main.cpp\
     gameLogic/aiplayer.cpp \
     gameLogic/remoteplayer.cpp \
     gameLogic/player.cpp \
-    gui/choosecolordialog.cpp \
     gameLogic/gamecontrollerproxy.cpp \
-    gameLogic/gamestate.cpp
-    gui/choosecolordialog.cpp
+    gameLogic/gamestate.cpp \
+    gui/choosecolordialog.cpp \
+    gui/connecttoserver.cpp \
+    gui/createserverdialog.cpp
+
 
 
 
@@ -65,13 +67,16 @@ HEADERS  += mainwindow.h \
     gui/choosecolordialog.h \
     gameLogic/gamecontrollerproxy.h \
     gameLogic/gamestate.h \
-    gameLogic/PlayerName.h
-    gui/choosecolordialog.h
+    gameLogic/PlayerName.h \
+    gui/connecttoserver.h \
+    gui/createserverdialog.h
 
 
 FORMS    += \
     gui/optiondialog.ui \
-    gui/choosecolordialog.ui
+    gui/choosecolordialog.ui \
+    gui/connecttoserver.ui \
+    gui/createserverdialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \
