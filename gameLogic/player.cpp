@@ -1,48 +1,36 @@
 #include "player.h"
+#include <algorithm>
+#include <stdexcept>
 
-int Player::getId() const
+PLAYER::Name Player::getPName() const
 {
-    return id;
+    return pName;
 }
 
-vector<Card> Player::getHand() const
-{
-    return hand;
-}
-
-int Player::getCardCount() const
-{
-    return hand.size();
-}
-
-Player::PlayerType Player::getType() const
-{
-    return playerType;
-}
-
-Player::Player(Player::PlayerType playerType, string name)
-    : playerType(playerType)
-    , name(name)
+Player::Player(PLAYER::Name pName, GameControllerProxy _gameController)
+    : pName(pName)
+    , gameController(_gameController)
 {
 }
 
-void Player::reciveCard(const Card& card)
+std::vector<Card>& Player::getPlayableCards(const Card& card, Card::cardSuit wishSuitCard)
 {
-    hand.push_back(card);
-}
-
-void Player::dropCard(const Card& card)
-{
-    hand.erase(remove(hand.begin(), hand.end(), card), hand.end());
-}
-//TODO specify playable cards
-vector<Card>& Player::getPlayableCards(const Card& card, Card::cardValue wishSuitCard)
-{
-    vector<Card>* playableCards = new vector<Card>;
+    std::vector<Card>* playableCards = new std::vector<Card>;
     for (unsigned int i = 0; i < hand.size(); ++i) {
-        if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue() || card.getValue() == wishSuitCard) {
+        if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue() || card.getSuit() == wishSuitCard) {
             playableCards->push_back(hand[i]);
         }
     }
     return *playableCards;
+}
+
+void Player::dropCard(const Card& card)
+{
+    std::vector<Card>::iterator pos = std::find(hand.begin(), hand.end(), card);
+
+    if (pos != hand.end()) {
+        hand.erase(pos);
+    } else {
+        throw std::range_error("Card not found in hand.");
+    }
 }

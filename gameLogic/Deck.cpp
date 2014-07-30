@@ -1,11 +1,12 @@
 #include "deck.h"
 
+//
 /**
  * Initializes a full cad deck
  */
-Deck::Deck(bool full_deck)
+Deck::Deck(Deck::InitStatus status)
 {
-    if (full_deck) {
+    if (status == Deck::FULL) {
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j <= 8; j++) {
                 cards.push_back(Card(Card::cardSuit(i), Card::cardValue(j)));
@@ -81,16 +82,16 @@ Card Deck::getCard(int index) const
     return cards.at(index);
 }
 
-vector<Card>& Deck::getUnderlyingCards()
+std::vector<Card>& Deck::getUnderlyingCards()
 {
-    vector<Card>* underlyingCards = new vector<Card>;
+    std::vector<Card>* underlyingCards = new std::vector<Card>;
     *underlyingCards = cards;
     underlyingCards->pop_back();
     cards.erase(cards.begin(), cards.end() - 1);
     return *underlyingCards;
 }
 
-void Deck::addCards(vector<Card>& newCards)
+void Deck::addCards(std::vector<Card>& newCards)
 {
     cards.insert(cards.end(), newCards.begin(), newCards.end());
     shuffle();

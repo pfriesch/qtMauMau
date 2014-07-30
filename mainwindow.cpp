@@ -26,11 +26,6 @@ void MainWindow::setupGraphicsView()
     setCentralWidget(view);
 }
 
-void MainWindow::setupGameController()
-{
-    gc = new GameController();
-}
-
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
     if (playground != NULL) {
@@ -89,18 +84,18 @@ void MainWindow::resetGame(){
 
 void MainWindow::connectSignalsForLocal()
 {
-    // From GameController(Logic) ----> Playground(View)
-    QObject::connect(gc, &GameController::initPlayground, playground, &Playground::initPlayground);
-    QObject::connect(gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
-    QObject::connect(gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
-    QObject::connect(gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
-    QObject::connect(gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
+    // From HumandPlayer(Logic) ----> Playground(View)
+    QObject::connect(humanPlayer, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
+    QObject::connect(humanPlayer, &HumanPlayer::UIdoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(humanPlayer, &HumanPlayer::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(humanPlayer, &HumanPlayer::UIaddPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(humanPlayer, &HumanPlayer::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
 
-    //From Playground(View) ---> GameController(View)
-    QObject::connect(playground, &Playground::playCard, gc, &GameController::playCard);
-    QObject::connect(playground, &Playground::drawCard, gc, &GameController::drawCard);
+    //From Playground(View) ---> HumanPlayer(Logic)
+    QObject::connect(playground, &Playground::playCard, humanPlayer, &HumanPlayer::UIplaysCard);
+    QObject::connect(playground, &Playground::drawCard, humanPlayer, &HumanPlayer::UIdrawsCard);
 }
-
+/*
 void MainWindow::connectSignalsForServer()
 {
     // From GameController(Logic) ----> Playground(View)
@@ -114,23 +109,23 @@ void MainWindow::connectSignalsForServer()
     QObject::connect(playground, &Playground::playCard, gc, &GameController::playCard);
     QObject::connect(playground, &Playground::drawCard, gc, &GameController::drawCard);
 }
-
+*/
 void MainWindow::startGameAsLocal()
 {
-    setupGameController();
+    gc = new GameController();
+    humanPlayer = static_cast<HumanPlayer*>(gc->getBottomPlayer());
     connectSignalsForLocal();
     playground->startGame();
     gc->gameInit();
-
 }
 
 void MainWindow::startGameAsServer()
 {
     resetGame();
-    setupGameController();
-    connectSignalsForServer();
-    playground->startGame();
-    gc->gameInit();
+    //connectSignalsForServer();
+    //playground->startGame();
+    //gc = new GameController();
+    //gc->gameInit();
 }
 
 void MainWindow::startGameAsClient()

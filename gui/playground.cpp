@@ -66,38 +66,27 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 // TODO: show starting player
-void Playground::initPlayground(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount, const Card& topDepotCard, int startingPlayer)
+void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer)
 {
     createPlayer(humanPlayerCards, otherPlayerCardCount);
     CardItem depotCard(topDepotCard);
     updateDepotCard(depotCard, depot);
 }
 
-void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> otherPlayerCardCount)
+void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount)
 {
     QPointF center = this->sceneRect().center();
     PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, "Icke");
     players.insert(PlayerItem::direction::HUMAN, human);
 
-    for (unsigned int i = 0; i < otherPlayerCardCount.size() + 1; i++) {
-        switch (i) {
-        case 1: {
-            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center, "Yoda");
-            players.insert(PlayerItem::direction::LEFT, p1);
-            break;
-        }
-        case 2: {
-            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount[1], center, "Anakin");
-            players.insert(PlayerItem::direction::TOP, p2);
-            break;
-        }
-        case 3: {
-            PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount[2], center, "C3PO");
-            players.insert(PlayerItem::direction::RIGHT, p3);
-            break;
-        }
-        }
-    }
+    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center, "Yoda");
+    players.insert(PlayerItem::direction::LEFT, p1);
+
+    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(PLAYER::Name::TOP), center, "Anakin");
+    players.insert(PlayerItem::direction::TOP, p2);
+
+    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(PLAYER::Name::RIGHT), center, "C3PO");
+    players.insert(PlayerItem::direction::RIGHT, p3);
 
     //Draw all Player Cards
     for (PlayerItem::direction dir : players.keys()) {
@@ -155,27 +144,27 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
     update(sceneRect());
 }
 
-void Playground::playerDoTurn(vector<Card> playableCards)
+void Playground::playerDoTurn(std::vector<Card> playableCards)
 {
     qDebug("Player do Turn");
     players.value(PlayerItem::direction::HUMAN)->setActive();
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }
 
-void Playground::playerPlaysCard(int player, const Card& playedCard)
+void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
 {
     qDebug("VIEW: GET Signal - playerPlaysCard");
     PlayerItem* p = NULL;
     switch (player) {
-    case 1: {
+    case PLAYER::Name::LEFT: {
         p = players.value(PlayerItem::direction::LEFT);
         break;
     }
-    case 2: {
+    case PLAYER::Name::TOP: {
         p = players.value(PlayerItem::direction::TOP);
         break;
     }
-    case 3: {
+    case PLAYER::Name::RIGHT: {
         p = players.value(PlayerItem::direction::RIGHT);
         break;
     }
@@ -198,21 +187,21 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
  * @brief Playground::playerDrawsCard
  * @param player
  */
-void Playground::playerDrawsCard(short player)
+void Playground::playerDrawsCard(PLAYER::Name player)
 {
     qDebug("VIEW: GET Signal - playerDrawsCard");
     PlayerItem* p;
 
     switch (player) {
-    case 1: {
+    case PLAYER::Name::LEFT: {
         p = players.value(PlayerItem::direction::LEFT);
         break;
     }
-    case 2: {
+    case PLAYER::Name::TOP: {
         p = players.value(PlayerItem::direction::TOP);
         break;
     }
-    case 3: {
+    case PLAYER::Name::RIGHT: {
         p = players.value(PlayerItem::direction::RIGHT);
         break;
     }

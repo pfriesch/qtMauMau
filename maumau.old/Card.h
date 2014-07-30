@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
+
 
 enum card_suit {
 	HEARTS = 0, DIAMONDS = 1, CLUBS = 2, SPADES = 3

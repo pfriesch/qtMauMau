@@ -7,21 +7,25 @@
 #include <stdexcept>
 #include "card.h"
 
-using namespace std;
-
 class Deck {
+public:
+    enum InitStatus {
+        FULL,
+        EMPTY
+    };
+
 private:
-    vector<Card> cards;
+    std::vector<Card> cards;
 
 public:
-    Deck(bool full_deck = false);
+    Deck(Deck::InitStatus staus = Deck::EMPTY);
     void shuffle();
     void pushCard(const Card card);
     Card getLast(Deck& deck);
     Card back() const;
     Card getCard(int index) const;
-    void addCards(vector<Card>& newCards);
-    vector<Card>& getUnderlyingCards();
+    void addCards(std::vector<Card>& newCards);
+    std::vector<Card>& getUnderlyingCards();
     bool empty() const;
 #ifdef TEST
     int size() const;

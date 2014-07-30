@@ -1,36 +1,39 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <vector>
 #include <string>
-#include <algorithm>
+#include <vector>
+#include <map>
 #include "card.h"
-
-using namespace std;
+#include "gamecontrollerproxy.h"
+#include "PlayerName.h"
 
 class Player {
 public:
-    enum PlayerType {
-        human = 0,
-        ai = 1,
-        remote = 2
-    };
-
-private:
-    Player::PlayerType playerType;
-    vector<Card> hand;
-    string name;
-    int id;
+protected:
+    std::vector<Card> hand;
+    std::string name;
+    PLAYER::Name pName;
+    Card topCard;
+    bool drewCard = false;
+    GameControllerProxy gameController;
 
 public:
-    explicit Player(Player::PlayerType playerType = Player::PlayerType(1), string name = "");
-    void reciveCard(const Card& card);
+    explicit Player(PLAYER::Name pName, GameControllerProxy _gameController);
+
+    virtual void otherPlaysCard(PLAYER::Name pName, const Card& playedCard) = 0;
+    virtual void otherDrawsCard(PLAYER::Name pName) = 0;
+
+    virtual void doTurn(Card::cardSuit wishSuitCard) = 0;
+    virtual void gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer) = 0;
+    virtual void reciveCard(const Card& card) = 0;
+    virtual int getCardCount() const = 0;
+
+    PLAYER::Name getPName() const;
+
+protected:
+    std::vector<Card>& getPlayableCards(const Card& card, Card::cardSuit wishSuitCard = Card::NONE);
     void dropCard(const Card& card);
-    vector<Card>& getPlayableCards(const Card& card, Card::cardValue wishSuitCard);
-    int getId() const;
-    vector<Card> getHand() const;
-    int getCardCount() const;
-    Player::PlayerType getType() const;
 };
 
 #endif // PLAYER_H

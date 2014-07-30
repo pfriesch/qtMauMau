@@ -9,7 +9,7 @@
 #include <iostream>
 #include <cstring>
 #include "Maumau_game_holder.h"
-using namespace std;
+
 
 bool check_parameters(int argc, char* argv[]);
 void print_help();

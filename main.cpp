@@ -5,7 +5,6 @@
 #include <QTextStream>
 #include <QTranslator>
 #include <QTime>
-#include "gameLogic/gamecontroller.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,8 +12,12 @@
 #include <QObject>
 #include <QDesktopWidget>
 #include <QStyle>
+#include <network/server.h>
+#include <network/client.h>
 #include <gui/playground.h>
 #include <settings.h>
+
+#include "gameLogic/humanplayer.h"
 
 //#define TEST
 
@@ -22,6 +25,8 @@
 #include "gameLogic/Test/gamecontroller_test.h"
 #include "gameLogic/Test/decktest.h"
 #endif
+
+Client* client;
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
@@ -77,9 +82,18 @@ int main(int argc, char* argv[])
         QStyle::alignedRect(
             Qt::LeftToRight,
             Qt::AlignCenter,
-            QSize(Settings::getInstance()->getProperty("common/width").toInt(),Settings::getInstance()->getProperty("common/height").toInt()),
-            app.desktop()->availableGeometry()
-        ));
+            QSize(Settings::getInstance()->getProperty("common/width").toInt(), Settings::getInstance()->getProperty("common/height").toInt()),
+            app.desktop()->availableGeometry()));
+
+    // Anfang Server
+    //Server *server = new Server();
+    //RemotePlayer *player = new RemotePlayer(server,1);
+
+    //client = new Client();
+    //client->setupConnection(QHostAddress("192.168.0.150"));
+    //client->write();
+
+    // Ende Server
 
     window.show();
 

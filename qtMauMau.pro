@@ -22,8 +22,6 @@ SOURCES += main.cpp\
     settings.cpp \
     network/server.cpp \
     network/client.cpp \
-    gameLogic/gamecontroller.cpp \
-    gameLogic/player.cpp \
     gameLogic/deck.cpp \
     gameLogic/card.cpp \
     gui/playground.cpp \
@@ -33,9 +31,18 @@ SOURCES += main.cpp\
     gameLogic/Test/gamecontroller_test.cpp \
     gameLogic/Test/decktest.cpp \
     gui/animatedgraphicsscene.cpp \
+    gameLogic/gamecontroller.cpp \
+    gameLogic/humanplayer.cpp \
+    gameLogic/aiplayer.cpp \
+    gameLogic/remoteplayer.cpp \
+    gameLogic/player.cpp \
+    gameLogic/gamecontrollerproxy.cpp \
+    gameLogic/gamestate.cpp \
     gui/choosecolordialog.cpp \
     gui/connecttoserver.cpp \
     gui/createserverdialog.cpp
+
+
 
 
 HEADERS  += mainwindow.h \
@@ -48,16 +55,21 @@ HEADERS  += mainwindow.h \
     gui/playground.h \
     gui/optiondialog.h \
     gui/carditem.h \
-    gameLogic/player.h \
     gui/playeritem.h \
     gameLogic/Deck.h \
     gameLogic/Test/gamecontroller_test.h \
     gameLogic/Test/decktest.h \
     gui/animatedgraphicsscene.h \
+    gameLogic/player.h \
+    gameLogic/humanplayer.h \
+    gameLogic/aiplayer.h \
+    gameLogic/remoteplayer.h \
     gui/choosecolordialog.h \
+    gameLogic/gamecontrollerproxy.h \
+    gameLogic/gamestate.h \
+    gameLogic/PlayerName.h \
     gui/connecttoserver.h \
     gui/createserverdialog.h
-
 
 
 FORMS    += \

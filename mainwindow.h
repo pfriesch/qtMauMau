@@ -6,6 +6,7 @@
 #include "gui/optiondialog.h"
 #include "gui/connecttoserver.h"
 #include "gui/createserverdialog.h"
+#include "gameLogic/humanplayer.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,12 +25,12 @@ private:
     void setupGraphicsView();
     void connectSignalsForLocal();
     void connectSignalsForServer();
-    void setupGameController();
 
     void resetGame();
 
-    GameController *gc = NULL;
+    HumanPlayer *humanPlayer = NULL;
     Playground *playground = NULL;
+    GameController *gc = NULL;
     OptionDialog* optionDialog;
     ConnectToServer* connectToServer;
     CreateServerDialog* createServerDialog;

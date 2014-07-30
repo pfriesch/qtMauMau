@@ -75,12 +75,14 @@ void AnimatedGraphicsScene::animationEnded()
         _animationActive = false;
         _destinationPositions.clear();
         delete timeLine;
+
 /*
         if(newAnimation != NULL && newAnimation->item() != NULL){
             newAnimation->item()->setZValue(0);
         }
   */
       eventLoop->exit();
+
         return;
     }
     QTimeLine * x = _activeTimeLines.dequeue();
