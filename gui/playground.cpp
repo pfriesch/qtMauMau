@@ -1,6 +1,7 @@
 #include "gui\playground.h"
 
-Playground::Playground(QObject* parent) : AnimatedGraphicsScene(parent)
+Playground::Playground(QObject* parent)
+    : AnimatedGraphicsScene(parent)
 {
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
@@ -30,32 +31,34 @@ void Playground::setDepotNStack()
 
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    QGraphicsItem* item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
-    if (item != NULL) {
+    if (event->button() == Qt::LeftButton) {
+        QGraphicsItem* item = itemAt(event->buttonDownScenePos(event->button()), QTransform());
+        if (item != NULL) {
 
-        //Clicked on Stack
-        if (item == stack.createImg()) {
-            qDebug("VIEW: Sende drawCard()");
-            players.value(PlayerItem::direction::HUMAN)->unsetPlayableCards();
-            emit drawCard();
-        }
-        //Clicked on Human Card
-        PlayerItem* human = players.value(PlayerItem::direction::HUMAN);
-        for (int j = 0; j < human->getCards()->size(); ++j) {
-            CardItem* c = human->getCards()->at(j);
-            if (c->createImg() == item && c->createImg()->isSelected()) {
+            //Clicked on Stack
+            if (item == stack.createImg()) {
+                qDebug("VIEW: Sende drawCard()");
+                players.value(PlayerItem::direction::HUMAN)->unsetPlayableCards();
+                emit drawCard();
+            }
+            //Clicked on Human Card
+            PlayerItem* human = players.value(PlayerItem::direction::HUMAN);
+            for (int j = 0; j < human->getCards()->size(); ++j) {
+                CardItem* c = human->getCards()->at(j);
+                if (c->createImg() == item && c->getPlayable()) {
 
-                // TODO: Sometimes the Jack isnt the card you can choose a color, we wanted it to let the player modify the action cards
-                if (c->getCard().getValue() == Card::cardValue::JACK) {
-                    Card::cardSuit chosenColor(chooseColor());
+                    // TODO: Sometimes the Jack isnt the card you can choose a color, we wanted it to let the player modify the action cards
+                    if (c->getCard().getValue() == Card::cardValue::JACK) {
+                        Card::cardSuit chosenColor(chooseColor());
+                    }
+
+                    updateDepotCard(*c, depot);
+                    human->removeCard(c->getCard());
+                    human->unsetPlayableCards();
+                    qDebug("VIEW: sende playCard()");
+                    human->setUnactive();
+                    emit playCard(depot.getCard());
                 }
-
-                updateDepotCard(*c, depot);
-                human->removeCard(c->getCard());
-                human->unsetPlayableCards();
-                qDebug("VIEW: sende playCard()");
-                human->setUnactive();
-                emit playCard(depot.getCard());
             }
         }
     }
@@ -76,7 +79,7 @@ void Playground::createPlayer(const vector<Card>& humanPlayerCards, vector<int> 
     PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, "Icke");
     players.insert(PlayerItem::direction::HUMAN, human);
 
-    for (unsigned int i = 0; i < otherPlayerCardCount.size()+1; i++) {
+    for (unsigned int i = 0; i < otherPlayerCardCount.size() + 1; i++) {
         switch (i) {
         case 1: {
             PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount[0], center, "Yoda");
@@ -180,7 +183,7 @@ void Playground::playerPlaysCard(int player, const Card& playedCard)
     p->setActive();
     //TODO: ist irgendwie falsch, er wird die gespielte Karte nie finden, da die View die Karten nicht kennt und nur SpecialCards also Blaue Hintergründe hält
     // für diesen Spieler, deshalb kommt einfach die last() Karte zurück
-    CardItem* dummyCard = p->findCard(playedCard,true);
+    CardItem* dummyCard = p->findCard(playedCard, true);
     CardItem _playedCard(playedCard);
     addItem(_playedCard.createImg());
     _playedCard.setPos(dummyCard->getX(), dummyCard->getY());
@@ -250,11 +253,12 @@ Card::cardSuit Playground::chooseColor()
 
 void Playground::rearrangeLayout()
 {
-
-    QHash<PlayerItem::direction, PlayerItem*>::iterator i = players.begin();
-    for (i = players.begin(); i != players.end(); ++i) {
-        PlayerItem* p = players.value(i.key());
-        p->rearrangePlayer(this->sceneRect().center());
+    if (players.size() > 0) {
+        QHash<PlayerItem::direction, PlayerItem*>::iterator i = players.begin();
+        for (i = players.begin(); i != players.end(); ++i) {
+            PlayerItem* p = players.value(i.key());
+            p->rearrangePlayer(this->sceneRect().center());
+        }
+        this->setDepotNStack();
     }
-    this->setDepotNStack();
 }

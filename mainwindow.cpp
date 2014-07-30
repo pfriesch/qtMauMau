@@ -21,23 +21,23 @@ void MainWindow::setupGraphicsView()
 {
     playground = new Playground();
     QGraphicsView* view = new QGraphicsView(this);
-    playground->setSceneRect(0,0, this->width()-50, this->height()-50);
-    playground->startGame();
+    playground->setSceneRect(0, 0, this->width() - 50, this->height() - 50);
     view->setScene(playground);
     setCentralWidget(view);
-
-}
-Playground *MainWindow::getPlayground() const
-{
-    return playground;
 }
 
-void MainWindow::resizeEvent (QResizeEvent *event)
+void MainWindow::setupGameController()
 {
-        playground->setSceneRect(0,0, event->size().width()-50, event->size().height()-50);
+    gc = new GameController();
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+    if (playground != NULL) {
+        playground->setSceneRect(0, 0, event->size().width() - 50, event->size().height() - 50);
         playground->rearrangeLayout();
+    }
 }
-
 
 /**
  * Setup the Menubar for the MainWindow
@@ -51,8 +51,9 @@ void MainWindow::setupMenuBar()
     QMenu* fileMenu = new QMenu(QMenu::tr("File"));
     menuBar->addMenu(fileMenu);
 
-    QAction* startGameMenu = new QAction(QAction::tr("Start Game"), this);
-    fileMenu->addAction(startGameMenu);
+    QAction* startLocalGameMenu = new QAction(QAction::tr("Start Local Game"), this);
+    connect(startLocalGameMenu, SIGNAL(triggered()), this, SLOT(startGameAsLocal()));
+    fileMenu->addAction(startLocalGameMenu);
 
     QAction* connectToServerMenu = new QAction(QAction::tr("Connect to Server..."), this);
     fileMenu->addAction(connectToServerMenu);
@@ -80,6 +81,60 @@ void MainWindow::setupMenuBar()
     menuBar->addMenu(infoMenu);
 
     setMenuBar(menuBar);
+}
+
+void MainWindow::resetGame(){
+
+}
+
+void MainWindow::connectSignalsForLocal()
+{
+    // From GameController(Logic) ----> Playground(View)
+    QObject::connect(gc, &GameController::initPlayground, playground, &Playground::initPlayground);
+    QObject::connect(gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
+
+    //From Playground(View) ---> GameController(View)
+    QObject::connect(playground, &Playground::playCard, gc, &GameController::playCard);
+    QObject::connect(playground, &Playground::drawCard, gc, &GameController::drawCard);
+}
+
+void MainWindow::connectSignalsForServer()
+{
+    // From GameController(Logic) ----> Playground(View)
+    QObject::connect(gc, &GameController::initPlayground, playground, &Playground::initPlayground);
+    QObject::connect(gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
+
+    //From Playground(View) ---> GameController(View)
+    QObject::connect(playground, &Playground::playCard, gc, &GameController::playCard);
+    QObject::connect(playground, &Playground::drawCard, gc, &GameController::drawCard);
+}
+
+void MainWindow::startGameAsLocal()
+{
+    setupGameController();
+    connectSignalsForLocal();
+    playground->startGame();
+    gc->gameInit();
+
+}
+
+void MainWindow::startGameAsServer()
+{
+    resetGame();
+    setupGameController();
+    connectSignalsForServer();
+    playground->startGame();
+    gc->gameInit();
+}
+
+void MainWindow::startGameAsClient()
+{
 }
 
 MainWindow::~MainWindow()

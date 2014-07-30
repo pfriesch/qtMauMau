@@ -39,13 +39,15 @@ public:
     void setPos(qreal _x, qreal _y);
     qreal getX() const;
     qreal getY() const;
+    bool getPlayable() const;
+    void setPlayable(bool value);
     ~CardItem();
-
 
 private:
     std::string getSpecialCardName();
     std::string getNormalCardName();
 
+    bool playable = false;
     std::string imgExtension;
     std::string deckNumber;
     CardItem::specialCards specialCode = specialCards::NOT_USED;

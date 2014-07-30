@@ -17,18 +17,28 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
-    Playground *getPlayground() const;
     void resizeEvent (QResizeEvent *event);
-    private
-    slots:
 
 private:
     void setupMenuBar();
     void setupGraphicsView();
-    Playground *playground;
+    void connectSignalsForLocal();
+    void connectSignalsForServer();
+    void setupGameController();
+
+    void resetGame();
+
+    GameController *gc = NULL;
+    Playground *playground = NULL;
     OptionDialog* optionDialog;
     ConnectToServer* connectToServer;
     CreateServerDialog* createServerDialog;
+
+    //Game Starts
+private slots:
+    void startGameAsLocal();
+    void startGameAsServer();
+    void startGameAsClient();
 };
 
 #endif // MAINWINDOW_H

@@ -113,7 +113,7 @@ void PlayerItem::rearrangePlayer(QPointF centerPoint)
         } else {
             x += cardGap;
         }
-        if(this->getCards()->at(i)->getGraphicsItem()->flags() == QGraphicsItem::ItemIsSelectable){
+        if(this->getCards()->at(i)->getPlayable()){
             std::vector<Card> v;
             this->getCards()->at(i)->setPos(x, y);
             v.push_back(this->getCards()->at(i)->getCard());
@@ -130,17 +130,17 @@ void PlayerItem::setPlayableCards(std::vector<Card> playableCards)
     for (unsigned int i = 0; i < playableCards.size(); ++i) {
         CardItem *cardItem = findCard(playableCards.at(i));
         cardItem->setPos(cardItem->getX(), cardItem->getY() - offsetPlayableCard);
-        cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cardItem->setPlayable(true);
     }
 }
 
 void PlayerItem::unsetPlayableCards()
 {
     for (int i = 0; i < cards->size(); ++i) {
-        if (cards->at(i)->getGraphicsItem()->flags() == QGraphicsItem::ItemIsSelectable) {
+        if (cards->at(i)->getPlayable()) {
             CardItem* cardItem = cards->at(i);
             cardItem->setPos(cardItem->getX(), cardItem->getY() + offsetPlayableCard);
-            cardItem->getGraphicsItem()->setFlag(QGraphicsItem::ItemIsSelectable, false);
+            cardItem->setPlayable(false);
         }
     }
 }

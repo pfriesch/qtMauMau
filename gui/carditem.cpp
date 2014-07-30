@@ -131,6 +131,16 @@ std::string CardItem::getNormalCardName()
 
     return imgName;
 }
+bool CardItem::getPlayable() const
+{
+    return playable;
+}
+
+void CardItem::setPlayable(bool value)
+{
+    playable = value;
+}
+
 
 qreal CardItem::getX() const
 {
