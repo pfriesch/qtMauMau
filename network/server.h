@@ -8,6 +8,8 @@
 #include <QString>
 #include <QHash>
 
+#include "gameLogic/remoteplayer.h"
+
 class Server : public QObject {
     Q_OBJECT
 public:
@@ -15,14 +17,18 @@ public:
     ~Server();
 public
 slots:
+    void startServer(int playerCount = 3);
     void acceptConnection();
     void startRead();
     void send(int playerId, QString message);
 
+signals:
+    void newConnection(QString adress, int connectionIndex, QString name);
+
 private:
-    QHash<int,QTcpSocket* > connections;
+    QVector<RemotePlayer*> players;
+    QHash<int, QTcpSocket*> connections;
     QTcpServer server;
-    QTcpSocket* client;
 };
 
 #endif

@@ -11,7 +11,7 @@ class Client : public QObject {
 public:
     Client(QObject* parent = 0);
     ~Client();
-    void setupConnection(QHostAddress address);
+    void setupConnection(QString _address, QString _port);
 public
 slots:
     void write();

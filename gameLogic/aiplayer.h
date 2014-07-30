@@ -13,8 +13,6 @@ public:
     void reciveCard(const Card& card);
     int getCardCount() const;
 
-private:
-    bool didTurn = false;
 };
 
 #endif // AIPLAYER_H

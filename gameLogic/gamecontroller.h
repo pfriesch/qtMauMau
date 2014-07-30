@@ -39,9 +39,10 @@ private:
     const Card::cardValue changeDirectCard = Card::TEN;
 
 public:
-    explicit GameController(PLAYER::Name currentPlayer = PLAYER::Name::BOTTOM, int playerCount = 4);
+    explicit GameController(PLAYER::Name startingPlayer = PLAYER::Name::BOTTOM);
+    void localGame(int playerCount = 4);
+    void networkGame();
     void gameInit();
-
     void playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit);
     void drawCard(PLAYER::Name pName);
 

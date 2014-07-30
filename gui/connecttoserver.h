@@ -8,20 +8,22 @@ namespace Ui {
 class ConnectToServer;
 }
 
-class ConnectToServer : public QDialog
-{
+class ConnectToServer : public QDialog {
     Q_OBJECT
 
 public:
-    explicit ConnectToServer(QWidget *parent = 0);
+    explicit ConnectToServer(QWidget* parent = 0);
     ~ConnectToServer();
 
-private slots:
-    void acceptButton();
-    void rejectButton();
+signals:
+  void connectToServer(QString adress, QString port);
+
+private
+slots:
+    void on_connectbtn_clicked();
 
 private:
-    Ui::ConnectToServer *ui;
+    Ui::ConnectToServer* ui;
 };
 
 #endif // CONNECTTOSERVER_H

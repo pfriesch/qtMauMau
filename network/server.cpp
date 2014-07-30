@@ -15,9 +15,10 @@ Server::Server(QObject* parent)
 void Server::acceptConnection()
 {
     qDebug() << "Server acceptedConection";
-    client = server.nextPendingConnection();
-    connections.insert(1,client);
+    QTcpSocket* client = server.nextPendingConnection();
+    connections.insert(1, client);
 
+    emit newConnection(client->peerAddress().toString(), 1, "hans");
     connect(client, SIGNAL(readyRead()), this, SLOT(startRead()));
 }
 
@@ -26,7 +27,7 @@ void Server::startRead()
     qDebug() << "start reading from Client";
 
     char buffer[1024] = { 0 };
-    client->read(buffer, client->bytesAvailable());
+    connections[0]->read(buffer, connections[0]->bytesAvailable());
     qDebug() << buffer;
     //we have to write the buffer to an object or something,
     //not implemented yet!!
@@ -35,7 +36,7 @@ void Server::startRead()
 void Server::send(int playerId, QString message)
 {
 
-    QTcpSocket *connection = connections.value(1);
+    QTcpSocket* connection = connections.value(1);
     connection->write(message.toStdString().c_str());
     connection->flush();
 }
@@ -43,4 +44,8 @@ void Server::send(int playerId, QString message)
 Server::~Server()
 {
     server.close();
+}
+
+void Server::startServer(int playerCount)
+{
 }

@@ -52,12 +52,10 @@ void MainWindow::setupMenuBar()
 
     QAction* connectToServerMenu = new QAction(QAction::tr("Connect to Server..."), this);
     fileMenu->addAction(connectToServerMenu);
-    connectToServer = new ConnectToServer;
-    connect(connectToServerMenu, SIGNAL(triggered()), connectToServer, SLOT(show()));
+    connect(connectToServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsClient()));
 
     QAction* createServerMenu = new QAction(QAction::tr("Create Server..."), this);
-    createServerDialog = new CreateServerDialog;
-    connect(createServerMenu, SIGNAL(triggered()), createServerDialog, SLOT(show()));
+    connect(createServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsServer()));
     fileMenu->addAction(createServerMenu);
 
     QAction* optionsMenu = new QAction(QAction::tr("Options..."), this);
@@ -78,8 +76,8 @@ void MainWindow::setupMenuBar()
     setMenuBar(menuBar);
 }
 
-void MainWindow::resetGame(){
-
+void MainWindow::resetGame()
+{
 }
 
 void MainWindow::connectSignalsForLocal()
@@ -113,6 +111,7 @@ void MainWindow::connectSignalsForServer()
 void MainWindow::startGameAsLocal()
 {
     gc = new GameController();
+    gc->localGame();
     humanPlayer = static_cast<HumanPlayer*>(gc->getBottomPlayer());
     connectSignalsForLocal();
     playground->startGame();
@@ -121,7 +120,13 @@ void MainWindow::startGameAsLocal()
 
 void MainWindow::startGameAsServer()
 {
-    resetGame();
+
+    server = new Server();
+    createServerDialog = new CreateServerDialog;
+    connect(server, &Server::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
+
+    createServerDialog->show();
+    // resetGame();
     //connectSignalsForServer();
     //playground->startGame();
     //gc = new GameController();
@@ -130,6 +135,10 @@ void MainWindow::startGameAsServer()
 
 void MainWindow::startGameAsClient()
 {
+    client = new Client();
+    connectToServer = new ConnectToServer;
+    connect(connectToServer, &ConnectToServer::connectToServer, client, &Client::setupConnection);
+    connectToServer->show();
 }
 
 MainWindow::~MainWindow()

@@ -5,30 +5,29 @@
 Client::Client(QObject* parent)
     : QObject(parent)
 {
-
 }
 
-void Client::setupConnection(QHostAddress address)
+void Client::setupConnection(QString _address, QString _port)
 {
-    int port(Settings::getInstance()->getProperty("network/port").toInt());
+    QHostAddress address = QHostAddress(_address);
+    qint16 port = _port.toInt();
 
     client->connectToHost(address, port);
 
     connect(client, SIGNAL(connected()), this, SLOT(write()));
     connect(client, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(OnError()));
     //connect(&client, SIGNAL(readyRead()), this, SLOT(read()));
-
 }
 
 void Client::write()
 {
 
-//    if (client->error()) {
-//        qCritical() << client->error();
-//        qCritical() << client->errorString();
-//        qCritical() << client->state();
+    //    if (client->error()) {
+    //        qCritical() << client->error();
+    //        qCritical() << client->errorString();
+    //        qCritical() << client->state();
 
-//    }
+    //    }
 
     //write HelloWorld is just a dummy
     client->write("Hallo Piiiiiiiuuuuuuuuusssss", 50);

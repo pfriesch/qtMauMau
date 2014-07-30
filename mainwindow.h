@@ -7,6 +7,8 @@
 #include "gui/connecttoserver.h"
 #include "gui/createserverdialog.h"
 #include "gameLogic/humanplayer.h"
+#include "network/server.h"
+#include "network/client.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +20,7 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
-    void resizeEvent (QResizeEvent *event);
+    void resizeEvent(QResizeEvent* event);
 
 private:
     void setupMenuBar();
@@ -28,15 +30,18 @@ private:
 
     void resetGame();
 
-    HumanPlayer *humanPlayer = NULL;
-    Playground *playground = NULL;
-    GameController *gc = NULL;
+    HumanPlayer* humanPlayer = NULL;
+    Playground* playground = NULL;
+    GameController* gc = NULL;
     OptionDialog* optionDialog;
     ConnectToServer* connectToServer;
     CreateServerDialog* createServerDialog;
+    Server* server;
+    Client* client;
 
     //Game Starts
-private slots:
+private
+slots:
     void startGameAsLocal();
     void startGameAsServer();
     void startGameAsClient();
