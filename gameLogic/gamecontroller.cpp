@@ -23,7 +23,7 @@ void GameController::gameInit()
 {
     cardStack.shuffle();
     std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >();
-    for (int i = 0; i < players.size(); i++) {
+    for (unsigned i = 0; i < players.size(); i++) {
         playerCards->push_back(std::vector<Card>());
         for (int j = 0; j < 5; j++) {
             playerCards->at(i).push_back(cardStack.getLast(cardDepot));
@@ -39,43 +39,30 @@ void GameController::gameInit()
 
         players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, currentPlayer);
     }
-    players.at(static_cast<int>(currentPlayer))->doTurn(Card::NONE);
+    players.at(currentPlayer)->doTurn(Card::NONE);
 }
 
 void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit)
 {
-    this->wishedSuit = whishedSuit;
-    cardDepot.pushCard(card);
-    foreach(Player * player, players)
-    {
-        if (player->getPName() != pName) {
-            player->otherPlaysCard(pName, cardDepot.back());
+    if (currentPlayer == pName) {
+        this->wishedSuit = whishedSuit;
+        cardDepot.pushCard(card);
+        foreach(Player * player, players)
+        {
+            if (player->getPName() != pName) {
+                player->otherPlaysCard(pName, cardDepot.back());
+            }
         }
+        setFlags(card);
+        nextTurn();
     }
-    nextTurn();
 }
 
 void GameController::drawCard(PLAYER::Name pName)
 {
-    if (!currentPlayerDrewCard) {
-        players[static_cast<int>(pName)]->reciveCard(cardStack.getLast(cardDepot));
-        currentPlayerDrewCard = true;
-        foreach(Player * player, players)
-        {
-            if (player->getPName() != pName) {
-                player->otherDrawsCard(pName);
-            }
-        }
-    }
-    players[pName]->doTurn(wishedSuit);
-}
-
-void GameController::doNothing(PLAYER::Name pName)
-{
-
-    if (!currentPlayerDrewCard) {
-        drawCard(pName);
-    } else {
+    if (currentPlayer == pName) {
+        playerDrawCard(pName);
+        handleDraw2x();
         nextTurn();
     }
 }
@@ -87,58 +74,52 @@ Player* GameController::getBottomPlayer()
 
 void GameController::nextTurn()
 {
-    setFlags(cardDepot.back());
+    setNextPlayer();
     qDebug() << "Next Payer: " << currentPlayer;
     players[currentPlayer]->doTurn(wishedSuit);
 }
 
 void GameController::setFlags(const Card& card)
 {
-    currentPlayerDrewCard = false;
-
     if (card.getValue() == changeDirectCard) {
-        if (changedDirection == true) {
+        if (changedDirection) {
             changedDirection = false;
         } else {
             changedDirection = true;
         }
-    } else if (card.getValue() == skipNextCard) {
-        skipNextPlayer = true;
-    } else if (card.getValue() == wishSuitCard) {
-        //TODO already handeld by play card. need to change?
-    } else if (card.getValue() == draw2xCard || draw2x) {
-        //TODO draw2x not rly working since u usually draw befor u play
+    }
+    if (card.getValue() == wishSuitCard) {
+        //already handled by play card
+    }
+    if (card.getValue() == draw2xCard) {
         if (draw2x) {
-            if (card.getValue() == draw2xCard) {
-                draw2xCount = draw2xCount + 2;
-            } else {
-                for (int i = 0; i < draw2xCount; ++i) {
-                    drawCard(currentPlayer);
-                    currentPlayerDrewCard = false;
-                }
-                draw2x = false;
-                draw2xCount = 0;
-            }
+            draw2xCount = draw2xCount + 2;
         } else {
             draw2x = true;
             draw2xCount = 2;
         }
+    } else {
+        handleDraw2x();
+    }
+    if (card.getValue() == skipNextCard) {
+        skipNextPlayer = true;
     }
 
-    setNextPlayer();
     if (skipNextPlayer) {
         setNextPlayer();
         skipNextPlayer = false;
     }
+}
 
-    //    bool draw2x = false;
-    //    int draw2xCount = 0;
-
-    //    //special cards
-    //    bool withDraw2xCard = true;
-    //    Card::cardValue draw2xCard = Card::SEVEN;
-    //    bool withWishedSuit = true;
-    //    Card::cardValue wishSuit = Card::JACK;
+void GameController::handleDraw2x()
+{
+    if (draw2x) {
+        for (int i = 0; i < draw2xCount; ++i) {
+            playerDrawCard(currentPlayer);
+        }
+        draw2xCount = 0;
+        draw2x = false;
+    }
 }
 
 void GameController::setNextPlayer()
@@ -155,7 +136,7 @@ void GameController::setNextPlayer()
             currentPlayer = PLAYER::LEFT;
             break;
         case PLAYER::RIGHT:
-            currentPlayer = PLAYER::RIGHT;
+            currentPlayer = PLAYER::TOP;
             break;
         }
     } else {
@@ -172,6 +153,17 @@ void GameController::setNextPlayer()
         case PLAYER::RIGHT:
             currentPlayer = PLAYER::BOTTOM;
             break;
+        }
+    }
+}
+
+void GameController::playerDrawCard(PLAYER::Name pName)
+{
+    players[pName]->reciveCard(cardStack.getLast(cardDepot));
+    foreach(Player * player, players)
+    {
+        if (player->getPName() != pName) {
+            player->otherDrawsCard(pName);
         }
     }
 }

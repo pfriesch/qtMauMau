@@ -27,7 +27,6 @@ private:
     int draw2xCount = 0;
     bool skipNextPlayer = false;
     //TODO always 4 players, 4+ players unregarded
-    bool currentPlayerDrewCard = false;
 
     //special cards
 
@@ -45,7 +44,6 @@ public:
 
     void playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit);
     void drawCard(PLAYER::Name pName);
-    void doNothing(PLAYER::Name pName);
 
     Player* getBottomPlayer();
 
@@ -53,8 +51,8 @@ private:
     void nextTurn();
     void setFlags(const Card& card);
     void setNextPlayer();
-    void otherPlayerDrawsCard(PLAYER::Name pName);
-    void otherPlayerPlaysCard(PLAYER::Name pName, const Card& card);
+    void playerDrawCard(PLAYER::Name pName);
+    void handleDraw2x();
 };
 
 #endif // GAMECONTROLLER_H

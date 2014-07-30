@@ -16,8 +16,3 @@ void GameControllerProxy::drawCard()
 {
     gameContr->drawCard(pName);
 }
-
-void GameControllerProxy::doNothing()
-{
-    gameContr->doNothing(pName);
-}

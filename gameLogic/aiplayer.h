@@ -12,6 +12,9 @@ public:
     void gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer);
     void reciveCard(const Card& card);
     int getCardCount() const;
+
+private:
+    bool didTurn = false;
 };
 
 #endif // AIPLAYER_H

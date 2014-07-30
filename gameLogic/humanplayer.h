@@ -27,6 +27,6 @@ public
 slots:
     void UIplaysCard(const Card& card);
     void UIdrawsCard();
-    void UIdoesNothing();
+
 };
 #endif // HUMANPLAYER_H
