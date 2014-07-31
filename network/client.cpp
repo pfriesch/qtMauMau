@@ -35,7 +35,17 @@ void Client::write()
 
 void Client::OnError()
 {
-    qDebug() << "error";
+  qDebug() << "error";
+}
+
+void Client::UIplaysCard(const Card &card)
+{
+
+}
+
+void Client::UIdrawsCard()
+{
+
 }
 /*
 void Client::read(){

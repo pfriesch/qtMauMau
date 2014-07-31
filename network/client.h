@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QString>
 #include <QTcpSocket>
+#include "gameLogic/Card.h"
+#include "gameLogic/PlayerName.h"
 
 class Client : public QObject {
     Q_OBJECT
@@ -15,10 +17,22 @@ public:
 public
 slots:
     void write();
-   // void read();
+    // void read();
     void OnError();
 
+signals:
+    void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer);
+    void UIdoTurn(std::vector<Card> playableCards, Card::cardSuit wishSuitCard);
+    void UIplayerPlaysCard(PLAYER::Name pName, const Card& playedCard);
+    void UIplayerDrawsCard(PLAYER::Name pName);
+    void UIaddPlayerCard(const Card& card);
+
+public
+slots:
+    void UIplaysCard(const Card& card);
+    void UIdrawsCard();
+
 private:
-    QTcpSocket *client = new QTcpSocket();
+    QTcpSocket* client = new QTcpSocket();
 };
 #endif

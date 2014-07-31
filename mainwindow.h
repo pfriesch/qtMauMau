@@ -30,6 +30,7 @@ private:
     void setupGraphicsView();
     void connectSignalsForLocal();
     void connectSignalsForServer(std::vector<Player*> remotePlayers);
+    void connectSignalsForClient();
 
     void resetGame();
 

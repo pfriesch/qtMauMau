@@ -123,6 +123,20 @@ void MainWindow::connectSignalsForServer(std::vector<Player*> remotePlayers)
     }
 }
 
+void MainWindow::connectSignalsForClient()
+{
+    // From HumandPlayer(Logic) ----> Playground(View)
+    QObject::connect(client, &Client::UIinitPlayground, playground, &Playground::initPlayground);
+    QObject::connect(client, &Client::UIdoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(client, &Client::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(client, &Client::UIaddPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(client, &Client::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
+
+    //From Playground(View) ---> HumanPlayer(Logic)
+    QObject::connect(playground, &Playground::playCard, client, &Client::UIplaysCard);
+    QObject::connect(playground, &Playground::drawCard, client, &Client::UIdrawsCard);
+}
+
 void MainWindow::startGameAsLocal()
 {
     resetGame();
