@@ -93,23 +93,39 @@ void MainWindow::connectSignalsForLocal()
     QObject::connect(playground, &Playground::playCard, humanPlayer, &HumanPlayer::UIplaysCard);
     QObject::connect(playground, &Playground::drawCard, humanPlayer, &HumanPlayer::UIdrawsCard);
 }
-/*
-void MainWindow::connectSignalsForServer()
-{
-    // From GameController(Logic) ----> Playground(View)
-    QObject::connect(gc, &GameController::initPlayground, playground, &Playground::initPlayground);
-    QObject::connect(gc, &GameController::playerDoTurn, playground, &Playground::playerDoTurn);
-    QObject::connect(gc, &GameController::playerPlaysCard, playground, &Playground::playerPlaysCard);
-    QObject::connect(gc, &GameController::addPlayerCard, playground, &Playground::addPlayerCard);
-    QObject::connect(gc, &GameController::playerDrawsCard, playground, &Playground::playerDrawsCard);
 
-    //From Playground(View) ---> GameController(View)
-    QObject::connect(playground, &Playground::playCard, gc, &GameController::playCard);
-    QObject::connect(playground, &Playground::drawCard, gc, &GameController::drawCard);
+void MainWindow::connectSignalsForServer(std::vector<Player*> remotePlayers)
+{
+    // From HumandPlayer(Logic) ----> Playground(View)
+    QObject::connect(humanPlayer, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
+    QObject::connect(humanPlayer, &HumanPlayer::UIdoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(humanPlayer, &HumanPlayer::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(humanPlayer, &HumanPlayer::UIaddPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(humanPlayer, &HumanPlayer::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
+
+    //From Playground(View) ---> HumanPlayer(Logic)
+    QObject::connect(playground, &Playground::playCard, humanPlayer, &HumanPlayer::UIplaysCard);
+    QObject::connect(playground, &Playground::drawCard, humanPlayer, &HumanPlayer::UIdrawsCard);
+
+    foreach(Player * remotePlayer, remotePlayers)
+    {
+        RemotePlayer* _remotePlayer = static_cast<RemotePlayer*>(remotePlayer);
+        // From RemotePlayer(Logic) ----> Server(Network)
+        connect(_remotePlayer, &RemotePlayer::RemoteInitPlayground, server, &Server::RemoteInitPlayground);
+        connect(_remotePlayer, &RemotePlayer::RemoteDoTurn, server, &Server::RemoteDoTurn);
+        connect(_remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &Server::RemotePlayerPlaysCard);
+        connect(_remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &Server::RemotePlayerDrawsCard);
+        connect(_remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &Server::RemoteAddPlayerCard);
+
+        // From  Server(Network) ----> RemotePlayer(Logic)
+        connect(server, &Server::RemotePlaysCard, _remotePlayer, &RemotePlayer::RemotePlaysCard);
+        connect(server, &Server::RemoteDrawsCard, _remotePlayer, &RemotePlayer::RemoteDrawsCard);
+    }
 }
-*/
+
 void MainWindow::startGameAsLocal()
 {
+    resetGame();
     gc = new GameController();
     gc->localGame();
     humanPlayer = static_cast<HumanPlayer*>(gc->getBottomPlayer());
@@ -124,17 +140,32 @@ void MainWindow::startGameAsServer()
     server = new Server();
     createServerDialog = new CreateServerDialog;
     connect(server, &Server::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
-
+    connect(createServerDialog, &CreateServerDialog::startNetworkGame, this, &MainWindow::startNetworkGame);
     createServerDialog->show();
-    // resetGame();
-    //connectSignalsForServer();
-    //playground->startGame();
-    //gc = new GameController();
-    //gc->gameInit();
+}
+
+void MainWindow::startNetworkGame()
+{
+    resetGame();
+
+    playground->startGame();
+    gc = new GameController();
+
+    std::vector<Player*> remotePlayers;
+    for (int i = 0; i < server->getConnections().size(); ++i) {
+        remotePlayers.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
+    }
+    gc->networkGame(remotePlayers);
+    humanPlayer = static_cast<HumanPlayer*>(gc->getBottomPlayer());
+    connectSignalsForServer(remotePlayers);
+
+    playground->startGame();
+    gc->gameInit();
 }
 
 void MainWindow::startGameAsClient()
 {
+    resetGame();
     client = new Client();
     connectToServer = new ConnectToServer;
     connect(connectToServer, &ConnectToServer::connectToServer, client, &Client::setupConnection);

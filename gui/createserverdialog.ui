@@ -181,19 +181,6 @@
     <string>Port:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="currentipaddresslbl">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>40</y>
-     <width>46</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>0.0.0.0</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="currentportlbl">
    <property name="geometry">
     <rect>
@@ -205,6 +192,19 @@
    </property>
    <property name="text">
     <string>0</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="currentIPadrBox">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>40</y>
+     <width>111</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="currentText">
+    <string/>
    </property>
   </widget>
  </widget>

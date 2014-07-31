@@ -9,26 +9,39 @@
 #include <QHash>
 
 #include "gameLogic/remoteplayer.h"
+#include "gameLogic/PlayerName.h"
 
 class Server : public QObject {
     Q_OBJECT
 public:
     Server(QObject* parent = 0);
     ~Server();
+    QHash<int, QTcpSocket*> getConnections() const;
+
 public
 slots:
-    void startServer(int playerCount = 3);
     void acceptConnection();
-    void startRead();
-    void send(int playerId, QString message);
+//    void startRead();
+//    void send(int playerId, QString message);
 
 signals:
     void newConnection(QString adress, int connectionIndex, QString name);
 
 private:
-    QVector<RemotePlayer*> players;
     QHash<int, QTcpSocket*> connections;
     QTcpServer server;
+
+public
+slots:
+    void RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer);
+    void RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> playableCards, Card::cardSuit wishSuitCard);
+    void RemotePlayerPlaysCard(PLAYER::Name pName, const Card& playedCard);
+    void RemotePlayerDrawsCard(PLAYER::Name pName);
+    void RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card);
+
+signals:
+    void RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card);
+    void RemoteDrawsCard(PLAYER::Name remotePlayerName);
 };
 
 #endif

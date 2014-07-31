@@ -13,6 +13,8 @@ class CreateServerDialog : public QDialog {
 public:
     explicit CreateServerDialog(QWidget* parent = 0);
     ~CreateServerDialog();
+signals:
+  void startNetworkGame();
 
 public
 slots:
@@ -20,9 +22,9 @@ slots:
 
 private
 slots:
+    void on_startgamebtn_clicked();
 
-    void acceptButton();
-    void rejectButton();
+    void on_cancelbtn_clicked();
 
 private:
     Ui::CreateServerDialog* ui;

@@ -23,7 +23,7 @@ void AIPlayer::doTurn(Card::cardSuit wishSuitCard)
         dropCard(playableCards.at(0));
         gameController.playCard(playCard);
     } else {
-        drewCard = true;
+
         gameController.drawCard();
     }
 }

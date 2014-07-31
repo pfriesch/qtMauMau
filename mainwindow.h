@@ -21,12 +21,15 @@ public:
     explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
     void resizeEvent(QResizeEvent* event);
+public
+slots:
+    void startNetworkGame();
 
 private:
     void setupMenuBar();
     void setupGraphicsView();
     void connectSignalsForLocal();
-    void connectSignalsForServer();
+    void connectSignalsForServer(std::vector<Player*> remotePlayers);
 
     void resetGame();
 

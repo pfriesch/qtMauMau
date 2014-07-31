@@ -2,6 +2,7 @@
 #include "gamecontrollerproxy.h"
 #include "humanplayer.h"
 #include "aiplayer.h"
+#include "remoteplayer.h"
 
 #include <QDebug>
 
@@ -9,22 +10,26 @@ GameController::GameController(PLAYER::Name startingPlayer)
     : cardStack(Deck::FULL)
     , currentPlayer(startingPlayer)
 {
-
 }
 
 void GameController::localGame(int playerCount)
 {
-  if (playerCount < 2 || playerCount > 4) {
-      throw std::invalid_argument("playercount has to be between 2 and 4");
-  }
-    players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
-    for (int i = 1; i < playerCount; ++i) {
-        players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
+    if (playerCount < 2 || playerCount > 4) {
+        throw std::invalid_argument("playercount has to be between 2 and 4");
+    } else {
+        players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
+        for (int i = 1; i < playerCount; ++i) {
+            players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
+        }
     }
 }
 
-void GameController::networkGame()
+void GameController::networkGame(std::vector<Player*> remotePlayers)
 {
+    players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
+    for (int i = 0; i < remotePlayers.size(); ++i) {
+        players.push_back(static_cast<HumanPlayer*>(remotePlayers.at(i)));
+    }
 }
 
 void GameController::gameInit()

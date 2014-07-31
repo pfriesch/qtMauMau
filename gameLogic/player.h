@@ -15,7 +15,6 @@ protected:
     std::string name;
     PLAYER::Name pName;
     Card topCard;
-    bool drewCard = false;
     GameControllerProxy gameController;
 
 public:

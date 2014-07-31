@@ -42,16 +42,11 @@ int HumanPlayer::getCardCount() const
 void HumanPlayer::UIplaysCard(const Card& card)
 {
     dropCard(card);
-    drewCard = false;
+
     gameController.playCard(card);
 }
 
 void HumanPlayer::UIdrawsCard()
 {
-    if (!drewCard) {
-        drewCard = true;
-        gameController.drawCard();
-    } else {
-        //cant draw card
-    }
+    gameController.drawCard();
 }
