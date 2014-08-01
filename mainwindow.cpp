@@ -6,11 +6,21 @@
 #include <QBrush>
 #include "gui/playground.h"
 #include "settings.h"
+#include "gui/setnamedialog.h"
 
 MainWindow::MainWindow(QWidget* parent)
 {
     setupMenuBar();
     setupGraphicsView();
+    //if(Settings::getInstance()->getProperty("common/changed_playername").toInt(0,10) == 0){
+    //    showNameDialog();
+    //}
+}
+
+void MainWindow::showNameDialog(){
+    SetNameDialog *dialog = new SetNameDialog();
+    dialog->setModal(true);
+    dialog->show();
 }
 
 /**
@@ -60,8 +70,7 @@ void MainWindow::setupMenuBar()
 
     QAction* optionsMenu = new QAction(QAction::tr("Options..."), this);
 
-    optionDialog = new OptionDialog;
-    connect(optionsMenu, SIGNAL(triggered()), optionDialog, SLOT(show()));
+    connect(optionsMenu, SIGNAL(triggered()), this, SLOT(showOptionDialog()));
 
     fileMenu->addAction(optionsMenu);
 
@@ -184,6 +193,11 @@ void MainWindow::startGameAsClient()
     connectToServer = new ConnectToServer;
     connect(connectToServer, &ConnectToServer::connectToServer, client, &Client::setupConnection);
     connectToServer->show();
+}
+
+void MainWindow::showOptionDialog(){
+    optionDialog = new OptionDialog;
+    optionDialog->show();
 }
 
 MainWindow::~MainWindow()

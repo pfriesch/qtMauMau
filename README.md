@@ -1,7 +1,7 @@
 qtMauMau
 
 
-==Custom Build Steps:==
+Custom Build Steps:
 
 What you need is a custom build step.
 
@@ -19,7 +19,7 @@ Folgende Funktionen sind implementiert oder kommen noch.
 1) (1 point) Es können mindestens 2 Menschen gegeneinander oder gegen einen Computer
 spielen.
 
-2) (1 point) Menschliche Spieler sollen vor Spielbeginn in der GUI ihre(n) Namen eingeben.
+~~2) (1 point) Menschliche Spieler sollen vor Spielbeginn in der GUI ihre(n) Namen eingeben.~~
 
 3) (2 point) Für die Spielkarten sollen mehrere Designs zur Auswahl stehen.
 

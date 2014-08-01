@@ -23,6 +23,7 @@
 #include <gui/animatedgraphicsscene.h>
 #include <gui/choosecolordialog.h>
 #include <gameLogic/PlayerName.h>
+#include <settings.h>
 
 class Playground : public AnimatedGraphicsScene {
     Q_OBJECT

@@ -32,12 +32,14 @@ private:
     void connectSignalsForServer(std::vector<Player*> remotePlayers);
     void connectSignalsForClient();
 
+    void showNameDialog();
+
     void resetGame();
 
     HumanPlayer* humanPlayer = NULL;
     Playground* playground = NULL;
     GameController* gc = NULL;
-    OptionDialog* optionDialog;
+    OptionDialog *optionDialog;
     ConnectToServer* connectToServer;
     CreateServerDialog* createServerDialog;
     Server* server;
@@ -49,6 +51,7 @@ slots:
     void startGameAsLocal();
     void startGameAsServer();
     void startGameAsClient();
+    void showOptionDialog();
 };
 
 #endif // MAINWINDOW_H

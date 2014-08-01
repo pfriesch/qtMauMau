@@ -43,6 +43,8 @@ SOURCES += main.cpp\
     gui/createserverdialog.cpp \
     network/serverproxy.cpp \
     network/maumauprotokoll.cpp
+    gui/setnamedialog.cpp
+
 
 
 
@@ -74,13 +76,16 @@ HEADERS  += mainwindow.h \
     gui/createserverdialog.h \
     network/serverproxy.h \
     network/maumauprotokoll.h
+    gui/setnamedialog.h
+
 
 
 FORMS    += \
     gui/optiondialog.ui \
     gui/choosecolordialog.ui \
     gui/connecttoserver.ui \
-    gui/createserverdialog.ui
+    gui/createserverdialog.ui \
+    gui/setnamedialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \

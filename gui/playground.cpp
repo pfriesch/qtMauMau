@@ -76,7 +76,7 @@ void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::
 void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount)
 {
     QPointF center = this->sceneRect().center();
-    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, "Icke");
+    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, Settings::getInstance()->getProperty("common/playername"));
     players.insert(PlayerItem::direction::HUMAN, human);
 
     PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center, "Yoda");
