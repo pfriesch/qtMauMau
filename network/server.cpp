@@ -1,6 +1,7 @@
 #include "server.h"
 #include <iostream>
 #include <settings.h>
+#include "maumauprotokoll.h"
 
 Server::Server(QObject* parent)
     : QObject(parent)
@@ -18,7 +19,8 @@ void Server::acceptConnection()
     QTcpSocket* client = server.nextPendingConnection();
     int index = connections.size();
     if (index < 3) {
-        connections.insert(index, client);
+        connect(client, &QTcpSocket::readyRead, this, &Server::readNextData);
+        connections.insert(PLAYER::Name(index), client);
         emit newConnection(client->peerAddress().toString(), index, "hans");
     } else {
         client->write("error max user");
@@ -28,31 +30,48 @@ void Server::acceptConnection()
     //connect(client, SIGNAL(readyRead()), this, SLOT(startRead()));
 }
 
-void Server::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card> &remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card &topDepotCard, PLAYER::Name startingPlayer)
+void Server::readNextData()
 {
 
+    QTcpSocket* client = qobject_cast<QTcpSocket*>(sender());
+
+    PLAYER::Name name = connections.key(client);
+
+    QString message = client->readLine();
+    QStringList messageSplit = message.split(";");
+    switch (MMP::toServer(messageSplit.at(0).toInt())) {
+    case MMP::PLAY_CARD:
+        emit RemotePlaysCard(name, MMP::stingToCard(messageSplit.at(1)));
+        break;
+    case MMP::DRAW_CARD:
+        emit RemoteDrawsCard(name);
+        break;
+    default:
+        qDebug() << "method not found";
+        break;
+    }
+}
+
+void Server::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer)
+{
 }
 
 void Server::RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> playableCards, Card::cardSuit wishSuitCard)
 {
-
 }
 
-void Server::RemotePlayerPlaysCard(PLAYER::Name pName, const Card &playedCard)
+void Server::RemotePlayerPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
-
 }
 
 void Server::RemotePlayerDrawsCard(PLAYER::Name pName)
 {
-
 }
 
-void Server::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card &card)
+void Server::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card)
 {
-
 }
-QHash<int, QTcpSocket*> Server::getConnections() const
+QHash<PLAYER::Name, QTcpSocket*> Server::getConnections() const
 {
     return connections;
 }

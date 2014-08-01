@@ -32,7 +32,13 @@ slots:
     void UIplaysCard(const Card& card);
     void UIdrawsCard();
 
+private
+slots:
+    void readNextData();
+
 private:
     QTcpSocket* client = new QTcpSocket();
+    void writeNextData(QString data);
+    void handleMessage(QString message);
 };
 #endif
