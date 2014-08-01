@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     gui/choosecolordialog.cpp \
     gui/connecttoserver.cpp \
     gui/createserverdialog.cpp \
-    network/serverproxy.cpp
+    network/serverproxy.cpp \
+    gui/setnamedialog.cpp
 
 
 
@@ -71,14 +72,16 @@ HEADERS  += mainwindow.h \
     gameLogic/PlayerName.h \
     gui/connecttoserver.h \
     gui/createserverdialog.h \
-    network/serverproxy.h
+    network/serverproxy.h \
+    gui/setnamedialog.h
 
 
 FORMS    += \
     gui/optiondialog.ui \
     gui/choosecolordialog.ui \
     gui/connecttoserver.ui \
-    gui/createserverdialog.ui
+    gui/createserverdialog.ui \
+    gui/setnamedialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \

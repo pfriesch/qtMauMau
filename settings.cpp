@@ -33,6 +33,7 @@ Settings* Settings::getInstance()
 void Settings::setProperty(const QString key, const QString value)
 {
     settings->setValue(key.toStdString().c_str(), value);
+    settings->sync();
 }
 
 /**
