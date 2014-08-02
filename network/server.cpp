@@ -17,10 +17,10 @@ void Server::acceptConnection()
 {
     qDebug() << "Server acceptedConection";
     QTcpSocket* client = server.nextPendingConnection();
-    int index = connections.size();
+    int index = clients.size();
     if (index < 3) {
         connect(client, &QTcpSocket::readyRead, this, &Server::readNextData);
-        connections.insert(PLAYER::Name(index), client);
+        clients.insert(PLAYER::Name(index), client);
         emit newConnection(client->peerAddress().toString(), index, "hans");
     } else {
         client->write("error max user");
@@ -35,7 +35,7 @@ void Server::readNextData()
 
     QTcpSocket* client = qobject_cast<QTcpSocket*>(sender());
 
-    PLAYER::Name name = connections.key(client);
+    PLAYER::Name name = clients.key(client);
 
     QString message = client->readLine();
     QStringList messageSplit = message.split(";");
@@ -51,49 +51,82 @@ void Server::readNextData()
         break;
     }
 }
+QHash<PLAYER::Name, QTcpSocket *> Server::getClients() const
+{
+  return clients;
+}
+
 
 void Server::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer)
 {
+    QString message;
+    message.append(MMP::INIT_PLAYGROUND);
+    message.append(";");
+    message.append(MMP::cardVectorToSting(remotePlayerCards));
+    message.append(";");
+    message.append(MMP::playerCardCountToSting(otherPlayerCardCount));
+    message.append(";");
+    message.append(MMP::cardToSting(topDepotCard));
+    message.append(";");
+    message.append(startingPlayer);
+    writeNextData(message, clients[remotePlayerName]);
 }
 
 void Server::RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> playableCards, Card::cardSuit wishSuitCard)
 {
+    QString message;
+    message.append(MMP::DO_TURN);
+    message.append(";");
+    message.append(MMP::cardVectorToSting(playableCards));
+    message.append(";");
+    message.append(wishSuitCard);
+    writeNextData(message, clients[remotePlayerName]);
 }
 
 void Server::RemotePlayerPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
+    QString message;
+    message.append(MMP::OTHER_PLAYS_CARD);
+    message.append(";");
+    message.append(pName);
+    message.append(";");
+    message.append(MMP::cardToSting(playedCard));
+    foreach(QTcpSocket * client, clients)
+    {
+        writeNextData(message, client);
+    }
 }
 
 void Server::RemotePlayerDrawsCard(PLAYER::Name pName)
 {
+    QString message;
+    message.append(MMP::OTHER_PLAYS_CARD);
+    message.append(";");
+    message.append(pName);
+    foreach(QTcpSocket * client, clients)
+    {
+        writeNextData(message, client);
+    }
 }
 
 void Server::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card)
 {
+    QString message;
+    message.append(MMP::ADD_CARD);
+    message.append(";");
+    message.append(MMP::cardToSting(card));
+    writeNextData(message, clients[remotePlayerName]);
 }
-QHash<PLAYER::Name, QTcpSocket*> Server::getConnections() const
+
+void Server::writeNextData(QString data, QTcpSocket* client)
 {
-    return connections;
+    qDebug() << "send Data: " << data;
+    qint64 writtenByteCount = client->write(data.toStdString().c_str());
+    if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
+        //TODO handle network fail
+        qDebug() << "server -> client write failed";
+    }
 }
-
-//void Server::startRead()
-//{
-//    qDebug() << "start reading from Client";
-
-//    char buffer[1024] = { 0 };
-//    connections[0]->read(buffer, connections[0]->bytesAvailable());
-//    qDebug() << buffer;
-//    //we have to write the buffer to an object or something,
-//    //not implemented yet!!
-//}
-
-//void Server::send(int playerId, QString message)
-//{
-
-//    QTcpSocket* connection = connections.value(1);
-//    connection->write(message.toStdString().c_str());
-//    connection->flush();
-//}
 
 Server::~Server()
 {

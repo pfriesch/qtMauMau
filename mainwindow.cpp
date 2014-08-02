@@ -7,7 +7,6 @@
 #include "gui/playground.h"
 #include "settings.h"
 #include "gui/setnamedialog.h"
-
 MainWindow::MainWindow(QWidget* parent)
 {
     setupMenuBar();
@@ -18,9 +17,9 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 void MainWindow::showNameDialog(){
-    SetNameDialog *dialog = new SetNameDialog();
-    dialog->setModal(true);
-    dialog->show();
+//    SetNameDialog *dialog = new SetNameDialog();
+//    dialog->setModal(true);
+//    dialog->show();
 }
 
 /**
@@ -175,7 +174,7 @@ void MainWindow::startNetworkGame()
     gc = new GameController();
 
     std::vector<Player*> remotePlayers;
-    for (int i = 0; i < server->getConnections().size(); ++i) {
+    for (int i = 0; i < server->getClients().size(); ++i) {
         remotePlayers.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
     }
     gc->networkGame(remotePlayers);

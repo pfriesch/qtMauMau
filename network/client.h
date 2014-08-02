@@ -14,11 +14,6 @@ public:
     Client(QObject* parent = 0);
     ~Client();
     void setupConnection(QString _address, QString _port);
-public
-slots:
-    void write();
-    // void read();
-    void OnError();
 
 signals:
     void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer);
@@ -35,9 +30,10 @@ slots:
 private
 slots:
     void readNextData();
+    void OnError();
 
 private:
-    QTcpSocket* client = new QTcpSocket();
+    QTcpSocket* server = new QTcpSocket();
     void writeNextData(QString data);
     void handleMessage(QString message);
 };

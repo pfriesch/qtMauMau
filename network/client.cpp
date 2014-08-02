@@ -13,46 +13,39 @@ void Client::setupConnection(QString _address, QString _port)
     QHostAddress address = QHostAddress(_address);
     qint16 port = _port.toInt();
 
-    client->connectToHost(address, port);
+    server->connectToHost(address, port);
 
     //connect(client, SIGNAL(connected()), this, SLOT(write()));
-    connect(client, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(OnError()));
-    connect(client, &QTcpSocket::readyRead, this, &Client::readNextData);
+    connect(server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(OnError()));
+    connect(server, &QTcpSocket::readyRead, this, &Client::readNextData);
     //connect(&client, SIGNAL(readyRead()), this, SLOT(read()));
-}
-
-void Client::write()
-{
-
-    //    if (client->error()) {
-    //        qCritical() << client->error();
-    //        qCritical() << client->errorString();
-    //        qCritical() << client->state();
-
-    //    }
-
-    //write HelloWorld is just a dummy
-    client->write("Hallo Piiiiiiiuuuuuuuuusssss", 50);
 }
 
 void Client::OnError()
 {
-    qDebug() << "error";
+    qDebug() << "socket error";
 }
 
 void Client::UIplaysCard(const Card& card)
 {
-
+    QString message;
+    message.append(MMP::PLAY_CARD);
+    message.append(";");
+    message.append(MMP::cardToSting(card));
+    writeNextData(message);
 }
 
 void Client::UIdrawsCard()
 {
+    QString message;
+    message.append(MMP::DRAW_CARD);
+    writeNextData(message);
 }
 
 void Client::readNextData()
 {
     char buf[1024];
-    qint64 lineLength = client->readLine(buf, sizeof(buf));
+    qint64 lineLength = server->readLine(buf, sizeof(buf));
     if (lineLength != -1) {
         handleMessage(QString(buf));
     }
@@ -60,7 +53,8 @@ void Client::readNextData()
 
 void Client::writeNextData(QString data)
 {
-    qint64 writtenByteCount = client->write(data.toStdString().c_str());
+    qDebug() << "send Data: " << data;
+    qint64 writtenByteCount = server->write(data.toStdString().c_str());
     if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
         //TODO handle network fail
         qDebug() << "client -> server write failed";
@@ -110,5 +104,5 @@ void Client::read(){
 
 Client::~Client()
 {
-    client->close();
+    server->close();
 }
