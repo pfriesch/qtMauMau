@@ -14,13 +14,17 @@ class ConnectToServer : public QDialog {
 public:
     explicit ConnectToServer(QWidget* parent = 0);
     ~ConnectToServer();
-
+public
+slots:
+    void gameStarted();
 signals:
-  void connectToServer(QString adress, QString port);
+    void connectToServer(QString adress, QString port);
 
 private
 slots:
     void on_connectbtn_clicked();
+
+    void on_cancelbtn_clicked();
 
 private:
     Ui::ConnectToServer* ui;

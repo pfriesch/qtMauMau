@@ -16,10 +16,11 @@ MainWindow::MainWindow(QWidget* parent)
     //}
 }
 
-void MainWindow::showNameDialog(){
-//    SetNameDialog *dialog = new SetNameDialog();
-//    dialog->setModal(true);
-//    dialog->show();
+void MainWindow::showNameDialog()
+{
+    //    SetNameDialog *dialog = new SetNameDialog();
+    //    dialog->setModal(true);
+    //    dialog->show();
 }
 
 /**
@@ -119,15 +120,15 @@ void MainWindow::connectSignalsForServer(std::vector<Player*> remotePlayers)
     {
         RemotePlayer* _remotePlayer = static_cast<RemotePlayer*>(remotePlayer);
         // From RemotePlayer(Logic) ----> Server(Network)
-        connect(_remotePlayer, &RemotePlayer::RemoteInitPlayground, server, &Server::RemoteInitPlayground);
-        connect(_remotePlayer, &RemotePlayer::RemoteDoTurn, server, &Server::RemoteDoTurn);
-        connect(_remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &Server::RemotePlayerPlaysCard);
-        connect(_remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &Server::RemotePlayerDrawsCard);
-        connect(_remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &Server::RemoteAddPlayerCard);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemoteInitPlayground, server, &Server::RemoteInitPlayground);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemoteDoTurn, server, &Server::RemoteDoTurn);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &Server::RemotePlayerPlaysCard);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &Server::RemotePlayerDrawsCard);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &Server::RemoteAddPlayerCard);
 
         // From  Server(Network) ----> RemotePlayer(Logic)
-        connect(server, &Server::RemotePlaysCard, _remotePlayer, &RemotePlayer::RemotePlaysCard);
-        connect(server, &Server::RemoteDrawsCard, _remotePlayer, &RemotePlayer::RemoteDrawsCard);
+        QObject::connect(server, &Server::RemotePlaysCard, _remotePlayer, &RemotePlayer::RemotePlaysCard);
+        QObject::connect(server, &Server::RemoteDrawsCard, _remotePlayer, &RemotePlayer::RemoteDrawsCard);
     }
 }
 
@@ -161,8 +162,8 @@ void MainWindow::startGameAsServer()
 
     server = new Server();
     createServerDialog = new CreateServerDialog;
-    connect(server, &Server::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
-    connect(createServerDialog, &CreateServerDialog::startNetworkGame, this, &MainWindow::startNetworkGame);
+    QObject::connect(server, &Server::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
+    QObject::connect(createServerDialog, &CreateServerDialog::startNetworkGame, this, &MainWindow::startNetworkGame);
     createServerDialog->show();
 }
 
@@ -180,7 +181,7 @@ void MainWindow::startNetworkGame()
     gc->networkGame(remotePlayers);
     humanPlayer = static_cast<HumanPlayer*>(gc->getBottomPlayer());
     connectSignalsForServer(remotePlayers);
-
+    createServerDialog->hide();
     playground->startGame();
     gc->gameInit();
 }
@@ -190,11 +191,13 @@ void MainWindow::startGameAsClient()
     resetGame();
     client = new Client();
     connectToServer = new ConnectToServer;
-    connect(connectToServer, &ConnectToServer::connectToServer, client, &Client::setupConnection);
+    QObject::connect(connectToServer, &ConnectToServer::connectToServer, client, &Client::setupConnection);
+    QObject::connect(client, &Client::gameStarted, connectToServer, &ConnectToServer::gameStarted);
     connectToServer->show();
 }
 
-void MainWindow::showOptionDialog(){
+void MainWindow::showOptionDialog()
+{
     optionDialog = new OptionDialog;
     optionDialog->show();
 }

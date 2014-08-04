@@ -10,7 +10,8 @@ QString MMP::cardVectorToSting(std::vector<Card> cards)
     //sting structure suit:value,suit:value,...
     QString vecSting;
     for (unsigned i = 0; i < cards.size(); ++i) {
-        vecSting.append(cardToSting(cards.at(i)) + ",");
+        vecSting.append(cardToSting(cards.at(i)));
+        vecSting.append(",");
     }
     //chop the last ","
     vecSting.chop(1);
@@ -22,7 +23,10 @@ QString MMP::playerCardCountToSting(std::map<PLAYER::Name, int> otherPlayerCardC
     //sting structure: name:count,name:count,...
     QString cardCountString;
     for (unsigned i = 0; i < otherPlayerCardCount.size(); ++i) {
-        cardCountString.append(QString::number(PLAYER::Name(i)) + ":" + QString::number(otherPlayerCardCount.at(PLAYER::Name(i))) + ",");
+        cardCountString.append(QString::number(PLAYER::Name(i)));
+        cardCountString.append(":");
+        cardCountString.append(QString::number(otherPlayerCardCount.at(PLAYER::Name(i))));
+        cardCountString.append(",");
     }
     //chop the last ","
     cardCountString.chop(1);
@@ -33,8 +37,9 @@ QString MMP::cardToSting(Card card)
 {
     //sting structure: suit:value
     QString cardAsString;
-    Card::cardSuit suit = card.getSuit();
-    cardAsString = QString(suit + ":" + card.getValue());
+    cardAsString.append(QString::number(card.getSuit()));
+    cardAsString.append(":");
+    cardAsString.append(QString::number(card.getValue()));
     return cardAsString;
 }
 

@@ -44,6 +44,7 @@ void Client::UIdrawsCard()
 
 void Client::readNextData()
 {
+
     char buf[1024];
     qint64 lineLength = server->readLine(buf, sizeof(buf));
     if (lineLength != -1) {
@@ -63,10 +64,12 @@ void Client::writeNextData(QString data)
 
 void Client::handleMessage(QString message)
 {
+    qDebug() << "recived Data: " << message;
     QStringList messageSplit = message.split(";");
     switch (messageSplit.at(0).toInt()) {
     case MMP::INIT_PLAYGROUND:
         emit UIinitPlayground(MMP::stringToCardVec(messageSplit.at(1)), MMP::stingToCardCountMap(messageSplit.at(2)), MMP::stingToCard(messageSplit.at(3)), PLAYER::Name(messageSplit.at(4).toInt()));
+        emit gameStarted();
         break;
     case MMP::DO_TURN:
         emit UIdoTurn(MMP::stringToCardVec(messageSplit.at(1)), Card::cardSuit(messageSplit.at(2).toInt()));
