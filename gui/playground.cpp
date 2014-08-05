@@ -51,8 +51,8 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
                     if (c->getCard().getValue() == Card::cardValue::JACK) {
                         Card::cardSuit chosenColor(chooseColor());
                     }
-
                     updateDepotCard(*c, depot);
+                    soundMgr.playCard();
                     human->removeCard(c->getCard());
                     human->unsetPlayableCards();
                     qDebug("VIEW: sende playCard()");
@@ -153,6 +153,7 @@ void Playground::playerDoTurn(std::vector<Card> playableCards)
 
 void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
 {
+
     qDebug("VIEW: GET Signal - playerPlaysCard");
     PlayerItem* p = NULL;
     switch (player) {
@@ -178,7 +179,7 @@ void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
     _playedCard.setPos(dummyCard->getX(), dummyCard->getY());
     p->removeCard(playedCard);
     updateDepotCard(_playedCard, depot);
-
+    soundMgr.playCard();
     p->setUnactive();
 }
 
@@ -216,7 +217,7 @@ void Playground::playerDrawsCard(PLAYER::Name player)
     CardItem* cardItem = p->addCard(dummyCard);
     CardItem fakeStack(p->getSpecialCard());
     updatePlayerCard(fakeStack, *cardItem);
-
+    soundMgr.drawCard();
     p->setUnactive();
 }
 
@@ -231,6 +232,7 @@ void Playground::addPlayerCard(const Card& card)
     CardItem* cardItem = players.value(PlayerItem::direction::HUMAN)->addCard(card);
     CardItem cardFromStack(card);
     updatePlayerCard(cardFromStack, *cardItem);
+    soundMgr.drawCard();
 }
 
 Card::cardSuit Playground::chooseColor()

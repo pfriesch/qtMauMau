@@ -24,6 +24,7 @@
 #include <gui/choosecolordialog.h>
 #include <gameLogic/PlayerName.h>
 #include <settings.h>
+#include <gui/soundmanager.h>
 
 class Playground : public AnimatedGraphicsScene {
     Q_OBJECT
@@ -45,6 +46,8 @@ private:
     void updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
     void createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount);
     Card::cardSuit chooseColor();
+
+    SoundManager soundMgr;
 
     //Layout entities
     int cardWidth = 71;

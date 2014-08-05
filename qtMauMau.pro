@@ -7,6 +7,7 @@
 QT       += core gui
 QT       += network
 QT       += testlib
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -42,7 +43,8 @@ SOURCES += main.cpp\
     gui/connecttoserver.cpp \
     gui/createserverdialog.cpp \
     network/serverproxy.cpp \
-    gui/setnamedialog.cpp
+    gui/setnamedialog.cpp \
+    gui/soundmanager.cpp
 
 
 
@@ -73,7 +75,8 @@ HEADERS  += mainwindow.h \
     gui/connecttoserver.h \
     gui/createserverdialog.h \
     network/serverproxy.h \
-    gui/setnamedialog.h
+    gui/setnamedialog.h \
+    gui/soundmanager.h
 
 
 FORMS    += \
@@ -94,9 +97,11 @@ CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/debug
 # Copy images,config etc. in the build folder
 images.path    = $$DESTDIR/img
 images.files   = img/*
+sound.path    = $$DESTDIR/sound
+sound.files   = sound/*
 config.path    = $$DESTDIR/
 config.files   = config.ini
 translation.path    = $$DESTDIR/
 translation.files   = qtmaumau_de.qm
-INSTALLS       += images config translation
+INSTALLS       += images config translation sound
 
