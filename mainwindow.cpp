@@ -164,6 +164,7 @@ void MainWindow::startGameAsServer()
     createServerDialog = new CreateServerDialog;
     QObject::connect(server, &Server::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
     QObject::connect(createServerDialog, &CreateServerDialog::startNetworkGame, this, &MainWindow::startNetworkGame);
+    createServerDialog->setModal(true);
     createServerDialog->show();
 }
 
@@ -193,12 +194,14 @@ void MainWindow::startGameAsClient()
     connectToServer = new ConnectToServer;
     QObject::connect(connectToServer, &ConnectToServer::connectToServer, client, &Client::setupConnection);
     QObject::connect(client, &Client::gameStarted, connectToServer, &ConnectToServer::gameStarted);
+    connectToServer->setModal(true);
     connectToServer->show();
 }
 
 void MainWindow::showOptionDialog()
 {
     optionDialog = new OptionDialog;
+    optionDialog->setModal(true);
     optionDialog->show();
 }
 
