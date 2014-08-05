@@ -1,4 +1,5 @@
 #include "carditem.h"
+#include "settings.h"
 
 CardItem::CardItem()
     : specialCode(specialCards::DEPOT)
@@ -75,9 +76,9 @@ QGraphicsPixmapItem* CardItem::getGraphicsItem() const
 
 QGraphicsPixmapItem* CardItem::createImg()
 {
-    //TODO: make this variable, so we can use different card decks
-    deckNumber = "1";
-    imgExtension = ".png";
+
+    deckNumber = Settings::getInstance()->getProperty("common/card_deck").toStdString();
+    imgExtension = Settings::getInstance()->getProperty("common/card_img_extension").toStdString();
 
     if (graphicsItem == NULL) {
 

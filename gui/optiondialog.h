@@ -18,8 +18,14 @@ public:
     private slots:
         void acceptButton();
         void rejectButton();
+        void on_carddeck1_clicked();
+        void on_carddeck2_clicked();
+        void on_volumeSlider_valueChanged(int value);
+        void on_buttonBox_2_accepted();
+        void on_buttonBox_2_rejected();
 
 private:
+    void acceptEvent();
     Ui::OptionDialog* ui;
 };
 
