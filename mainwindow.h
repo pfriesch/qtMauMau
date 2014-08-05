@@ -42,8 +42,8 @@ private:
     OptionDialog *optionDialog;
     ConnectToServer* connectToServer;
     CreateServerDialog* createServerDialog;
-    Server* server;
-    Client* client;
+    MauServer* server;
+    MauClient* client;
 
     //Game Starts
 private

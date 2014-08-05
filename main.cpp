@@ -26,7 +26,7 @@
 #include "gameLogic/Test/decktest.h"
 #endif
 
-Client* client;
+MauClient* client;
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {

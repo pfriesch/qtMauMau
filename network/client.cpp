@@ -3,12 +3,12 @@
 #include <settings.h>
 #include "maumauprotokoll.h"
 
-Client::Client(QObject* parent)
+MauClient::MauClient(QObject* parent)
     : QObject(parent)
 {
 }
 
-void Client::setupConnection(QString _address, QString _port)
+void MauClient::setupConnection(QString _address, QString _port)
 {
     QHostAddress address = QHostAddress(_address);
     qint16 port = _port.toInt();
@@ -17,42 +17,45 @@ void Client::setupConnection(QString _address, QString _port)
 
     //connect(client, SIGNAL(connected()), this, SLOT(write()));
     connect(server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(OnError()));
-    connect(server, &QTcpSocket::readyRead, this, &Client::readNextData);
+    connect(server, &QTcpSocket::readyRead, this, &MauClient::readNextData);
     //connect(&client, SIGNAL(readyRead()), this, SLOT(read()));
 }
 
-void Client::OnError()
+void MauClient::OnError()
 {
     qDebug() << "socket error";
+    if (server->error()) {
+        qCritical() << server->error();
+        qCritical() << server->errorString();
+        qCritical() << server->state();
+    }
 }
 
-void Client::UIplaysCard(const Card& card)
+void MauClient::UIplaysCard(const Card& card)
 {
     QString message;
-    message.append(MMP::PLAY_CARD);
+    message.append(MProtocol::PLAY_CARD);
     message.append(";");
-    message.append(MMP::cardToSting(card));
+    message.append(MProtocol::cardToSting(card));
     writeNextData(message);
 }
 
-void Client::UIdrawsCard()
+void MauClient::UIdrawsCard()
 {
     QString message;
-    message.append(MMP::DRAW_CARD);
+    message.append(MProtocol::DRAW_CARD);
     writeNextData(message);
 }
-
-void Client::readNextData()
+void MauClient::readNextData()
 {
-
-    char buf[1024];
+    char buf[1024] = { 0 };
     qint64 lineLength = server->readLine(buf, sizeof(buf));
     if (lineLength != -1) {
         handleMessage(QString(buf));
     }
 }
 
-void Client::writeNextData(QString data)
+void MauClient::writeNextData(QString data)
 {
     qDebug() << "send Data: " << data;
     qint64 writtenByteCount = server->write(data.toStdString().c_str());
@@ -62,50 +65,89 @@ void Client::writeNextData(QString data)
     }
 }
 
-void Client::handleMessage(QString message)
+void MauClient::handleMessage(QString message)
 {
     qDebug() << "recived Data: " << message;
     QStringList messageSplit = message.split(";");
     switch (messageSplit.at(0).toInt()) {
-    case MMP::INIT_PLAYGROUND:
-        emit UIinitPlayground(MMP::stringToCardVec(messageSplit.at(1)), MMP::stingToCardCountMap(messageSplit.at(2)), MMP::stingToCard(messageSplit.at(3)), PLAYER::Name(messageSplit.at(4).toInt()));
+    case MProtocol::INIT_PLAYGROUND:
+        playerName = PLAYER::Name(messageSplit.at(2).toInt());
+        qDebug() << "client: local/remote Player Name: " << playerName;
+        //        void UIinitPlayground(const std::vector<Card> & humanPlayerCards,
+        //                              std::map<PLAYER::Name, int> otherPlayerCardCount,
+        //                              const Card & topDepotCard,
+        //                              PLAYER::Name startingPlayer);
+        emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(1)),
+                              rotatePlayerMap(MProtocol::stingToCardCountMap(messageSplit.at(3))),
+                              MProtocol::stingToCard(messageSplit.at(4)),
+                              getLocalPlayerName(PLAYER::Name(messageSplit.at(5).toInt())));
         emit gameStarted();
         break;
-    case MMP::DO_TURN:
-        emit UIdoTurn(MMP::stringToCardVec(messageSplit.at(1)), Card::cardSuit(messageSplit.at(2).toInt()));
+    case MProtocol::DO_TURN:
+        //        void UIdoTurn(std::vector<Card> playableCards,
+        //                      Card::cardSuit wishSuitCard);
+        emit UIdoTurn(MProtocol::stringToCardVec(messageSplit.at(1)),
+                      Card::cardSuit(messageSplit.at(2).toInt()));
         break;
-    case MMP::OTHER_PLAYS_CARD:
-        emit UIplayerPlaysCard(PLAYER::Name(messageSplit.at(1).toInt()), MMP::stingToCard(messageSplit.at(2)));
+    case MProtocol::OTHER_PLAYS_CARD:
+        //        void UIplayerPlaysCard(PLAYER::Name pName,
+        //                               const Card & playedCard);
+        emit UIplayerPlaysCard(getLocalPlayerName(PLAYER::Name(messageSplit.at(1).toInt())),
+                               MProtocol::stingToCard(messageSplit.at(2)));
         break;
-    case MMP::OTHER_DRAWS_CARD:
-        emit UIplayerDrawsCard(PLAYER::Name(messageSplit.at(1).toInt()));
+    case MProtocol::OTHER_DRAWS_CARD:
+        //        void UIplayerDrawsCard(PLAYER::Name pName);
+        emit UIplayerDrawsCard(getLocalPlayerName(PLAYER::Name(messageSplit.at(1).toInt())));
         break;
-    case MMP::ADD_CARD:
-        emit UIaddPlayerCard(MMP::stingToCard(messageSplit.at(1)));
+    case MProtocol::ADD_CARD:
+        //        void UIaddPlayerCard(const Card & card);
+        emit UIaddPlayerCard(MProtocol::stingToCard(messageSplit.at(1)));
         break;
     default:
         qDebug() << "method not found";
         break;
     }
 }
-/*
-void Client::read(){
 
-    if (client.error()) {
-        qCritical() << client.error();
-        qCritical() << client.errorString();
-        qCritical() << client.state();
+std::map<PLAYER::Name, int> MauClient::rotatePlayerMap(std::map<PLAYER::Name, int> otherPlayerCardCount)
+{
+    std::map<PLAYER::Name, int> rotatedMap;
+    rotatedMap.insert(std::pair<PLAYER::Name, int>(getLocalPlayerName(PLAYER::BOTTOM), otherPlayerCardCount.at(PLAYER::BOTTOM)));
+    rotatedMap.insert(std::pair<PLAYER::Name, int>(getLocalPlayerName(PLAYER::TOP), otherPlayerCardCount.at(PLAYER::TOP)));
+    rotatedMap.insert(std::pair<PLAYER::Name, int>(getLocalPlayerName(PLAYER::LEFT), otherPlayerCardCount.at(PLAYER::LEFT)));
+    rotatedMap.insert(std::pair<PLAYER::Name, int>(getLocalPlayerName(PLAYER::RIGHT), otherPlayerCardCount.at(PLAYER::RIGHT)));
+    return rotatedMap;
+}
 
+/**
+ * @brief Rotates the player names, so the local player is always on bottom.
+ * @param pName the name to be rotated according to the local player position
+ * @return
+ */
+PLAYER::Name MauClient::getLocalPlayerName(PLAYER::Name pName)
+{
+    int backwardsRotations = playerName;
+
+    for (int i = 0; i < backwardsRotations; ++i) {
+        switch (pName) {
+        case PLAYER::BOTTOM:
+            pName = PLAYER::RIGHT;
+            break;
+        case PLAYER::LEFT:
+            pName = PLAYER::BOTTOM;
+            break;
+        case PLAYER::TOP:
+            pName = PLAYER::LEFT;
+            break;
+        case PLAYER::RIGHT:
+            pName = PLAYER::TOP;
+            break;
+        }
     }
+    return pName;
+}
 
-    qDebug() << "start reading from Server";
-
-    char buffer[1024] = { 0 };
-    client.read(buffer, client.bytesAvailable());
-    qDebug() << buffer;
-}*/
-
-Client::~Client()
+MauClient::~MauClient()
 {
     server->close();
 }

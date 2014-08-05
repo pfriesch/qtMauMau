@@ -120,30 +120,30 @@ void MainWindow::connectSignalsForServer(std::vector<Player*> remotePlayers)
     {
         RemotePlayer* _remotePlayer = static_cast<RemotePlayer*>(remotePlayer);
         // From RemotePlayer(Logic) ----> Server(Network)
-        QObject::connect(_remotePlayer, &RemotePlayer::RemoteInitPlayground, server, &Server::RemoteInitPlayground);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemoteDoTurn, server, &Server::RemoteDoTurn);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &Server::RemotePlayerPlaysCard);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &Server::RemotePlayerDrawsCard);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &Server::RemoteAddPlayerCard);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemoteInitPlayground, server, &MauServer::RemoteInitPlayground);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemoteDoTurn, server, &MauServer::RemoteDoTurn);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &MauServer::RemotePlayerPlaysCard);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &MauServer::RemotePlayerDrawsCard);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &MauServer::RemoteAddPlayerCard);
 
         // From  Server(Network) ----> RemotePlayer(Logic)
-        QObject::connect(server, &Server::RemotePlaysCard, _remotePlayer, &RemotePlayer::RemotePlaysCard);
-        QObject::connect(server, &Server::RemoteDrawsCard, _remotePlayer, &RemotePlayer::RemoteDrawsCard);
+        QObject::connect(server, &MauServer::RemotePlaysCard, _remotePlayer, &RemotePlayer::RemotePlaysCard);
+        QObject::connect(server, &MauServer::RemoteDrawsCard, _remotePlayer, &RemotePlayer::RemoteDrawsCard);
     }
 }
 
 void MainWindow::connectSignalsForClient()
 {
     // From HumandPlayer(Logic) ----> Playground(View)
-    QObject::connect(client, &Client::UIinitPlayground, playground, &Playground::initPlayground);
-    QObject::connect(client, &Client::UIdoTurn, playground, &Playground::playerDoTurn);
-    QObject::connect(client, &Client::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
-    QObject::connect(client, &Client::UIaddPlayerCard, playground, &Playground::addPlayerCard);
-    QObject::connect(client, &Client::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
+    QObject::connect(client, &MauClient::UIinitPlayground, playground, &Playground::initPlayground);
+    QObject::connect(client, &MauClient::UIdoTurn, playground, &Playground::playerDoTurn);
+    QObject::connect(client, &MauClient::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
+    QObject::connect(client, &MauClient::UIaddPlayerCard, playground, &Playground::addPlayerCard);
+    QObject::connect(client, &MauClient::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
 
     //From Playground(View) ---> HumanPlayer(Logic)
-    QObject::connect(playground, &Playground::playCard, client, &Client::UIplaysCard);
-    QObject::connect(playground, &Playground::drawCard, client, &Client::UIdrawsCard);
+    QObject::connect(playground, &Playground::playCard, client, &MauClient::UIplaysCard);
+    QObject::connect(playground, &Playground::drawCard, client, &MauClient::UIdrawsCard);
 }
 
 void MainWindow::startGameAsLocal()
@@ -160,9 +160,9 @@ void MainWindow::startGameAsLocal()
 void MainWindow::startGameAsServer()
 {
 
-    server = new Server();
+    server = new MauServer();
     createServerDialog = new CreateServerDialog;
-    QObject::connect(server, &Server::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
+    QObject::connect(server, &MauServer::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
     QObject::connect(createServerDialog, &CreateServerDialog::startNetworkGame, this, &MainWindow::startNetworkGame);
     createServerDialog->setModal(true);
     createServerDialog->show();
@@ -190,10 +190,10 @@ void MainWindow::startNetworkGame()
 void MainWindow::startGameAsClient()
 {
     resetGame();
-    client = new Client();
+    client = new MauClient();
     connectToServer = new ConnectToServer;
-    QObject::connect(connectToServer, &ConnectToServer::connectToServer, client, &Client::setupConnection);
-    QObject::connect(client, &Client::gameStarted, connectToServer, &ConnectToServer::gameStarted);
+    QObject::connect(connectToServer, &ConnectToServer::connectToServer, client, &MauClient::setupConnection);
+    QObject::connect(client, &MauClient::gameStarted, connectToServer, &ConnectToServer::gameStarted);
     connectToServer->setModal(true);
     connectToServer->show();
 }

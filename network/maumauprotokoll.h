@@ -8,7 +8,7 @@
 #include "gameLogic/PlayerName.h"
 
 //MauMauProtokoll
-class MMP {
+class MProtocol {
 public:
     enum toClient {
         INIT_PLAYGROUND = 0,
@@ -23,7 +23,7 @@ public:
     };
 
 public:
-    MMP();
+    MProtocol();
     static QString cardVectorToSting(std::vector<Card> cards);
     static QString playerCardCountToSting(std::map<PLAYER::Name, int> otherPlayerCardCount);
     static QString cardToSting(Card card);

@@ -4,15 +4,15 @@
 #include "gameLogic/Card.h"
 #include "gameLogic/PlayerName.h"
 
-class Server;
+class MauServer;
 
 class ServerProxy {
 private:
-    Server* server;
+    MauServer* server;
     PLAYER::Name pName;
 
 public:
-    explicit ServerProxy(Server* _gameContr, PLAYER::Name _pName);
+    explicit ServerProxy(MauServer* _gameContr, PLAYER::Name _pName);
     void playCard(const Card& card, Card::cardSuit whishedSuit = Card::NONE);
     void drawCard();
 };

@@ -3,35 +3,29 @@
 
 #include <QtNetwork>
 #include <QObject>
-#include <QTcpServer>
-#include <QTcpSocket>
 #include <QString>
-#include <QHash>
+#include <QList>
 
 #include "gameLogic/remoteplayer.h"
 #include "gameLogic/PlayerName.h"
+#include "msocket.h"
 
-class Server : public QObject {
+class MauServer : public QObject {
     Q_OBJECT
 public:
-    Server(QObject* parent = 0);
-    ~Server();
-    QHash<PLAYER::Name, QTcpSocket*> getClients() const;
+    MauServer(QObject* parent = 0);
+    ~MauServer();
+    QList<MSocket*> getClients() const;
 
 public
 slots:
     void acceptConnection();
-    void readNextData();
+    void readNextData(MSocket* client);
 //    void startRead();
 //    void send(int playerId, QString message);
 
 signals:
     void newConnection(QString adress, int connectionIndex, QString name);
-
-private:
-    QHash<PLAYER::Name, QTcpSocket*> clients;
-    QTcpServer server;
-    void writeNextData(QString data, QTcpSocket* client);
 
 public
 slots:
@@ -44,6 +38,14 @@ slots:
 signals:
     void RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card);
     void RemoteDrawsCard(PLAYER::Name remotePlayerName);
+
+private:
+    QList<MSocket*> clients;
+
+    QTcpServer server;
+    void writeNextData(QString data, QTcpSocket* client);
+    QTcpSocket* socketByName(PLAYER::Name pName);
+    void assignSocket(PLAYER::Name remotePlayerName);
 };
 
 #endif

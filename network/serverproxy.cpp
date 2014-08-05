@@ -1,7 +1,7 @@
 #include "serverproxy.h"
 #include "server.h"
 
-ServerProxy::ServerProxy(Server* _gameContr, PLAYER::Name _pName)
+ServerProxy::ServerProxy(MauServer* _gameContr, PLAYER::Name _pName)
 {
 }
 

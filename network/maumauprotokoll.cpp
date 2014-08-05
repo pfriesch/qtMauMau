@@ -1,11 +1,11 @@
 #include "maumauprotokoll.h"
 #include <QStringList>
 
-MMP::MMP()
+MProtocol::MProtocol()
 {
 }
 
-QString MMP::cardVectorToSting(std::vector<Card> cards)
+QString MProtocol::cardVectorToSting(std::vector<Card> cards)
 {
     //sting structure suit:value,suit:value,...
     QString vecSting;
@@ -18,7 +18,7 @@ QString MMP::cardVectorToSting(std::vector<Card> cards)
     return vecSting;
 }
 
-QString MMP::playerCardCountToSting(std::map<PLAYER::Name, int> otherPlayerCardCount)
+QString MProtocol::playerCardCountToSting(std::map<PLAYER::Name, int> otherPlayerCardCount)
 {
     //sting structure: name:count,name:count,...
     QString cardCountString;
@@ -33,7 +33,7 @@ QString MMP::playerCardCountToSting(std::map<PLAYER::Name, int> otherPlayerCardC
     return cardCountString;
 }
 
-QString MMP::cardToSting(Card card)
+QString MProtocol::cardToSting(Card card)
 {
     //sting structure: suit:value
     QString cardAsString;
@@ -43,18 +43,18 @@ QString MMP::cardToSting(Card card)
     return cardAsString;
 }
 
-std::vector<Card> MMP::stringToCardVec(QString vecAsSting)
+std::vector<Card> MProtocol::stringToCardVec(QString vecAsSting)
 {
     std::vector<Card> cards;
     QStringList vecAsStingList = vecAsSting.split(",");
     foreach(QString string, vecAsStingList)
     {
-        cards.push_back(Card(MMP::stingToCard(string)));
+        cards.push_back(Card(MProtocol::stingToCard(string)));
     }
     return cards;
 }
 
-std::map<PLAYER::Name, int> MMP::stingToCardCountMap(QString mapAsSting)
+std::map<PLAYER::Name, int> MProtocol::stingToCardCountMap(QString mapAsSting)
 {
     std::map<PLAYER::Name, int> otherPlayerCardCount;
     QStringList pairs = mapAsSting.split(",");
@@ -66,7 +66,7 @@ std::map<PLAYER::Name, int> MMP::stingToCardCountMap(QString mapAsSting)
     return otherPlayerCardCount;
 }
 
-Card MMP::stingToCard(QString cardAsSting)
+Card MProtocol::stingToCard(QString cardAsSting)
 {
     QStringList cardAttrib = cardAsSting.split(":");
 

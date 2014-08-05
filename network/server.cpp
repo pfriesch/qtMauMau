@@ -3,7 +3,7 @@
 #include <settings.h>
 #include "maumauprotokoll.h"
 
-Server::Server(QObject* parent)
+MauServer::MauServer(QObject* parent)
     : QObject(parent)
 {
     connect(&server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
@@ -13,14 +13,15 @@ Server::Server(QObject* parent)
     qDebug() << "Server is now listening";
 }
 
-void Server::acceptConnection()
+void MauServer::acceptConnection()
 {
     qDebug() << "Server acceptedConection";
     QTcpSocket* client = server.nextPendingConnection();
     int count = clients.size();
     if (count < 3) {
-        connect(client, &QTcpSocket::readyRead, this, &Server::readNextData);
-        clients.insert(PLAYER::Name(count + 1), client);
+        MSocket* mClient = new MSocket(client);
+        clients.append(mClient);
+        connect(mClient, &MSocket::readyRead, this, &MauServer::readNextData);
         emit newConnection(client->peerAddress().toString(), count, "hans");
     } else {
         client->write("error max user");
@@ -30,21 +31,21 @@ void Server::acceptConnection()
     //connect(client, SIGNAL(readyRead()), this, SLOT(startRead()));
 }
 
-void Server::readNextData()
+void MauServer::readNextData(MSocket* _client)
 {
 
-    QTcpSocket* client = qobject_cast<QTcpSocket*>(sender());
+    QTcpSocket* client = _client->getSocket();
 
-    PLAYER::Name name = clients.key(client);
+    PLAYER::Name name = _client->getPlayerName();
 
     QString message = client->readLine();
     qDebug() << "send Data: " << message;
     QStringList messageSplit = message.split(";");
-    switch (MMP::toServer(messageSplit.at(0).toInt())) {
-    case MMP::PLAY_CARD:
-        emit RemotePlaysCard(name, MMP::stingToCard(messageSplit.at(1)));
+    switch (MProtocol::toServer(messageSplit.at(0).toInt())) {
+    case MProtocol::PLAY_CARD:
+        emit RemotePlaysCard(name, MProtocol::stingToCard(messageSplit.at(1)));
         break;
-    case MMP::DRAW_CARD:
+    case MProtocol::DRAW_CARD:
         emit RemoteDrawsCard(name);
         break;
     default:
@@ -52,73 +53,74 @@ void Server::readNextData()
         break;
     }
 }
-QHash<PLAYER::Name, QTcpSocket*> Server::getClients() const
+QList<MSocket*> MauServer::getClients() const
 {
     return clients;
 }
 
-void Server::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer)
+void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer)
 {
+    assignSocket(remotePlayerName);
     QString message;
-    message.append(QString::number(MMP::INIT_PLAYGROUND));
+    message.append(QString::number(MProtocol::INIT_PLAYGROUND));
     message.append(";");
-    message.append(MMP::cardVectorToSting(remotePlayerCards));
+    message.append(QString::number(remotePlayerName));
     message.append(";");
-    message.append(MMP::playerCardCountToSting(otherPlayerCardCount));
+    message.append(MProtocol::cardVectorToSting(remotePlayerCards));
     message.append(";");
-    message.append(MMP::cardToSting(topDepotCard));
+    message.append(MProtocol::playerCardCountToSting(otherPlayerCardCount));
+    message.append(";");
+    message.append(MProtocol::cardToSting(topDepotCard));
     message.append(";");
     message.append(QString::number(startingPlayer));
-    writeNextData(message, clients[remotePlayerName]);
+    writeNextData(message, socketByName(remotePlayerName));
 }
 
-void Server::RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> playableCards, Card::cardSuit wishSuitCard)
+void MauServer::RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> playableCards, Card::cardSuit wishSuitCard)
 {
     QString message;
-    message.append(QString::number(MMP::DO_TURN));
+    message.append(QString::number(MProtocol::DO_TURN));
     message.append(";");
-    message.append(MMP::cardVectorToSting(playableCards));
+    message.append(MProtocol::cardVectorToSting(playableCards));
     message.append(";");
     message.append(QString::number(wishSuitCard));
-    writeNextData(message, clients[remotePlayerName]);
+    writeNextData(message, socketByName(remotePlayerName));
 }
 
-void Server::RemotePlayerPlaysCard(PLAYER::Name pName, const Card& playedCard)
+void MauServer::RemotePlayerPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
     QString message;
-    message.append(QString::number(MMP::OTHER_PLAYS_CARD));
+    message.append(QString::number(MProtocol::OTHER_PLAYS_CARD));
     message.append(";");
     message.append(QString::number(pName));
     message.append(";");
-    message.append(MMP::cardToSting(playedCard));
-    foreach(QTcpSocket * client, clients)
-    {
-        writeNextData(message, client);
+    message.append(MProtocol::cardToSting(playedCard));
+    for (int i = 0; i < clients.size(); ++i) {
+        writeNextData(message, clients.at(i)->getSocket());
     }
 }
 
-void Server::RemotePlayerDrawsCard(PLAYER::Name pName)
+void MauServer::RemotePlayerDrawsCard(PLAYER::Name pName)
 {
     QString message;
-    message.append(QString::number(MMP::OTHER_PLAYS_CARD));
+    message.append(QString::number(MProtocol::OTHER_PLAYS_CARD));
     message.append(";");
     message.append(QString::number(pName));
-    foreach(QTcpSocket * client, clients)
-    {
-        writeNextData(message, client);
+    for (int i = 0; i < clients.size(); ++i) {
+        writeNextData(message, clients.at(i)->getSocket());
     }
 }
 
-void Server::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card)
+void MauServer::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card)
 {
     QString message;
-    message.append(QString::number(MMP::ADD_CARD));
+    message.append(QString::number(MProtocol::ADD_CARD));
     message.append(";");
-    message.append(MMP::cardToSting(card));
-    writeNextData(message, clients[remotePlayerName]);
+    message.append(MProtocol::cardToSting(card));
+    writeNextData(message, socketByName(remotePlayerName));
 }
 
-void Server::writeNextData(QString data, QTcpSocket* client)
+void MauServer::writeNextData(QString data, QTcpSocket* client)
 {
     qDebug() << "send Data: " << data;
     qint64 writtenByteCount = client->write(data.toStdString().c_str());
@@ -128,7 +130,28 @@ void Server::writeNextData(QString data, QTcpSocket* client)
     }
 }
 
-Server::~Server()
+QTcpSocket* MauServer::socketByName(PLAYER::Name pName)
+{
+    for (int i = 0; i < clients.size(); ++i) {
+        if (clients.at(i)->getPlayerName() == pName) {
+            return clients.at(i)->getSocket();
+        }
+    }
+    qDebug() << "CRITICAL: socket not found! this should never happen";
+    return 0;
+}
+
+void MauServer::assignSocket(PLAYER::Name remotePlayerName)
+{
+    for (int i = 0; i < clients.size(); ++i) {
+        if (clients.at(i)->getPlayerName() == PLAYER::Name(0)) {
+            clients.at(i)->setPlayerName(remotePlayerName);
+            break;
+        }
+    }
+}
+
+MauServer::~MauServer()
 {
     server.close();
 }
