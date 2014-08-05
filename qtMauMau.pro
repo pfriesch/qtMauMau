@@ -45,6 +45,8 @@ SOURCES += main.cpp\
     network/serverproxy.cpp \
     gui/setnamedialog.cpp \
     gui/soundmanager.cpp
+    network/maumauprotokoll.cpp
+
 
 
 
@@ -77,6 +79,8 @@ HEADERS  += mainwindow.h \
     network/serverproxy.h \
     gui/setnamedialog.h \
     gui/soundmanager.h
+    network/maumauprotokoll.h
+
 
 
 FORMS    += \

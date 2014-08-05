@@ -17,7 +17,19 @@ ConnectToServer::~ConnectToServer()
     delete ui;
 }
 
+void ConnectToServer::gameStarted()
+{
+    this->close();
+}
+
 void ConnectToServer::on_connectbtn_clicked()
 {
     emit connectToServer(ui->ipadresstxt->text(), ui->porttxt->text());
+    ui->connectbtn->setDisabled(true);
+    ui->connectbtn->setText("Waiting...");
+}
+
+void ConnectToServer::on_cancelbtn_clicked()
+{
+    this->close();
 }

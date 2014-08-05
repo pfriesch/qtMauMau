@@ -32,6 +32,7 @@ public:
     Card();
     cardSuit getSuit() const;
     cardValue getValue() const;
+
     bool operator==(const Card& card) const;
 };
 

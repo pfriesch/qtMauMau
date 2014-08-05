@@ -34,6 +34,9 @@
    </property>
   </widget>
   <widget class="QPushButton" name="connectbtn">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -44,6 +47,15 @@
    </property>
    <property name="text">
     <string>Connect</string>
+   </property>
+   <property name="autoDefault">
+    <bool>true</bool>
+   </property>
+   <property name="default">
+    <bool>true</bool>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="ipaddresslbl">

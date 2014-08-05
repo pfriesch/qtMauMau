@@ -30,6 +30,12 @@ void GameController::networkGame(std::vector<Player*> remotePlayers)
     for (int i = 0; i < remotePlayers.size(); ++i) {
         players.push_back(static_cast<HumanPlayer*>(remotePlayers.at(i)));
     }
+
+    //TODO remove debugging ai player
+    for (int i = 0; i < 3 - remotePlayers.size(); ++i) {
+        qDebug() << "added debug ai player";
+        players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
+    }
 }
 
 void GameController::gameInit()

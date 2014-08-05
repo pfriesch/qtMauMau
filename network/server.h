@@ -16,11 +16,12 @@ class Server : public QObject {
 public:
     Server(QObject* parent = 0);
     ~Server();
-    QHash<int, QTcpSocket*> getConnections() const;
+    QHash<PLAYER::Name, QTcpSocket*> getClients() const;
 
 public
 slots:
     void acceptConnection();
+    void readNextData();
 //    void startRead();
 //    void send(int playerId, QString message);
 
@@ -28,8 +29,9 @@ signals:
     void newConnection(QString adress, int connectionIndex, QString name);
 
 private:
-    QHash<int, QTcpSocket*> connections;
+    QHash<PLAYER::Name, QTcpSocket*> clients;
     QTcpServer server;
+    void writeNextData(QString data, QTcpSocket* client);
 
 public
 slots:
