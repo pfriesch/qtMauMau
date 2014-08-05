@@ -123,6 +123,7 @@ void MauServer::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& c
 void MauServer::writeNextData(QString data, QTcpSocket* client)
 {
     qDebug() << "send Data: " << data;
+    data.append("\n");
     qint64 writtenByteCount = client->write(data.toStdString().c_str());
     if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
         //TODO handle network fail

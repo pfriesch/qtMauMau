@@ -16,7 +16,7 @@ public:
     ~ConnectToServer();
 public
 slots:
-    void gameStarted();
+    void clientGameStarted();
 signals:
     void connectToServer(QString adress, QString port);
 

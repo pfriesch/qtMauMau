@@ -25,7 +25,7 @@ signals:
     void UIplayerDrawsCard(PLAYER::Name pName);
     void UIaddPlayerCard(const Card& card);
 
-    void gameStarted();
+    void clientGameStarted();
 
 public
 slots:

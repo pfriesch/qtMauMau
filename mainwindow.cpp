@@ -62,10 +62,10 @@ void MainWindow::setupMenuBar()
 
     QAction* connectToServerMenu = new QAction(QAction::tr("Connect to Server..."), this);
     fileMenu->addAction(connectToServerMenu);
-    connect(connectToServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsClient()));
+    connect(connectToServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsClientDialog()));
 
     QAction* createServerMenu = new QAction(QAction::tr("Create Server..."), this);
-    connect(createServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsServer()));
+    connect(createServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsServerDialog()));
     fileMenu->addAction(createServerMenu);
 
     QAction* optionsMenu = new QAction(QAction::tr("Options..."), this);
@@ -89,7 +89,7 @@ void MainWindow::resetGame()
 {
 }
 
-void MainWindow::connectSignalsForLocal()
+void MainWindow::connectSignalsForLocal(HumanPlayer* humanPlayer)
 {
     // From HumandPlayer(Logic) ----> Playground(View)
     QObject::connect(humanPlayer, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
@@ -103,7 +103,7 @@ void MainWindow::connectSignalsForLocal()
     QObject::connect(playground, &Playground::drawCard, humanPlayer, &HumanPlayer::UIdrawsCard);
 }
 
-void MainWindow::connectSignalsForServer(std::vector<Player*> remotePlayers)
+void MainWindow::connectSignalsForServer(HumanPlayer* humanPlayer, std::vector<Player*> remotePlayers)
 {
     // From HumandPlayer(Logic) ----> Playground(View)
     QObject::connect(humanPlayer, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
@@ -151,13 +151,12 @@ void MainWindow::startGameAsLocal()
     resetGame();
     gc = new GameController();
     gc->localGame();
-    humanPlayer = static_cast<HumanPlayer*>(gc->getBottomPlayer());
-    connectSignalsForLocal();
+    connectSignalsForLocal(static_cast<HumanPlayer*>(gc->getBottomPlayer()));
     playground->startGame();
     gc->gameInit();
 }
 
-void MainWindow::startGameAsServer()
+void MainWindow::startGameAsServerDialog()
 {
 
     server = new MauServer();
@@ -180,8 +179,7 @@ void MainWindow::startNetworkGame()
         remotePlayers.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
     }
     gc->networkGame(remotePlayers);
-    humanPlayer = static_cast<HumanPlayer*>(gc->getBottomPlayer());
-    connectSignalsForServer(remotePlayers);
+    connectSignalsForServer(static_cast<HumanPlayer*>(gc->getBottomPlayer()), remotePlayers);
     createServerDialog->hide();
     playground->startGame();
     gc->gameInit();
@@ -190,10 +188,18 @@ void MainWindow::startNetworkGame()
 void MainWindow::startGameAsClient()
 {
     resetGame();
+    playground->startGame();
+    connectSignalsForClient();
+}
+
+void MainWindow::startGameAsClientDialog()
+{
+    resetGame();
     client = new MauClient();
     connectToServer = new ConnectToServer;
     QObject::connect(connectToServer, &ConnectToServer::connectToServer, client, &MauClient::setupConnection);
-    QObject::connect(client, &MauClient::gameStarted, connectToServer, &ConnectToServer::gameStarted);
+    QObject::connect(client, &MauClient::clientGameStarted, connectToServer, &ConnectToServer::clientGameStarted);
+    QObject::connect(client, &MauClient::clientGameStarted, this, &MainWindow::startGameAsClient);
     connectToServer->setModal(true);
     connectToServer->show();
 }

@@ -17,7 +17,7 @@ ConnectToServer::~ConnectToServer()
     delete ui;
 }
 
-void ConnectToServer::gameStarted()
+void ConnectToServer::clientGameStarted()
 {
     this->close();
 }

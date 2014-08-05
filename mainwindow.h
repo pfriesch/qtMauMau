@@ -24,22 +24,22 @@ public:
 public
 slots:
     void startNetworkGame();
+    void startGameAsClient();
 
 private:
     void setupMenuBar();
     void setupGraphicsView();
-    void connectSignalsForLocal();
-    void connectSignalsForServer(std::vector<Player*> remotePlayers);
+    void connectSignalsForLocal(HumanPlayer* humanPlayer);
+    void connectSignalsForServer(HumanPlayer* humanPlayer, std::vector<Player*> remotePlayers);
     void connectSignalsForClient();
 
     void showNameDialog();
 
     void resetGame();
 
-    HumanPlayer* humanPlayer = NULL;
     Playground* playground = NULL;
     GameController* gc = NULL;
-    OptionDialog *optionDialog;
+    OptionDialog* optionDialog;
     ConnectToServer* connectToServer;
     CreateServerDialog* createServerDialog;
     MauServer* server;
@@ -49,8 +49,8 @@ private:
 private
 slots:
     void startGameAsLocal();
-    void startGameAsServer();
-    void startGameAsClient();
+    void startGameAsServerDialog();
+    void startGameAsClientDialog();
     void showOptionDialog();
 };
 

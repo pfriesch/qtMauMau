@@ -58,6 +58,7 @@ void MauClient::readNextData()
 void MauClient::writeNextData(QString data)
 {
     qDebug() << "send Data: " << data;
+    data.append("\n");
     qint64 writtenByteCount = server->write(data.toStdString().c_str());
     if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
         //TODO handle network fail
@@ -71,17 +72,18 @@ void MauClient::handleMessage(QString message)
     QStringList messageSplit = message.split(";");
     switch (messageSplit.at(0).toInt()) {
     case MProtocol::INIT_PLAYGROUND:
-        playerName = PLAYER::Name(messageSplit.at(2).toInt());
+        emit clientGameStarted();
+        playerName = PLAYER::Name(messageSplit.at(1).toInt());
         qDebug() << "client: local/remote Player Name: " << playerName;
         //        void UIinitPlayground(const std::vector<Card> & humanPlayerCards,
         //                              std::map<PLAYER::Name, int> otherPlayerCardCount,
         //                              const Card & topDepotCard,
         //                              PLAYER::Name startingPlayer);
-        emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(1)),
+        emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(2)),
                               rotatePlayerMap(MProtocol::stingToCardCountMap(messageSplit.at(3))),
                               MProtocol::stingToCard(messageSplit.at(4)),
                               getLocalPlayerName(PLAYER::Name(messageSplit.at(5).toInt())));
-        emit gameStarted();
+
         break;
     case MProtocol::DO_TURN:
         //        void UIdoTurn(std::vector<Card> playableCards,
