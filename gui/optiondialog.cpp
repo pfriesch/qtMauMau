@@ -31,11 +31,7 @@ OptionDialog::OptionDialog(QWidget* parent)
     ui->portEdit->setText(Settings::getInstance()->getProperty("network/port"));
     ui->playernameEdit->setText(Settings::getInstance()->getProperty("common/playername"));
     ui->volumeSlider->setValue(Settings::getInstance()->getProperty("common/volume").toInt());
-}
-
-void OptionDialog::acceptButton()
-{
-    acceptEvent();
+    ui->volumeIntLb->setText(Settings::getInstance()->getProperty("common/volume"));
 }
 
 void OptionDialog::acceptEvent(){
@@ -52,7 +48,7 @@ void OptionDialog::acceptEvent(){
         QApplication::instance()->installTranslator(&translator);
     }
 
-    Settings::getInstance()->setProperty("common/volume",QString::number(ui->volumeSlider->value(),10));
+    Settings::getInstance()->setProperty("common/volume",QString::number(ui->volumeSlider->value()));
 
     if(ui->carddeck1radio->isChecked()){
         Settings::getInstance()->setProperty("common/card_deck","1");
@@ -62,11 +58,6 @@ void OptionDialog::acceptEvent(){
         Settings::getInstance()->setProperty("common/card_deck","2");
         Settings::getInstance()->setProperty("common/card_img_extension",".gif");
     }
-}
-
-void OptionDialog::rejectButton()
-{
-    close();
 }
 
 OptionDialog::~OptionDialog()
@@ -97,6 +88,16 @@ void OptionDialog::on_buttonBox_2_accepted()
 }
 
 void OptionDialog::on_buttonBox_2_rejected()
+{
+    close();
+}
+
+void OptionDialog::on_buttonBox_accepted()
+{
+    acceptEvent();
+}
+
+void OptionDialog::on_buttonBox_rejected()
 {
     close();
 }

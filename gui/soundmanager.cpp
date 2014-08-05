@@ -1,10 +1,12 @@
 #include "soundmanager.h"
 #include "QDebug"
+#include "settings.h"
 
 SoundManager::SoundManager(QObject *parent) :
     QObject(parent)
 {
     player = new QSoundEffect();
+    player->setVolume(Settings::getInstance()->getProperty("common/volume").toInt()/100);
 }
 
 void SoundManager::playCard()
