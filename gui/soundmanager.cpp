@@ -1,10 +1,12 @@
 #include "soundmanager.h"
 #include "QDebug"
+#include "settings.h"
 
 SoundManager::SoundManager(QObject *parent) :
     QObject(parent)
 {
     player = new QSoundEffect();
+    player->setVolume(Settings::getInstance()->getProperty("common/volume").toInt()/100);
 }
 
 void SoundManager::playCard()
@@ -20,8 +22,8 @@ int SoundManager::getRandom(int low, int high){
 
 void SoundManager::drawCard()
 {
-    int random = getRandom(1,8);
-    player->setSource(QUrl::fromLocalFile("sound/cardSlide" + QString::number(random) +".wav"));
+    int random = getRandom(1,4);
+    player->setSource(QUrl::fromLocalFile("sound/cardShove" + QString::number(random) +".wav"));
     player->play();
 }
 

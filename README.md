@@ -21,7 +21,7 @@ spielen.
 
 ~~2) (1 point) Menschliche Spieler sollen vor Spielbeginn in der GUI ihre(n) Namen eingeben.~~
 
-3) (2 point) Für die Spielkarten sollen mehrere Designs zur Auswahl stehen.
+~~3) (2 point) Für die Spielkarten sollen mehrere Designs zur Auswahl stehen.~~ !Vielleicht noch eins dazu machen!
 
 4) (2 point) Aktionskarten (8,Ass,König,...) sollen mit einer vorgegebenen Aktion beliebig
 verknüpft werden können (zwei Karten ziehen, Richtungswechsel, Aussetzen,...).
