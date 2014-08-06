@@ -77,16 +77,16 @@ void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::
 void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount)
 {
     QPointF center = this->sceneRect().center();
-    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center, Settings::getInstance()->getProperty("common/playername"));
+    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center.x(), center.y(), Settings::getInstance()->getProperty("common/playername"));
     players.insert(PlayerItem::direction::HUMAN, human);
 
-    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center, "Yoda");
+    PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center.x(), center.y(), "Yoda");
     players.insert(PlayerItem::direction::LEFT, p1);
 
-    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(PLAYER::Name::TOP), center, "Anakin");
+    PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(PLAYER::Name::TOP), center.x(), center.y(), "Anakin");
     players.insert(PlayerItem::direction::TOP, p2);
 
-    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(PLAYER::Name::RIGHT), center, "C3PO");
+    PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(PLAYER::Name::RIGHT), center.x(), center.y(), "C3PO");
     players.insert(PlayerItem::direction::RIGHT, p3);
 
     //Draw all Player Cards
@@ -108,7 +108,7 @@ void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool with
         //TODO: Die QEventLoop geht glaub ich noch nicht richtig
         QEventLoop pause;
         prepareNewAnimation(pause);
-        addPositionAnimation(fromCard.createImg(), toCard.createImg()->pos());
+        addPositionAnimation(*fromCard.createImg(), *toCard.createImg());
         startAnimation();
         pause.exec(QEventLoop::AllEvents);
     }
@@ -116,6 +116,8 @@ void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool with
     removeItem(toCard.createImg());
     toCard = CardItem(fromCard.getCard());
     toCard.setPos(x, y);
+    toCard.createImg()->setZValue(zValue);
+    zValue++;
     addItem(toCard.createImg());
 
     update(sceneRect());
@@ -132,14 +134,15 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
     if (withAnimation) {
         QEventLoop pause;
         prepareNewAnimation(pause);
-        addPositionAnimation(fromCard.createImg(), toCard.createImg()->pos());
+        addPositionAnimation(*fromCard.createImg(), *toCard.createImg());
         startAnimation();
         pause.exec();
     }
 
     toCard = CardItem(fromCard);
     toCard.setPos(x, y);
-    toCard.createImg()->setZValue(1);
+    toCard.createImg()->setZValue(zValue);
+    zValue++;
     addItem(toCard.createImg());
 
     update(sceneRect());
@@ -181,8 +184,8 @@ void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
     p->removeCard(playedCard);
     soundMgr.playCard();
     updateDepotCard(_playedCard, depot);
-    soundMgr.drawCard();
     p->setUnactive();
+    p->rearrangePlayer(this->sceneRect().center().x(),this->sceneRect().center().y());
 }
 
 /**
@@ -220,8 +223,8 @@ void Playground::playerDrawsCard(PLAYER::Name player)
     CardItem fakeStack(p->getSpecialCard());
     soundMgr.playCard();
     updatePlayerCard(fakeStack, *cardItem);
-    soundMgr.drawCard();
     p->setUnactive();
+    p->rearrangePlayer(this->sceneRect().center().x(),this->sceneRect().center().y());
 }
 
 /**
@@ -236,7 +239,7 @@ void Playground::addPlayerCard(const Card& card)
     CardItem cardFromStack(card);
     soundMgr.playCard();
     updatePlayerCard(cardFromStack, *cardItem);
-    soundMgr.drawCard();
+    players.value(PlayerItem::direction::HUMAN)->rearrangePlayer(this->sceneRect().center().x(),this->sceneRect().center().y());
 }
 
 Card::cardSuit Playground::chooseColor()
@@ -252,7 +255,7 @@ void Playground::rearrangeLayout()
         QHash<PlayerItem::direction, PlayerItem*>::iterator i = players.begin();
         for (i = players.begin(); i != players.end(); ++i) {
             PlayerItem* p = players.value(i.key());
-            p->rearrangePlayer(this->sceneRect().center());
+            p->rearrangePlayer(this->sceneRect().center().x(),this->sceneRect().center().y());
         }
         this->setDepotNStack();
     }

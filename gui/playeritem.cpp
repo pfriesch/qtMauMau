@@ -1,10 +1,11 @@
 #include "playeritem.h"
 
-PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QString _playername, QObject* parent)
+PlayerItem::PlayerItem(direction dir, int cardCount, int xCenter, int yCenter, QString _playername, QObject* parent)
     : QObject(parent)
 {
 
-    this->centerPoint = centerPoint;
+    this->xCenter = xCenter;
+    this->yCenter = yCenter;
     playerDirection = dir;
     specialCard = getSpecialCard();
 
@@ -25,9 +26,10 @@ PlayerItem::PlayerItem(direction dir, int cardCount, QPointF centerPoint, QStrin
  * @param centerPoint
  * @param _playername
  */
-PlayerItem::PlayerItem(direction dir, std::vector<Card> humanCards, QPointF centerPoint, QString _playername)
+PlayerItem::PlayerItem(direction dir, std::vector<Card> humanCards, int xCenter, int yCenter, QString _playername)
 {
-    this->centerPoint = centerPoint;
+    this->xCenter = xCenter;
+    this->yCenter = yCenter;
     playerDirection = dir;
     measureLayout(humanCards.size());
     createHumanCards(humanCards);
@@ -75,37 +77,39 @@ void PlayerItem::measureLayout(int cardCount)
     if (playerDirection == direction::LEFT) {
         int playerCardsWidth = (cardCount - 1 * cardGap) + (cardWidth - cardGap) - cardWidth;
         x = cardWidth - borderMargin;
-        y = (centerPoint.y() / 2) - (playerCardsWidth / 2);
+        y = (yCenter / 2) - (playerCardsWidth / 2);
         nameX = x;
         nameY = y - 20;
     }
     if (playerDirection == direction::TOP) {
         int playerCardsWidth = (cardCount * cardGap);
-        x = (centerPoint.x() - (playerCardsWidth / 2) - cardGap);
+        x = (xCenter - (playerCardsWidth / 2) - cardGap);
         y = cardHeight - 70;
         nameX = x - 70;
         nameY = y;
     }
     if (playerDirection == direction::HUMAN) {
         int playerCardsWidth = cardCount * cardGap;
-        x = (centerPoint.x()) - (playerCardsWidth / 2) - cardGap;
-        y = centerPoint.y() * 2 - cardHeight - borderMargin;
+        x = (xCenter) - (playerCardsWidth / 2) - cardGap;
+        y = yCenter * 2 - cardHeight - borderMargin;
         nameX = x - 70;
         nameY = y - 60;
     }
     if (playerDirection == direction::RIGHT) {
         int playerCardsWidth = (cardCount - 1 * cardGap) + (cardWidth - cardGap) - cardWidth;
-        x = centerPoint.x() * 2 - cardWidth - borderMargin;
-        y = (centerPoint.y() / 2) - (playerCardsWidth / 2);
+        x = xCenter * 2 - cardWidth - borderMargin;
+        y = (yCenter / 2) - (playerCardsWidth / 2);
         nameX = x;
         nameY = y - 20;
     }
 }
 
-void PlayerItem::rearrangePlayer(QPointF centerPoint)
+void PlayerItem::rearrangePlayer(int xCenter, int yCenter)
 {
-    this->centerPoint = centerPoint;
+    this->xCenter = xCenter;
+    this->yCenter = yCenter;
     this->measureLayout(this->getCards()->size());
+
     playername->setPos(nameX, nameY);
     for (int i = 0; i < this->getCards()->size(); ++i) {
         if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {

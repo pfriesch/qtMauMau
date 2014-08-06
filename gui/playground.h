@@ -41,6 +41,7 @@ private:
 
     CardItem depot;
     CardItem stack;
+    int zValue = 1;
 
     void updateDepotCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
     void updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);

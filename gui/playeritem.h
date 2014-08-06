@@ -27,8 +27,8 @@ public:
         HUMAN = 4
     };
 
-    PlayerItem(direction dir, int cardCount, QPointF centerPoint, QString _playername, QObject* parent = 0);
-    PlayerItem(direction dir, std::vector<Card> humanCards, QPointF centerPoint, QString _playername);
+    PlayerItem(direction dir, int cardCount, int xCenter, int yCenter, QString _playername, QObject* parent = 0);
+    PlayerItem(direction dir, std::vector<Card> humanCards, int xCenter, int yCenter, QString _playername);
     void createCards(int cardCount);
     void setPlayableCards(std::vector<Card> playableCards);
     void unsetPlayableCards();
@@ -41,7 +41,7 @@ public:
     QGraphicsTextItem* getPlayername();
     void setActive();
     void setUnactive();
-    void rearrangePlayer(QPointF centerPoint);
+    void rearrangePlayer(int xCenter, int yCenter);
     ~PlayerItem();
 
 private:
@@ -50,7 +50,8 @@ private:
     QVector<CardItem*>* cards = new QVector<CardItem*>();
     CardItem::specialCards specialCard;
     PlayerItem::direction playerDirection;
-    QPointF centerPoint;
+    int xCenter;
+    int yCenter;
 
     QGraphicsTextItem *playername;
 

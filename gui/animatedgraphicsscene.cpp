@@ -3,6 +3,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
 #include <QDebug>
+#include <settings.h>
 
 AnimatedGraphicsScene::AnimatedGraphicsScene ( QObject * parent ) : QGraphicsScene ( parent ), _activeTimeLines (  ), _animationActive ( false )
 {
@@ -15,39 +16,39 @@ AnimatedGraphicsScene::AnimatedGraphicsScene ( QObject * parent ) : QGraphicsSce
 void AnimatedGraphicsScene::prepareNewAnimation(QEventLoop &loop)
 {
     eventLoop = &loop;
-    timeLine = new QTimeLine ( 1500 );
+    timeLine = new QTimeLine ( Settings::getInstance()->getProperty("common/animation_velocity").toInt() );
     bool bOk = connect ( timeLine, SIGNAL ( finished() ), this, SLOT ( animationEnded() ) );
     Q_ASSERT ( bOk );
 }
 
-void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem * item, QPointF destinationPoint )
+void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem &item, QGraphicsPixmapItem &destinationItem )
 {
-    item->setZValue(1);
-    QPointF srcPos = item->pos();
-    if ( srcPos == destinationPoint )
+    //item->setZValue(1);
+    QPointF srcPos = item.pos();
+    /*if ( srcPos == destinationPoint )
     {
-        return ;
-    }
+        return;
+    }*/
 
     // already animated
-    if ( _destinationPositions.contains ( item ) )
+    if ( _destinationPositions.contains ( &item ) )
     {
-        if ( destinationPoint == _destinationPositions[item] )
+        if ( destinationItem.pos() == _destinationPositions[&item] )
         {
             return;
         }
         // as long as this item is already being animated
         // the src pos will be this
-        srcPos = _destinationPositions[item];
+        srcPos = _destinationPositions[&item];
     }
 
-    _destinationPositions[item] = destinationPoint;
+    _destinationPositions[&item] = destinationItem.pos();
 
     newAnimation = new QGraphicsItemAnimation ( timeLine );
     newAnimation->setTimeLine ( timeLine );
-    newAnimation->setItem ( item );
+    newAnimation->setItem ( &item );
     newAnimation->setPosAt ( 0, srcPos );
-    newAnimation->setPosAt ( 1, destinationPoint );
+    newAnimation->setPosAt ( 1, destinationItem.pos() );
 }
 
 
@@ -86,6 +87,5 @@ void AnimatedGraphicsScene::animationEnded()
         return;
     }
     QTimeLine * x = _activeTimeLines.dequeue();
-    qDebug() << "Starting time line: " << x;
     x->start();
 }

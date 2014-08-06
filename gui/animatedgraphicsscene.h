@@ -16,7 +16,7 @@ class AnimatedGraphicsScene : public QGraphicsScene
 public:
     explicit AnimatedGraphicsScene ( QObject * parent = 0 );
 
-    void addPositionAnimation ( QGraphicsPixmapItem *item , QPointF destinationPoint );
+    void addPositionAnimation ( QGraphicsPixmapItem &item , QGraphicsPixmapItem &destinationItem );
 signals:
     void complete();
 public slots:
@@ -30,7 +30,7 @@ protected:
     QGraphicsItemAnimation *newAnimation = NULL;
     QEventLoop *eventLoop;
 
-    QMap<QGraphicsItem *, QPointF> _destinationPositions;
+    QMap<QGraphicsItem*, QPointF> _destinationPositions;
 };
 
 #endif // ANIMATEDGRAPHICSSCENE_H
