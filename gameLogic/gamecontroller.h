@@ -18,8 +18,8 @@ private:
     //The stack of cards where the played cards are dropped.
     Deck cardDepot;
 
-    //flags
-    PLAYER::Name currentPlayer;
+    //player at 0 is always the current player
+    std::vector<PLAYER::Name> playerOrder;
 
     bool changedDirection = false;
     Card::cardSuit wishedSuit = Card::cardSuit(0);
@@ -39,7 +39,7 @@ private:
     const Card::cardValue changeDirectCard = Card::TEN;
 
 public:
-    explicit GameController(PLAYER::Name startingPlayer = PLAYER::Name::BOTTOM);
+    explicit GameController();
     void localGame(int playerCount = 4);
     void networkGame(std::vector<Player*> remotePlayers);
     void gameInit();

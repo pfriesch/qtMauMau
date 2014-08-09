@@ -5,10 +5,10 @@
 #include "remoteplayer.h"
 
 #include <QDebug>
+#include "algorithm"
 
-GameController::GameController(PLAYER::Name startingPlayer)
+GameController::GameController()
     : cardStack(Deck::FULL)
-    , currentPlayer(startingPlayer)
 {
 }
 
@@ -18,8 +18,10 @@ void GameController::localGame(int playerCount)
         throw std::invalid_argument("playercount has to be between 2 and 4");
     } else {
         players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
+        playerOrder.push_back(PLAYER::BOTTOM);
         for (int i = 1; i < playerCount; ++i) {
             players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
+            playerOrder.push_back(PLAYER::Name(i));
         }
     }
 }
@@ -27,15 +29,17 @@ void GameController::localGame(int playerCount)
 void GameController::networkGame(std::vector<Player*> remotePlayers)
 {
     players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
+    playerOrder.push_back(PLAYER::BOTTOM);
     for (int i = 0; i < remotePlayers.size(); ++i) {
-        players.push_back(static_cast<HumanPlayer*>(remotePlayers.at(i)));
+        players.push_back(remotePlayers.at(i));
+        playerOrder.push_back(PLAYER::Name(i + 1));
     }
 
-    //TODO remove debugging ai player
-    for (int i = 0; i < 3 - remotePlayers.size(); ++i) {
-        qDebug() << "added debug ai player";
-        players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
-    }
+    //    //TODO remove debugging ai player
+    //    for (int i = 0; i < 3 - remotePlayers.size(); ++i) {
+    //        qDebug() << "added debug ai player";
+    //        players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
+    //    }
 }
 
 void GameController::gameInit()
@@ -56,14 +60,14 @@ void GameController::gameInit()
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, currentPlayer);
+        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, playerOrder[0]);
     }
-    players.at(currentPlayer)->doTurn(Card::NONE);
+    players.at(playerOrder[0])->doTurn(Card::NONE);
 }
 
 void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit)
 {
-    if (currentPlayer == pName) {
+    if (playerOrder[0] == pName) {
         this->wishedSuit = whishedSuit;
         cardDepot.pushCard(card);
         foreach(Player * player, players)
@@ -79,7 +83,7 @@ void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSu
 
 void GameController::drawCard(PLAYER::Name pName)
 {
-    if (currentPlayer == pName) {
+    if (playerOrder[0] == pName) {
         playerDrawCard(pName);
         handleDraw2x();
         nextTurn();
@@ -94,8 +98,8 @@ Player* GameController::getBottomPlayer()
 void GameController::nextTurn()
 {
     setNextPlayer();
-    qDebug() << "Next Payer: " << currentPlayer;
-    players[currentPlayer]->doTurn(wishedSuit);
+    qDebug() << "Next Payer: " << playerOrder[0];
+    players[playerOrder[0]]->doTurn(wishedSuit);
 }
 
 void GameController::setFlags(const Card& card)
@@ -134,7 +138,7 @@ void GameController::handleDraw2x()
 {
     if (draw2x) {
         for (int i = 0; i < draw2xCount; ++i) {
-            playerDrawCard(currentPlayer);
+            playerDrawCard(playerOrder[0]);
         }
         draw2xCount = 0;
         draw2x = false;
@@ -144,35 +148,9 @@ void GameController::handleDraw2x()
 void GameController::setNextPlayer()
 {
     if (changedDirection) {
-        switch (currentPlayer) {
-        case PLAYER::BOTTOM:
-            currentPlayer = PLAYER::RIGHT;
-            break;
-        case PLAYER::LEFT:
-            currentPlayer = PLAYER::BOTTOM;
-            break;
-        case PLAYER::TOP:
-            currentPlayer = PLAYER::LEFT;
-            break;
-        case PLAYER::RIGHT:
-            currentPlayer = PLAYER::TOP;
-            break;
-        }
+        std::rotate(playerOrder.begin(), playerOrder.begin() + 1, playerOrder.end());
     } else {
-        switch (currentPlayer) {
-        case PLAYER::BOTTOM:
-            currentPlayer = PLAYER::LEFT;
-            break;
-        case PLAYER::LEFT:
-            currentPlayer = PLAYER::TOP;
-            break;
-        case PLAYER::TOP:
-            currentPlayer = PLAYER::RIGHT;
-            break;
-        case PLAYER::RIGHT:
-            currentPlayer = PLAYER::BOTTOM;
-            break;
-        }
+        std::rotate(playerOrder.begin(), playerOrder.end() - 1, playerOrder.end());
     }
 }
 
