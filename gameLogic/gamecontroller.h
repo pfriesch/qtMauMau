@@ -21,6 +21,9 @@ private:
     //player at 0 is always the current player
     std::vector<PLAYER::Name> playerOrder;
 
+
+    bool playerPlayed = false;
+
     bool changedDirection = false;
     Card::cardSuit wishedSuit = Card::cardSuit(0);
     bool draw2x = false;

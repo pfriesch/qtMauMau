@@ -67,7 +67,8 @@ void GameController::gameInit()
 
 void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit)
 {
-    if (playerOrder[0] == pName) {
+    if (playerOrder[0] == pName && !playerPlayed) {
+        playerPlayed = true;
         this->wishedSuit = whishedSuit;
         cardDepot.pushCard(card);
         foreach(Player * player, players)
@@ -83,7 +84,8 @@ void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSu
 
 void GameController::drawCard(PLAYER::Name pName)
 {
-    if (playerOrder[0] == pName) {
+    if (playerOrder[0] == pName && !playerPlayed) {
+        playerPlayed = true;
         playerDrawCard(pName);
         handleDraw2x();
         nextTurn();
@@ -97,6 +99,7 @@ Player* GameController::getBottomPlayer()
 
 void GameController::nextTurn()
 {
+    playerPlayed = false;
     setNextPlayer();
     qDebug() << "Next Payer: " << playerOrder[0];
     players[playerOrder[0]]->doTurn(wishedSuit);
