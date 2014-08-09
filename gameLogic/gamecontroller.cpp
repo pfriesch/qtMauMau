@@ -62,7 +62,7 @@ void GameController::gameInit()
 
         players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, playerOrder[0]);
     }
-    players.at(playerOrder[0])->doTurn(Card::NONE);
+    players[playerOrder[0]]->doTurn(Card::NONE);
 }
 
 void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit)
