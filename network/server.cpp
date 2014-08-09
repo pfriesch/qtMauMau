@@ -39,7 +39,7 @@ void MauServer::readNextData(MSocket* _client)
     PLAYER::Name name = _client->getPlayerName();
 
     QString message = client->readLine();
-    qDebug() << "send Data: " << message;
+    qDebug() << "recieved Data: " << message;
     QStringList messageSplit = message.split(";");
     switch (MProtocol::toServer(messageSplit.at(0).toInt())) {
     case MProtocol::PLAY_CARD:

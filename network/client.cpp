@@ -48,14 +48,6 @@ void MauClient::UIdrawsCard()
     message.append(QString::number(MProtocol::DRAW_CARD));
     writeNextData(message);
 }
-void MauClient::readNextData()
-{
-    char buf[1024] = { 0 };
-    qint64 lineLength = server->readLine(buf, sizeof(buf));
-    if (lineLength != -1) {
-        handleMessage(QString(buf));
-    }
-}
 
 void MauClient::writeNextData(QString data)
 {
@@ -65,6 +57,21 @@ void MauClient::writeNextData(QString data)
     if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
         //TODO handle network fail
         qDebug() << "client -> server write failed";
+    }
+}
+
+void MauClient::readNextData()
+{
+    int availableBytes = server->bytesAvailable();
+    while (availableBytes > 0) {
+        char buff[1024] = { 0 };
+        qint64 lineLength = server->readLine(buff, sizeof(buff));
+        if (lineLength > 0) {
+            handleMessage(QString(buff));
+        } else {
+            qDebug() << "message length error occured";
+        }
+
     }
 }
 
