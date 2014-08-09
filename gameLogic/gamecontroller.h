@@ -40,7 +40,7 @@ private:
 
 public:
     explicit GameController();
-    void localGame(int playerCount = 2);
+    void localGame(int playerCount = 4);
     void networkGame(std::vector<Player*> remotePlayers);
     void gameInit();
     void playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit);

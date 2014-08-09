@@ -23,7 +23,7 @@ public:
     void resizeEvent(QResizeEvent* event);
 public
 slots:
-    void startNetworkGame();
+    void startNetworkGame(int aiPlayerCount);
     void startGameAsClient();
 
 private:

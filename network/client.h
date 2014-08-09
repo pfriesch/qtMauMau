@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QString>
 #include <QTcpSocket>
+#include <QVector>
 #include "gameLogic/Card.h"
 #include "gameLogic/PlayerName.h"
 
@@ -15,8 +16,9 @@ public:
     ~MauClient();
     //name of the player in the remote game controller
     PLAYER::Name playerName;
+    QVector<PLAYER::Name> localPlayerOrder;
     void setupConnection(QString _address, QString _port);
-    PLAYER::Name getLocalPlayerName(PLAYER::Name pName);
+//    PLAYER::Name getLocalPlayerName(PLAYER::Name pName);
 
 signals:
     void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer);
@@ -41,6 +43,6 @@ private:
     QTcpSocket* server = new QTcpSocket();
     void writeNextData(QString data);
     void handleMessage(QString message);
-    std::map<PLAYER::Name, int> rotatePlayerMap(std::map<PLAYER::Name, int> otherPlayerCardCount);
+    void rotatePlayerMap();
 };
 #endif

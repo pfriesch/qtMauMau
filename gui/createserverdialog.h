@@ -14,7 +14,7 @@ public:
     explicit CreateServerDialog(QWidget* parent = 0);
     ~CreateServerDialog();
 signals:
-  void startNetworkGame();
+    void startNetworkGame(int aiPlayerCount);
 
 public
 slots:
@@ -26,8 +26,11 @@ slots:
 
     void on_cancelbtn_clicked();
 
+    void on_addAiPlayer_clicked();
+
 private:
     Ui::CreateServerDialog* ui;
+    int aiPlayerCount = 0;
 };
 
 #endif // CREATESERVERDIALOG_H

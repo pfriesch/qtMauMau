@@ -167,7 +167,7 @@ void MainWindow::startGameAsServerDialog()
     createServerDialog->show();
 }
 
-void MainWindow::startNetworkGame()
+void MainWindow::startNetworkGame(int aiPlayerCount)
 {
     resetGame();
 

@@ -26,24 +26,39 @@ void CreateServerDialog::newPlayer(QString adress, int connectionIndex, QString 
 {
     switch (connectionIndex) {
     case 0:
-        ui->player1txt->setText(adress);
+        ui->player1statlbl->setEnabled(true);
+        ui->player1statlbl->setText(adress);
         break;
     case 1:
-        ui->player2txt->setText(adress);
+        ui->player2statlbl->setEnabled(true);
+        ui->player2statlbl->setText(adress);
         break;
     case 2:
-        ui->player3txt->setText(adress);
+        ui->player3statlbl->setEnabled(true);
+        ui->player3statlbl->setText(adress);
         break;
     }
 }
 
 void CreateServerDialog::on_startgamebtn_clicked()
 {
-    emit startNetworkGame();
+    //TODO add ai player in create server dialog
+    if (aiPlayerCount != 0) {
+        qDebug() << "aiplayer not handled in create server dialog";
+    }
+    emit startNetworkGame(aiPlayerCount);
     close();
 }
 
 void CreateServerDialog::on_cancelbtn_clicked()
 {
     close();
+}
+
+void CreateServerDialog::on_addAiPlayer_clicked()
+{
+
+    if (aiPlayerCount != 0) {
+        qDebug() << "try to add aiplayer, not handled in create server dialog";
+    }
 }
