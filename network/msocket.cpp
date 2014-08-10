@@ -1,8 +1,8 @@
 #include "msocket.h"
 
-MSocket::MSocket(QTcpSocket* _socket, QObject* parent)
+MSocket::MSocket(QTcpSocket* _socket)
     : socket(_socket)
-    , QObject(parent)
+
 {
 
     connect(socket, &QTcpSocket::readyRead, this, &MSocket::socketReadyRead);

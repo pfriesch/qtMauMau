@@ -8,7 +8,7 @@
 class MSocket : public QObject {
     Q_OBJECT
 public:
-    explicit MSocket(QTcpSocket* _socket, QObject* parent = 0);
+    explicit MSocket(QTcpSocket* _socket);
     QTcpSocket* getSocket() const;
 
     PLAYER::Name getPlayerName() const;

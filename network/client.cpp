@@ -71,16 +71,23 @@ void MauClient::readNextData()
         } else {
             qDebug() << "message length error occured";
         }
-
+        availableBytes = server->bytesAvailable();
     }
 }
 
 void MauClient::handleMessage(QString message)
 {
+
+    message = message.trimmed();
     qDebug() << "recived Data: " << message;
     QStringList messageSplit = message.split(";");
+    qDebug() << "message split size: " << messageSplit.size();
+
     switch (messageSplit.at(0).toInt()) {
     case MProtocol::INIT_PLAYGROUND: {
+        if (messageSplit.size() < 6) {
+            qDebug() << "message split error at: " << MProtocol::INIT_PLAYGROUND;
+        }
         emit clientGameStarted();
         playerName = PLAYER::Name(messageSplit.at(1).toInt());
         qDebug() << "client: local/remote Player Name: " << playerName;
@@ -104,22 +111,35 @@ void MauClient::handleMessage(QString message)
         break;
     }
     case MProtocol::DO_TURN:
+        if (messageSplit.size() < 3) {
+            qDebug() << "message split error at: " << MProtocol::DO_TURN;
+        }
         //        void UIdoTurn(std::vector<Card> playableCards,
         //                      Card::cardSuit wishSuitCard);
         emit UIdoTurn(MProtocol::stringToCardVec(messageSplit.at(1)),
                       Card::cardSuit(messageSplit.at(2).toInt()));
         break;
+
     case MProtocol::OTHER_PLAYS_CARD:
+        if (messageSplit.size() < 3) {
+            qDebug() << "message split error at: " << MProtocol::OTHER_PLAYS_CARD;
+        }
         //        void UIplayerPlaysCard(PLAYER::Name pName,
         //                               const Card & playedCard);
-        emit UIplayerPlaysCard(localPlayerOrder[PLAYER::Name(messageSplit.at(1).toInt())],
+        emit UIplayerPlaysCard(localPlayerOrder[messageSplit.at(1).toInt()],
                                MProtocol::stingToCard(messageSplit.at(2)));
         break;
     case MProtocol::OTHER_DRAWS_CARD:
+        if (messageSplit.size() < 2) {
+            qDebug() << "message split error at: " << MProtocol::OTHER_DRAWS_CARD;
+        }
         //        void UIplayerDrawsCard(PLAYER::Name pName);
         emit UIplayerDrawsCard(localPlayerOrder[messageSplit.at(1).toInt()]);
         break;
     case MProtocol::ADD_CARD:
+        if (messageSplit.size() < 2) {
+            qDebug() << "message split error at: " << MProtocol::ADD_CARD;
+        }
         //        void UIaddPlayerCard(const Card & card);
         emit UIaddPlayerCard(MProtocol::stingToCard(messageSplit.at(1)));
         break;

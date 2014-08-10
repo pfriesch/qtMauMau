@@ -39,6 +39,7 @@ void MauServer::readNextData(MSocket* _client)
     PLAYER::Name name = _client->getPlayerName();
 
     QString message = client->readLine();
+    message = message.trimmed();
     qDebug() << "recieved Data: " << message;
     QStringList messageSplit = message.split(";");
     switch (MProtocol::toServer(messageSplit.at(0).toInt())) {
@@ -103,7 +104,7 @@ void MauServer::RemotePlayerPlaysCard(PLAYER::Name pName, const Card& playedCard
 void MauServer::RemotePlayerDrawsCard(PLAYER::Name pName)
 {
     QString message;
-    message.append(QString::number(MProtocol::OTHER_PLAYS_CARD));
+    message.append(QString::number(MProtocol::OTHER_DRAWS_CARD));
     message.append(";");
     message.append(QString::number(pName));
     for (int i = 0; i < clients.size(); ++i) {

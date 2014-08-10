@@ -1,5 +1,6 @@
 #include "maumauprotokoll.h"
 #include <QStringList>
+#include <QDebug>
 
 MProtocol::MProtocol()
 {
@@ -9,12 +10,16 @@ QString MProtocol::cardVectorToSting(std::vector<Card> cards)
 {
     //sting structure suit:value,suit:value,...
     QString vecSting;
-    for (unsigned i = 0; i < cards.size(); ++i) {
-        vecSting.append(cardToSting(cards.at(i)));
-        vecSting.append(",");
+    if (cards.size() <= 0) {
+        vecSting.append("$");
+    } else {
+        for (unsigned i = 0; i < cards.size(); ++i) {
+            vecSting.append(cardToSting(cards.at(i)));
+            vecSting.append(",");
+        }
+        //chop the last ","
+        vecSting.chop(1);
     }
-    //chop the last ","
-    vecSting.chop(1);
     return vecSting;
 }
 
@@ -46,10 +51,13 @@ QString MProtocol::cardToSting(Card card)
 std::vector<Card> MProtocol::stringToCardVec(QString vecAsSting)
 {
     std::vector<Card> cards;
-    QStringList vecAsStingList = vecAsSting.split(",");
-    foreach(QString string, vecAsStingList)
-    {
-        cards.push_back(Card(MProtocol::stingToCard(string)));
+    if (!vecAsSting.contains("$")) {
+        qDebug() << vecAsSting;
+        QStringList vecAsStingList = vecAsSting.split(",");
+        foreach(QString string, vecAsStingList)
+        {
+            cards.push_back(Card(MProtocol::stingToCard(string)));
+        }
     }
     return cards;
 }

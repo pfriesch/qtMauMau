@@ -44,5 +44,6 @@ private:
     void writeNextData(QString data);
     void handleMessage(QString message);
     void rotatePlayerMap();
+
 };
 #endif
