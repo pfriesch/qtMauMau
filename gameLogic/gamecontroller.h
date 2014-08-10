@@ -21,7 +21,6 @@ private:
     //player at 0 is always the current player
     std::vector<PLAYER::Name> playerOrder;
 
-
     bool playerPlayed = false;
 
     bool changedDirection = false;
@@ -43,8 +42,8 @@ private:
 
 public:
     explicit GameController();
-    void localGame(int playerCount = 4);
-    void networkGame(std::vector<Player*> remotePlayers);
+    void localGame(int playerCount = MAX_PLAYER);
+    void networkGame(std::vector<Player*> _players);
     void gameInit();
     void playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit);
     void drawCard(PLAYER::Name pName);

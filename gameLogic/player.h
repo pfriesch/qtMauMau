@@ -8,8 +8,17 @@
 #include "gamecontrollerproxy.h"
 #include "PlayerName.h"
 
+static const int MAX_PLAYER = 4;
+static const int MIN_PLAYER = 2;
+
 class Player {
 public:
+    enum Type {
+        HUMAN_PLAYER = 0,
+        AI_PLAYER = 1,
+        REMOTE_PLAYER = 2
+    };
+
 protected:
     std::vector<Card> hand;
     std::string name;
@@ -31,7 +40,7 @@ public:
     PLAYER::Name getPName() const;
 
 protected:
-    std::vector<Card>& getPlayableCards(const Card& card, Card::cardSuit wishSuitCard = Card::NONE);
+    std::vector<Card> getPlayableCards(const Card& card, Card::cardSuit wishSuitCard = Card::NONE);
     void dropCard(const Card& card);
 };
 

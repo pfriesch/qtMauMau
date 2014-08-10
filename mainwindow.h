@@ -23,14 +23,14 @@ public:
     void resizeEvent(QResizeEvent* event);
 public
 slots:
-    void startNetworkGame(int aiPlayerCount);
+    void startNetworkGame(QVector<QPair<Player::Type, int> > players);
     void startGameAsClient();
 
 private:
     void setupMenuBar();
     void setupGraphicsView();
     void connectSignalsForLocal(HumanPlayer* humanPlayer);
-    void connectSignalsForServer(HumanPlayer* humanPlayer, std::vector<Player*> remotePlayers);
+    void connectSignalsForServer(HumanPlayer* humanPlayer, QVector<RemotePlayer*> remotePlayers);
     void connectSignalsForClient();
 
     void showNameDialog();

@@ -103,7 +103,7 @@ void MainWindow::connectSignalsForLocal(HumanPlayer* humanPlayer)
     QObject::connect(playground, &Playground::drawCard, humanPlayer, &HumanPlayer::UIdrawsCard);
 }
 
-void MainWindow::connectSignalsForServer(HumanPlayer* humanPlayer, std::vector<Player*> remotePlayers)
+void MainWindow::connectSignalsForServer(HumanPlayer* humanPlayer, QVector<RemotePlayer*> remotePlayers)
 {
     // From HumandPlayer(Logic) ----> Playground(View)
     QObject::connect(humanPlayer, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
@@ -167,18 +167,23 @@ void MainWindow::startGameAsServerDialog()
     createServerDialog->show();
 }
 
-void MainWindow::startNetworkGame(int aiPlayerCount)
+void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)
 {
     resetGame();
 
     playground->startGame();
     gc = new GameController();
-
-    std::vector<Player*> remotePlayers;
-    for (int i = 0; i < server->getClients().size(); ++i) {
-        remotePlayers.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
+    std::vector<Player*> _players;
+    QVector<RemotePlayer*> remotePlayers;
+    for (int i = 0; i < players.size(); ++i) {
+        if (players.at(i).first == Player::AI_PLAYER) {
+            _players.push_back(new AIPlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
+        } else if (players.at(i).first == Player::REMOTE_PLAYER) {
+            _players.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
+            remotePlayers.append(static_cast<RemotePlayer*>(_players.back()));
+        }
     }
-    gc->networkGame(remotePlayers);
+    gc->networkGame(_players);
     connectSignalsForServer(static_cast<HumanPlayer*>(gc->getBottomPlayer()), remotePlayers);
     createServerDialog->hide();
     playground->startGame();

@@ -24,30 +24,24 @@ CreateServerDialog::~CreateServerDialog()
 
 void CreateServerDialog::newPlayer(QString adress, int connectionIndex, QString name)
 {
-    switch (connectionIndex) {
-    case 0:
-        ui->player1statlbl->setEnabled(true);
-        ui->player1statlbl->setText(adress);
-        break;
-    case 1:
-        ui->player2statlbl->setEnabled(true);
-        ui->player2statlbl->setText(adress);
-        break;
-    case 2:
-        ui->player3statlbl->setEnabled(true);
-        ui->player3statlbl->setText(adress);
-        break;
+    if (getFreeSlots() <= 0) {
+        QLabel* label = getNextFreeSlot();
+        if (label != NULL) {
+            label->setEnabled(true);
+            label->setText(adress);
+            players.append(QPair<Player::Type, int>(Player::REMOTE_PLAYER, connectionIndex));
+        }
     }
 }
 
 void CreateServerDialog::on_startgamebtn_clicked()
 {
-    //TODO add ai player in create server dialog
-    if (aiPlayerCount != 0) {
-        qDebug() << "aiplayer not handled in create server dialog";
+    if (players.size() < 1) {
+        qDebug() << "hanlde to few players";
+    } else {
+        emit startNetworkGame(players);
+        close();
     }
-    emit startNetworkGame(aiPlayerCount);
-    close();
 }
 
 void CreateServerDialog::on_cancelbtn_clicked()
@@ -57,8 +51,38 @@ void CreateServerDialog::on_cancelbtn_clicked()
 
 void CreateServerDialog::on_addAiPlayer_clicked()
 {
-
-    if (aiPlayerCount != 0) {
-        qDebug() << "try to add aiplayer, not handled in create server dialog";
+    if (getFreeSlots() <= 0) {
+        QLabel* label = getNextFreeSlot();
+        if (label != NULL) {
+            label->setEnabled(true);
+            label->setText("Computer");
+            players.append(QPair<Player::Type, int>(Player::AI_PLAYER, 0));
+        }
     }
+}
+
+int CreateServerDialog::getFreeSlots()
+{
+    int freeSlots = 0;
+    if (ui->player1statlbl->isEnabled()) {
+        freeSlots++;
+    }
+    if (ui->player2statlbl->isEnabled()) {
+        freeSlots++;
+    }
+    if (ui->player3statlbl->isEnabled()) {
+        freeSlots++;
+    }
+}
+
+QLabel* CreateServerDialog::getNextFreeSlot()
+{
+    if (!ui->player1statlbl->isEnabled()) {
+        return ui->player1statlbl;
+    } else if (!ui->player2statlbl->isEnabled()) {
+        return ui->player2statlbl;
+    } else if (!ui->player3statlbl->isEnabled()) {
+        return ui->player3statlbl;
+    }
+    return NULL;
 }

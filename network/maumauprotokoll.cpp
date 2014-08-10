@@ -10,7 +10,7 @@ QString MProtocol::cardVectorToSting(std::vector<Card> cards)
 {
     //sting structure suit:value,suit:value,...
     QString vecSting;
-    if (cards.size() <= 0) {
+    if (cards.size() == 0) {
         vecSting.append("$");
     } else {
         for (unsigned i = 0; i < cards.size(); ++i) {

@@ -14,7 +14,7 @@ GameController::GameController()
 
 void GameController::localGame(int playerCount)
 {
-    if (playerCount < 2 || playerCount > 4) {
+    if (playerCount < MIN_PLAYER || playerCount > MAX_PLAYER) {
         throw std::invalid_argument("playercount has to be between 2 and 4");
     } else {
         players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
@@ -26,20 +26,14 @@ void GameController::localGame(int playerCount)
     }
 }
 
-void GameController::networkGame(std::vector<Player*> remotePlayers)
+void GameController::networkGame(std::vector<Player*> _players)
 {
     players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
     playerOrder.push_back(PLAYER::BOTTOM);
-    for (int i = 0; i < remotePlayers.size(); ++i) {
-        players.push_back(remotePlayers.at(i));
+    for (unsigned i = 0; i < _players.size(); ++i) {
+        players.push_back(_players.at(i));
         playerOrder.push_back(PLAYER::Name(i + 1));
     }
-
-    //    //TODO remove debugging ai player
-    //    for (int i = 0; i < 3 - remotePlayers.size(); ++i) {
-    //        qDebug() << "added debug ai player";
-    //        players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
-    //    }
 }
 
 void GameController::gameInit()

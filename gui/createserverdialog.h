@@ -2,6 +2,10 @@
 #define CREATESERVERDIALOG_H
 
 #include <QDialog>
+#include <QLabel>
+#include <QPair>
+#include <gameLogic/remoteplayer.h>
+#include <gameLogic/aiplayer.h>
 
 namespace Ui {
 class CreateServerDialog;
@@ -14,7 +18,7 @@ public:
     explicit CreateServerDialog(QWidget* parent = 0);
     ~CreateServerDialog();
 signals:
-    void startNetworkGame(int aiPlayerCount);
+    void startNetworkGame(QVector<QPair<Player::Type, int> > players);
 
 public
 slots:
@@ -30,7 +34,9 @@ slots:
 
 private:
     Ui::CreateServerDialog* ui;
-    int aiPlayerCount = 0;
+    QVector<QPair<Player::Type, int> > players;
+    int getFreeSlots();
+    QLabel* getNextFreeSlot();
 };
 
 #endif // CREATESERVERDIALOG_H
