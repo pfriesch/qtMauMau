@@ -1,24 +1,27 @@
 #include "choosecolordialog.h"
 #include "ui_choosecolordialog.h"
+#include "settings.h"
 
 ChooseColorDialog::ChooseColorDialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::ChooseColorDialog)
 {
     ui->setupUi(this);
-    QPixmap pixmap("img/hearts.png");
-    QIcon icon(pixmap);
 
-    ui->btnFirst->setIcon(icon);
+    QString deckNumber = Settings::getInstance()->getProperty("common/card_deck");
+    QString imgExtension = Settings::getInstance()->getProperty("common/card_img_extension");
+
+
+    ui->btnFirst->setIcon(QIcon(QPixmap("img/deck_" + deckNumber + "/hearts" + imgExtension)));
     ui->btnFirst->installEventFilter(this);
 
-    ui->btnSecond->setIcon(QIcon(QPixmap("img/diamonds.png")));
+    ui->btnSecond->setIcon(QIcon(QPixmap("img/deck_" + deckNumber + "/diamonds" + imgExtension)));
     ui->btnSecond->installEventFilter(this);
 
-    ui->btnThird->setIcon(QIcon(QPixmap("img/clubs.png")));
+    ui->btnThird->setIcon(QIcon(QPixmap("img/deck_" + deckNumber + "/clubs" + imgExtension)));
     ui->btnThird->installEventFilter(this);
 
-    ui->btnFourth->setIcon(QIcon(QPixmap("img/spades.png")));
+    ui->btnFourth->setIcon(QIcon(QPixmap("img/deck_" + deckNumber + "/spades" + imgExtension)));
     ui->btnFourth->installEventFilter(this);
 }
 
