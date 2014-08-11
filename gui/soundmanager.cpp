@@ -6,7 +6,8 @@ SoundManager::SoundManager(QObject *parent) :
     QObject(parent)
 {
     player = new QSoundEffect();
-    player->setVolume(Settings::getInstance()->getProperty("common/volume").toInt()/100);
+    int volume = Settings::getInstance()->getProperty("common/volume").toInt();
+    player->setVolume((float)volume/100);
 }
 
 void SoundManager::playCard()
