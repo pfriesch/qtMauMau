@@ -22,6 +22,7 @@ void AIPlayer::doTurn(Card::cardSuit wishSuitCard)
         Card playCard = playableCards.at(0);
         dropCard(playableCards.at(0));
         gameController.playCard(playCard);
+        topCard = playCard;
     } else {
 
         gameController.drawCard();

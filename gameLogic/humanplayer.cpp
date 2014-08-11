@@ -44,6 +44,7 @@ void HumanPlayer::UIplaysCard(const Card& card)
     dropCard(card);
 
     gameController.playCard(card);
+    topCard = card;
 }
 
 void HumanPlayer::UIdrawsCard()

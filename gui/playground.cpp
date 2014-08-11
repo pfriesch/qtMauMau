@@ -162,7 +162,10 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
 
 void Playground::playerDoTurn(std::vector<Card> playableCards)
 {
-    qDebug("Player do Turn");
+    qDebug("Player do Turn; cards: ");
+    for (unsigned i = 0; i < playableCards.size(); ++i) {
+        qDebug() << playableCards[i].getSuit()<<":"<<playableCards[i].getValue();
+    }
     players.value(PlayerItem::direction::HUMAN)->setActive();
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }

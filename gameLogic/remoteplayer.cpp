@@ -43,6 +43,7 @@ int RemotePlayer::getCardCount() const
 void RemotePlayer::RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card)
 {
     if (pName == remotePlayerName) {
+        topCard = card;
         dropCard(card);
         gameController.playCard(card);
     }
