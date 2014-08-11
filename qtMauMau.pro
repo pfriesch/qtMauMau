@@ -38,14 +38,14 @@ SOURCES += main.cpp\
     gameLogic/remoteplayer.cpp \
     gameLogic/player.cpp \
     gameLogic/gamecontrollerproxy.cpp \
-    gameLogic/gamestate.cpp \
     gui/choosecolordialog.cpp \
     gui/connecttoserver.cpp \
     gui/createserverdialog.cpp \
     gui/setnamedialog.cpp \
     gui/soundmanager.cpp \
     network/maumauprotokoll.cpp \
-    network/msocket.cpp
+    network/msocket.cpp \
+    gamecontrollerserializer.cpp
 
 
 
@@ -70,14 +70,14 @@ HEADERS  += mainwindow.h \
     gameLogic/remoteplayer.h \
     gui/choosecolordialog.h \
     gameLogic/gamecontrollerproxy.h \
-    gameLogic/gamestate.h \
     gameLogic/PlayerName.h \
     gui/connecttoserver.h \
     gui/createserverdialog.h \
     gui/setnamedialog.h \
     gui/soundmanager.h \
     network/maumauprotokoll.h \
-    network/msocket.h
+    network/msocket.h \
+    gamecontrollerserializer.h
 
 
 FORMS    += \
