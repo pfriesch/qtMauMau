@@ -36,4 +36,12 @@ public:
     bool operator==(const Card& card) const;
 };
 
+static const Card::cardValue draw2xCard = Card::SEVEN;
+
+static const Card::cardValue wishSuitCard = Card::JACK;
+
+static const Card::cardValue skipNextCard = Card::EIGHT;
+
+static const Card::cardValue changeDirectCard = Card::TEN;
+
 #endif /* CARD_H_ */

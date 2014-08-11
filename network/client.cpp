@@ -33,12 +33,14 @@ void MauClient::OnError()
     }
 }
 
-void MauClient::UIplaysCard(const Card& card)
+void MauClient::UIplaysCard(const Card& card, Card::cardSuit wishedSuit)
 {
     QString message;
     message.append(QString::number(MProtocol::PLAY_CARD));
     message.append(";");
     message.append(MProtocol::cardToSting(card));
+    message.append(";");
+    message.append(QString::number(wishedSuit));
     writeNextData(message);
 }
 
@@ -115,7 +117,7 @@ void MauClient::handleMessage(QString message)
             qDebug() << "message split error at: " << MProtocol::DO_TURN;
         }
         //        void UIdoTurn(std::vector<Card> playableCards,
-        //                      Card::cardSuit wishSuitCard);
+        //                      Card::cardSuit wishedSuit);
         emit UIdoTurn(MProtocol::stringToCardVec(messageSplit.at(1)),
                       Card::cardSuit(messageSplit.at(2).toInt()));
         break;
@@ -142,6 +144,12 @@ void MauClient::handleMessage(QString message)
         }
         //        void UIaddPlayerCard(const Card & card);
         emit UIaddPlayerCard(MProtocol::stingToCard(messageSplit.at(1)));
+        break;
+    case MProtocol::PLAYER_WON:
+        if (messageSplit.size() < 2) {
+            qDebug() << "message split error at: " << MProtocol::ADD_CARD;
+        }
+        qDebug() << "Player " << messageSplit.at(1) << " won, signal to view not implemented yet";
         break;
     default:
         qDebug() << "method not found";

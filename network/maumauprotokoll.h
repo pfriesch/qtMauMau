@@ -16,6 +16,7 @@ public:
         OTHER_PLAYS_CARD = 2,
         OTHER_DRAWS_CARD = 3,
         ADD_CARD = 4,
+        PLAYER_WON = 5
     };
     enum toServer {
         PLAY_CARD = 0,

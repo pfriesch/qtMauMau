@@ -4,20 +4,25 @@
 
 PLAYER::Name Player::getPName() const
 {
-    return pName;
+    return playerName;
+}
+
+int Player::getCardCount() const
+{
+    return this->hand.size();
 }
 
 Player::Player(PLAYER::Name pName, GameControllerProxy _gameController)
-    : pName(pName)
+    : playerName(pName)
     , gameController(_gameController)
 {
 }
 
-std::vector<Card> Player::getPlayableCards(const Card& card, Card::cardSuit wishSuitCard)
+std::vector<Card> Player::getPlayableCards(const Card& card, Card::cardSuit wishedSuit)
 {
     std::vector<Card> playableCards;
-    for (unsigned int i = 0; i < hand.size(); ++i) {
-        if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue() || card.getSuit() == wishSuitCard) {
+    for (unsigned i = 0; i < hand.size(); ++i) {
+        if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue() || (card.getValue() == wishSuitCard)) {
             playableCards.push_back(hand[i]);
         }
     }

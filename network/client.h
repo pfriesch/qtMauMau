@@ -22,7 +22,7 @@ public:
 
 signals:
     void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer);
-    void UIdoTurn(std::vector<Card> playableCards, Card::cardSuit wishSuitCard);
+    void UIdoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit);
     void UIplayerPlaysCard(PLAYER::Name pName, const Card& playedCard);
     void UIplayerDrawsCard(PLAYER::Name pName);
     void UIaddPlayerCard(const Card& card);
@@ -31,7 +31,7 @@ signals:
 
 public
 slots:
-    void UIplaysCard(const Card& card);
+    void UIplaysCard(const Card& card, Card::cardSuit wishedSuit);
     void UIdrawsCard();
 
 private
@@ -44,6 +44,5 @@ private:
     void writeNextData(QString data);
     void handleMessage(QString message);
     void rotatePlayerMap();
-
 };
 #endif

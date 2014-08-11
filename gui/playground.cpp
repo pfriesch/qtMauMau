@@ -46,10 +46,10 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
             for (int j = 0; j < human->getCards()->size(); ++j) {
                 CardItem* c = human->getCards()->at(j);
                 if (c->createImg() == item && c->getPlayable()) {
-
+                    Card::cardSuit chosenColor;
                     // TODO: Sometimes the Jack isnt the card you can choose a color, we wanted it to let the player modify the action cards
                     if (c->getCard().getValue() == Card::cardValue::JACK) {
-                        Card::cardSuit chosenColor(chooseColor());
+                        chosenColor = chooseColor();
                     }
                     soundMgr.playCard();
                     updateDepotCard(*c, depot);
@@ -58,7 +58,7 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
                     human->unsetPlayableCards();
                     qDebug("VIEW: sende playCard()");
                     human->setUnactive();
-                    emit playCard(depot.getCard());
+                    emit playCard(depot.getCard(), chosenColor);
                 }
             }
         }
@@ -164,7 +164,7 @@ void Playground::playerDoTurn(std::vector<Card> playableCards)
 {
     qDebug("Player do Turn; cards: ");
     for (unsigned i = 0; i < playableCards.size(); ++i) {
-        qDebug() << playableCards[i].getSuit()<<":"<<playableCards[i].getValue();
+        qDebug() << playableCards[i].getSuit() << ":" << playableCards[i].getValue();
     }
     players.value(PlayerItem::direction::HUMAN)->setActive();
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
@@ -188,6 +188,8 @@ void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
         p = players.value(PlayerItem::direction::RIGHT);
         break;
     }
+    default:
+        break;
     }
     p->setActive();
     //TODO: ist irgendwie falsch, er wird die gespielte Karte nie finden, da die View die Karten nicht kennt und nur SpecialCards also Blaue Hintergründe hält

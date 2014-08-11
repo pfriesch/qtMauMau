@@ -1,7 +1,8 @@
 #include "humanplayer.h"
+#include <QDebug>
 
-HumanPlayer::HumanPlayer(PLAYER::Name pName, GameControllerProxy _gameController)
-    : Player(pName, _gameController)
+HumanPlayer::HumanPlayer(PLAYER::Name playerName, GameControllerProxy _gameController)
+    : Player(playerName, _gameController)
 {
 }
 
@@ -16,9 +17,9 @@ void HumanPlayer::otherDrawsCard(PLAYER::Name pName)
     emit UIplayerDrawsCard(pName);
 }
 
-void HumanPlayer::doTurn(Card::cardSuit wishSuitCard)
+void HumanPlayer::doTurn(Card::cardSuit wishedSuit)
 {
-    emit UIdoTurn(this->getPlayableCards(topCard, wishSuitCard), wishSuitCard);
+    emit UIdoTurn(this->getPlayableCards(topCard, wishedSuit), wishedSuit);
 }
 
 void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer)
@@ -34,16 +35,17 @@ void HumanPlayer::reciveCard(const Card& card)
     emit UIaddPlayerCard(card);
 }
 
-int HumanPlayer::getCardCount() const
+void HumanPlayer::playerWon(PLAYER::Name playerName)
 {
-    return hand.size();
+    qDebug() << "Player Won, UI doesnt handle it yet";
+    emit UIPlayerWon(playerName);
 }
 
-void HumanPlayer::UIplaysCard(const Card& card)
+void HumanPlayer::UIplaysCard(const Card& card, Card::cardSuit whishedSuit)
 {
     dropCard(card);
 
-    gameController.playCard(card);
+    gameController.playCard(card, whishedSuit);
     topCard = card;
 }
 

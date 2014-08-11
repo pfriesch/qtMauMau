@@ -1,56 +1,57 @@
 #include "RemotePlayer.h"
 #include <QDebug>
 
-RemotePlayer::RemotePlayer(PLAYER::Name pName, GameControllerProxy _gameController)
-    : Player(pName, _gameController)
+RemotePlayer::RemotePlayer(PLAYER::Name playerName, GameControllerProxy _gameController)
+    : Player(playerName, _gameController)
 {
-    qDebug() << "server: remote Player Name: " << pName;
+    qDebug() << "server: remote Player Name: " << playerName;
 }
 
 void RemotePlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
     topCard = playedCard;
-    emit RemotePlayerPlaysCard(pName, playedCard);
+    emit RemotePlayerPlaysCard(playerName, pName, playedCard);
 }
 
 void RemotePlayer::otherDrawsCard(PLAYER::Name pName)
 {
-    emit RemotePlayerDrawsCard(pName);
+    emit RemotePlayerDrawsCard(playerName, pName);
 }
 
-void RemotePlayer::doTurn(Card::cardSuit wishSuitCard)
+void RemotePlayer::doTurn(Card::cardSuit wishedSuit)
 {
-    emit RemoteDoTurn(pName, this->getPlayableCards(topCard, wishSuitCard), wishSuitCard);
+    emit RemoteDoTurn(playerName, this->getPlayableCards(topCard, wishedSuit), wishedSuit);
 }
 
 void RemotePlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer)
 {
     this->hand = hand;
     this->topCard = topCard;
-    emit RemoteInitPlayground(pName, hand, otherPlayerCardCount, topCard, startingPlayer);
+    emit RemoteInitPlayground(playerName, hand, otherPlayerCardCount, topCard, startingPlayer);
 }
 
 void RemotePlayer::reciveCard(const Card& card)
 {
     this->hand.push_back(card);
-    emit RemoteAddPlayerCard(pName, card);
+    emit RemoteAddPlayerCard(playerName, card);
 }
 
-int RemotePlayer::getCardCount() const
+void RemotePlayer::playerWon(PLAYER::Name pName)
 {
-    return this->hand.size();
+    emit RemotePlayerWon(playerName, pName);
 }
-void RemotePlayer::RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card)
+
+void RemotePlayer::RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card, Card::cardSuit wishedSuit)
 {
-    if (pName == remotePlayerName) {
+    if (playerName == remotePlayerName) {
         topCard = card;
         dropCard(card);
-        gameController.playCard(card);
+        gameController.playCard(card, wishedSuit);
     }
 }
 void RemotePlayer::RemoteDrawsCard(PLAYER::Name remotePlayerName)
 {
-    if (pName == remotePlayerName) {
+    if (playerName == remotePlayerName) {
         gameController.drawCard();
     }
 }

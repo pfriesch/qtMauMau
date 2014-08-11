@@ -42,7 +42,6 @@ SOURCES += main.cpp\
     gui/choosecolordialog.cpp \
     gui/connecttoserver.cpp \
     gui/createserverdialog.cpp \
-    network/serverproxy.cpp \
     gui/setnamedialog.cpp \
     gui/soundmanager.cpp \
     network/maumauprotokoll.cpp \
@@ -75,7 +74,6 @@ HEADERS  += mainwindow.h \
     gameLogic/PlayerName.h \
     gui/connecttoserver.h \
     gui/createserverdialog.h \
-    network/serverproxy.h \
     gui/setnamedialog.h \
     gui/soundmanager.h \
     network/maumauprotokoll.h \

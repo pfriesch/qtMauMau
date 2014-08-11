@@ -9,6 +9,8 @@
 #include "PlayerName.h"
 #include "card.h"
 
+
+
 class GameController {
 
 private:
@@ -22,6 +24,7 @@ private:
     std::vector<PLAYER::Name> playerOrder;
 
     bool playerPlayed = false;
+    bool aPlayerWon = false;
 
     bool changedDirection = false;
     Card::cardSuit wishedSuit = Card::cardSuit(0);
@@ -32,13 +35,7 @@ private:
 
     //special cards
 
-    const Card::cardValue draw2xCard = Card::SEVEN;
 
-    const Card::cardValue wishSuitCard = Card::JACK;
-
-    const Card::cardValue skipNextCard = Card::EIGHT;
-
-    const Card::cardValue changeDirectCard = Card::TEN;
 
 public:
     explicit GameController();
@@ -56,6 +53,7 @@ private:
     void setNextPlayer();
     void playerDrawCard(PLAYER::Name pName);
     void handleDraw2x();
+    void playerWon(PLAYER::Name playerName);
 };
 
 #endif // GAMECONTROLLER_H

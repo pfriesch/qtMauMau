@@ -6,7 +6,8 @@ enum Name {
     BOTTOM = 0,
     LEFT = 1,
     TOP = 2,
-    RIGHT = 3
+    RIGHT = 3,
+    NONE = -1
 };
 };
 

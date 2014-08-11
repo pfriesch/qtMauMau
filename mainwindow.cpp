@@ -125,6 +125,7 @@ void MainWindow::connectSignalsForServer(HumanPlayer* humanPlayer, QVector<Remot
         QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &MauServer::RemotePlayerPlaysCard);
         QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &MauServer::RemotePlayerDrawsCard);
         QObject::connect(_remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &MauServer::RemoteAddPlayerCard);
+        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerWon, server, &MauServer::RemotePlayerWon);
 
         // From  Server(Network) ----> RemotePlayer(Logic)
         QObject::connect(server, &MauServer::RemotePlaysCard, _remotePlayer, &RemotePlayer::RemotePlaysCard);

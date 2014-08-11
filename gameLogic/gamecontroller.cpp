@@ -72,6 +72,13 @@ void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSu
             }
         }
         setFlags(card);
+        if (!players[playerOrder[0]]->getCardCount()) {
+            playerWon(playerOrder[0]);
+        }
+        if (skipNextPlayer) {
+            setNextPlayer();
+            skipNextPlayer = false;
+        }
         nextTurn();
     }
 }
@@ -93,10 +100,14 @@ Player* GameController::getBottomPlayer()
 
 void GameController::nextTurn()
 {
-    playerPlayed = false;
-    setNextPlayer();
-    qDebug() << "Next Payer: " << playerOrder[0];
-    players[playerOrder[0]]->doTurn(wishedSuit);
+    if (!aPlayerWon) {
+        playerPlayed = false;
+        setNextPlayer();
+        qDebug() << "Next Payer: " << playerOrder[0];
+        players[playerOrder[0]]->doTurn(wishedSuit);
+    } else {
+        qDebug() << "some player won !!!!!";
+    }
 }
 
 void GameController::setFlags(const Card& card)
@@ -124,11 +135,6 @@ void GameController::setFlags(const Card& card)
     if (card.getValue() == skipNextCard) {
         skipNextPlayer = true;
     }
-
-    if (skipNextPlayer) {
-        setNextPlayer();
-        skipNextPlayer = false;
-    }
 }
 
 void GameController::handleDraw2x()
@@ -140,6 +146,14 @@ void GameController::handleDraw2x()
         draw2xCount = 0;
         draw2x = false;
     }
+}
+
+void GameController::playerWon(PLAYER::Name playerName)
+{
+    for (unsigned i = 0; i < players.size(); ++i) {
+        players[i]->playerWon(playerName);
+    }
+    aPlayerWon = true;
 }
 
 void GameController::setNextPlayer()

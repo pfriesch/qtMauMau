@@ -23,7 +23,7 @@ slots:
 
 private:
     QTcpSocket* socket;
-    PLAYER::Name playerName = PLAYER::Name(0);
+    PLAYER::Name playerName = PLAYER::NONE;
 };
 
 #endif // MSOCKET_H

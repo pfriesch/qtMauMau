@@ -73,6 +73,7 @@ int CreateServerDialog::getFreeSlots()
     if (ui->player3statlbl->isEnabled()) {
         freeSlots++;
     }
+    return freeSlots;
 }
 
 QLabel* CreateServerDialog::getNextFreeSlot()

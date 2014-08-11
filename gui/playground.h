@@ -75,7 +75,7 @@ slots:
 // Human Spieler hat eine Karte gezogen
 
 signals:
-    void playCard(const Card& card);
+    void playCard(const Card& card, Card::cardSuit whishedSuit);
     void drawCard();
 };
 
