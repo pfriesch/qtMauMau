@@ -8,6 +8,7 @@ QT       += core gui
 QT       += network
 QT       += testlib
 QT       += multimedia
+QT       += webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -45,7 +46,8 @@ SOURCES += main.cpp\
     gui/setnamedialog.cpp \
     gui/soundmanager.cpp \
     network/maumauprotokoll.cpp \
-    network/msocket.cpp
+    network/msocket.cpp \
+    gui/infodialog.cpp
 
 
 
@@ -77,7 +79,8 @@ HEADERS  += mainwindow.h \
     gui/setnamedialog.h \
     gui/soundmanager.h \
     network/maumauprotokoll.h \
-    network/msocket.h
+    network/msocket.h \
+    gui/infodialog.h
 
 
 FORMS    += \
@@ -86,6 +89,7 @@ FORMS    += \
     gui/connecttoserver.ui \
     gui/createserverdialog.ui \
     gui/setnamedialog.ui \
+    gui/infodialog.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \

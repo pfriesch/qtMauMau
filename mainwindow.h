@@ -9,6 +9,7 @@
 #include "gameLogic/humanplayer.h"
 #include "network/server.h"
 #include "network/client.h"
+#include "gui/infodialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +43,7 @@ private:
     OptionDialog* optionDialog;
     ConnectToServer* connectToServer;
     CreateServerDialog* createServerDialog;
+    InfoDialog* infoDialog;
     MauServer* server;
     MauClient* client;
 
@@ -52,6 +54,8 @@ slots:
     void startGameAsServerDialog();
     void startGameAsClientDialog();
     void showOptionDialog();
+    void aboutDialog();
+
 };
 
 #endif // MAINWINDOW_H
