@@ -55,6 +55,11 @@ void Settings::showAllKeys()
     }
 }
 
+bool Settings::contains(QString key)
+{
+    return this->settings->contains(key);
+}
+
 Settings::~Settings()
 {
     delete settings;

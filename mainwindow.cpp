@@ -154,7 +154,15 @@ void MainWindow::startGameAsLocal()
     gc->localGame();
     connectSignalsForLocal(static_cast<HumanPlayer*>(gc->getBottomPlayer()));
     playground->startGame();
-    gc->gameInit();
+
+    if (Settings::getInstance()->contains("game/draw2xCard")) {
+        gc->gameInit(Card::cardValue(Settings::getInstance()->getProperty("game/draw2xCard").toInt()),
+                     Card::cardValue(Settings::getInstance()->getProperty("game/wishSuitCard").toInt()),
+                     Card::cardValue(Settings::getInstance()->getProperty("game/skipNextCard").toInt()),
+                     Card::cardValue(Settings::getInstance()->getProperty("game/changeDirectCard").toInt()));
+    } else {
+        gc->gameInit();
+    }
 }
 
 void MainWindow::startGameAsServerDialog()
@@ -188,7 +196,15 @@ void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)
     connectSignalsForServer(static_cast<HumanPlayer*>(gc->getBottomPlayer()), remotePlayers);
     createServerDialog->hide();
     playground->startGame();
-    gc->gameInit();
+
+    if (Settings::getInstance()->contains("game/draw2xCard")) {
+        gc->gameInit(Card::cardValue(Settings::getInstance()->getProperty("game/draw2xCard").toInt()),
+                     Card::cardValue(Settings::getInstance()->getProperty("game/wishSuitCard").toInt()),
+                     Card::cardValue(Settings::getInstance()->getProperty("game/skipNextCard").toInt()),
+                     Card::cardValue(Settings::getInstance()->getProperty("game/changeDirectCard").toInt()));
+    } else {
+        gc->gameInit();
+    }
 }
 
 void MainWindow::startGameAsClient()

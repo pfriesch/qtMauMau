@@ -26,11 +26,11 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="general">
     <attribute name="title">
-     <string>Tab 1</string>
+     <string>Allgemein</string>
     </attribute>
     <widget class="QSlider" name="volumeSlider">
      <property name="geometry">
@@ -171,7 +171,7 @@
    </widget>
    <widget class="QWidget" name="carddeck">
     <attribute name="title">
-     <string>Tab 2</string>
+     <string>Decks</string>
     </attribute>
     <widget class="QPushButton" name="carddeck1">
      <property name="geometry">
@@ -238,6 +238,323 @@
      </property>
     </widget>
     <widget class="QDialogButtonBox" name="buttonBox_2">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>270</y>
+       <width>341</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>341</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Special Cards</string>
+    </attribute>
+    <widget class="QLabel" name="draw2xlbl">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Ziehe 2 Karte</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="wishCardlbl">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>90</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Wünsche Karte</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="switchDirectionlbl">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>160</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Richtungs Wechsel Karte</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="skipPlayerlbl">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>230</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Aussetzen Karte</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="draw2xcombo">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>241</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTipDuration">
+      <number>0</number>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Jack</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Queen</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>King</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ace</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="wishcombo">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>100</y>
+       <width>241</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>4</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Jack</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Queen</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>King</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ace</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="changedirectcombo">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>170</y>
+       <width>241</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>3</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Jack</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Queen</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>King</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ace</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="skipplayercombo">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>240</y>
+       <width>241</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="toolTipDuration">
+      <number>0</number>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <item>
+      <property name="text">
+       <string comment="1">7</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string comment="2">8</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string comment="3">9</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string comment="4">10</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string comment="5">Jack</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string comment="6">Queen</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string comment="7">King</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string comment="8">Ace</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QDialogButtonBox" name="okdiscardbtngrp">
      <property name="geometry">
       <rect>
        <x>100</x>

@@ -15,6 +15,7 @@ public:
     void setProperty(QString key, QString value);
     QString getProperty(QString key);
     void showAllKeys();
+    bool contains(QString key);
     ~Settings();
 
 private:

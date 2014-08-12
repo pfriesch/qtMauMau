@@ -16,3 +16,8 @@ void GameControllerProxy::drawCard()
 {
     gameContr->drawCard(pName);
 }
+
+Card::cardValue GameControllerProxy::getWhishSuitCard()
+{
+    return gameContr->getWhishSuitCard();
+}

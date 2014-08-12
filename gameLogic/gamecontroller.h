@@ -9,8 +9,6 @@
 #include "PlayerName.h"
 #include "card.h"
 
-
-
 class GameController {
 
 private:
@@ -34,17 +32,29 @@ private:
     //TODO always 4 players, 4+ players unregarded
 
     //special cards
-
-
+    Card::cardValue draw2xCard;
+    Card::cardValue wishSuitCard;
+    Card::cardValue skipNextCard;
+    Card::cardValue changeDirectCard;
 
 public:
     explicit GameController();
     void localGame(int playerCount = MAX_PLAYER);
     void networkGame(std::vector<Player*> _players);
-    void gameInit();
+    void gameInit(Card::cardValue _draw2xCard = Card::SEVEN,
+                  Card::cardValue _wishSuitCard = Card::JACK,
+                  Card::cardValue _skipNextCard = Card::EIGHT,
+                  Card::cardValue _changeDirectCard = Card::TEN);
+
     void playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit);
     void drawCard(PLAYER::Name pName);
 
+    void setdraw2xCard(Card::cardValue cardValue);
+    void setwishSuitCard(Card::cardValue cardValue);
+    void setskipNextCard(Card::cardValue cardValue);
+    void setchangeDirectCard(Card::cardValue cardValue);
+
+    Card::cardValue getWhishSuitCard();
     Player* getBottomPlayer();
 
 private:

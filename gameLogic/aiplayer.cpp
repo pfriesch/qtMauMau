@@ -21,7 +21,7 @@ void AIPlayer::doTurn(Card::cardSuit wishedSuit)
         //TODO ai choose better card
         Card playCard = getPlayCard(playableCards);
         Card::cardSuit aiWhischedSuit;
-        if (playCard.getValue() == wishSuitCard) {
+        if (playCard.getValue() == gameController.getWhishSuitCard()) {
             aiWhischedSuit = getWhishedCardSuit();
         } else {
             aiWhischedSuit = Card::NONE;
@@ -60,7 +60,7 @@ Card::cardSuit AIPlayer::getWhishedCardSuit()
 {
     int suitsCount[4] = { 0 };
     for (unsigned i = 0; i < hand.size(); ++i) {
-        if (hand[i].getValue() != wishSuitCard) {
+        if (hand[i].getValue() != gameController.getWhishSuitCard()) {
             suitsCount[hand[i].getSuit()]++;
         }
     }

@@ -10,11 +10,13 @@ class GameControllerProxy {
 private:
     GameController* gameContr;
     PLAYER::Name pName;
+    Card::cardValue whishSuitCard;
 
 public:
     explicit GameControllerProxy(GameController* _gameContr, PLAYER::Name _pName);
     void playCard(const Card& card, Card::cardSuit whishedSuit);
     void drawCard();
+    Card::cardValue getWhishSuitCard();
 };
 
 #endif // GAMECONTROLLERPROXY_H

@@ -2,6 +2,7 @@
 #include "ui_optiondialog.h"
 #include <settings.h>
 #include <QTranslator>
+#include "gameLogic/card.h"
 
 OptionDialog::OptionDialog(QWidget* parent)
     : QDialog(parent)
@@ -21,10 +22,9 @@ OptionDialog::OptionDialog(QWidget* parent)
     ui->carddeck1->setIcon(QIcon(QPixmap("img/deck_1/08.png")));
     ui->carddeck2->setIcon(QIcon(QPixmap("img/deck_2/08.gif")));
 
-    if(Settings::getInstance()->getProperty("common/card_deck").toInt() == 1){
+    if (Settings::getInstance()->getProperty("common/card_deck").toInt() == 1) {
         ui->carddeck1radio->setChecked(true);
-    }
-    else{
+    } else {
         ui->carddeck2radio->setChecked(true);
     }
 
@@ -34,7 +34,8 @@ OptionDialog::OptionDialog(QWidget* parent)
     ui->volumeIntLb->setText(Settings::getInstance()->getProperty("common/volume"));
 }
 
-void OptionDialog::acceptEvent(){
+void OptionDialog::acceptEvent()
+{
     Settings::getInstance()->setProperty("network/port", ui->portEdit->text());
     Settings::getInstance()->setProperty("common/playername", ui->playernameEdit->text());
 
@@ -48,16 +49,21 @@ void OptionDialog::acceptEvent(){
         QApplication::instance()->installTranslator(&translator);
     }
 
-    Settings::getInstance()->setProperty("common/volume",QString::number(ui->volumeSlider->value()));
+    Settings::getInstance()->setProperty("common/volume", QString::number(ui->volumeSlider->value()));
 
-    if(ui->carddeck1radio->isChecked()){
-        Settings::getInstance()->setProperty("common/card_deck","1");
-        Settings::getInstance()->setProperty("common/card_img_extension",".png");
+    if (ui->carddeck1radio->isChecked()) {
+        Settings::getInstance()->setProperty("common/card_deck", "1");
+        Settings::getInstance()->setProperty("common/card_img_extension", ".png");
+    } else {
+        Settings::getInstance()->setProperty("common/card_deck", "2");
+        Settings::getInstance()->setProperty("common/card_img_extension", ".gif");
     }
-    else{
-        Settings::getInstance()->setProperty("common/card_deck","2");
-        Settings::getInstance()->setProperty("common/card_img_extension",".gif");
-    }
+
+    Settings::getInstance()->setProperty("game/draw2xCard", QString::number(ui->draw2xcombo->currentIndex() + 1));
+    Settings::getInstance()->setProperty("game/wishSuitCard", QString::number(ui->wishcombo->currentIndex() + 1));
+    Settings::getInstance()->setProperty("game/skipNextCard", QString::number(ui->skipplayercombo->currentIndex() + 1));
+    Settings::getInstance()->setProperty("game/changeDirectCard", QString::number(ui->changedirectcombo->currentIndex() + 1));
+    close();
 }
 
 OptionDialog::~OptionDialog()
@@ -79,7 +85,7 @@ void OptionDialog::on_carddeck2_clicked()
 
 void OptionDialog::on_volumeSlider_valueChanged(int value)
 {
-    ui->volumeIntLb->setText(QString::number(value,10));
+    ui->volumeIntLb->setText(QString::number(value, 10));
 }
 
 void OptionDialog::on_buttonBox_2_accepted()
@@ -98,6 +104,16 @@ void OptionDialog::on_buttonBox_accepted()
 }
 
 void OptionDialog::on_buttonBox_rejected()
+{
+    close();
+}
+
+void OptionDialog::on_okdiscardbtngrp_accepted()
+{
+    acceptEvent();
+}
+
+void OptionDialog::on_okdiscardbtngrp_rejected()
 {
     close();
 }

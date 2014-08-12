@@ -11,7 +11,6 @@ GameController::GameController()
     : cardStack(Deck::FULL)
 {
 }
-
 void GameController::localGame(int playerCount)
 {
     if (playerCount < MIN_PLAYER || playerCount > MAX_PLAYER) {
@@ -36,8 +35,15 @@ void GameController::networkGame(std::vector<Player*> _players)
     }
 }
 
-void GameController::gameInit()
+void GameController::gameInit(Card::cardValue _draw2xCard,
+                              Card::cardValue _wishSuitCard,
+                              Card::cardValue _skipNextCard,
+                              Card::cardValue _changeDirectCard)
 {
+    Card::cardValue draw2xCard = _draw2xCard;
+    Card::cardValue wishSuitCard = _wishSuitCard;
+    Card::cardValue skipNextCard = _skipNextCard;
+    Card::cardValue changeDirectCard = _changeDirectCard;
     cardStack.shuffle();
     std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >();
     for (unsigned i = 0; i < players.size(); i++) {
@@ -91,6 +97,16 @@ void GameController::drawCard(PLAYER::Name pName)
         handleDraw2x();
         nextTurn();
     }
+}
+
+void GameController::setdraw2xCard(Card::cardValue cardValue)
+{
+    draw2xCard = cardValue;
+}
+
+Card::cardValue GameController::getWhishSuitCard()
+{
+    return wishSuitCard;
 }
 
 Player* GameController::getBottomPlayer()

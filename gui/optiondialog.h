@@ -23,6 +23,8 @@ public:
         void on_buttonBox_2_rejected();
         void on_buttonBox_accepted();
         void on_buttonBox_rejected();
+        void on_okdiscardbtngrp_accepted();
+        void on_okdiscardbtngrp_rejected();
 
 private:
     void acceptEvent();

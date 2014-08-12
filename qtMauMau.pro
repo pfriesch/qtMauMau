@@ -44,8 +44,7 @@ SOURCES += main.cpp\
     gui/setnamedialog.cpp \
     gui/soundmanager.cpp \
     network/maumauprotokoll.cpp \
-    network/msocket.cpp \
-    gamecontrollerserializer.cpp
+    network/msocket.cpp
 
 
 
@@ -76,8 +75,7 @@ HEADERS  += mainwindow.h \
     gui/setnamedialog.h \
     gui/soundmanager.h \
     network/maumauprotokoll.h \
-    network/msocket.h \
-    gamecontrollerserializer.h
+    network/msocket.h
 
 
 FORMS    += \
