@@ -82,6 +82,10 @@ void MainWindow::setupMenuBar()
     QMenu* infoMenu = new QMenu(QMenu::tr("Info"));
     menuBar->addMenu(infoMenu);
 
+    QAction *aboutMenu = new QAction(QAction::tr("About"),this);
+    connect(aboutMenu, SIGNAL(triggered()), this, SLOT(aboutDialog()));
+    infoMenu->addAction(aboutMenu);
+
     setMenuBar(menuBar);
 }
 
@@ -231,6 +235,12 @@ void MainWindow::showOptionDialog()
     optionDialog = new OptionDialog;
     optionDialog->setModal(true);
     optionDialog->show();
+}
+
+void MainWindow::aboutDialog(){
+    infoDialog = new InfoDialog();
+    infoDialog->setModal(true);
+    infoDialog->show();
 }
 
 MainWindow::~MainWindow()

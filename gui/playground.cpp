@@ -17,6 +17,7 @@ void Playground::startGame()
 
     this->addItem(stack.createImg());
     this->addItem(depot.createImg());
+    soundMgr.playBackgroundSong();
 }
 
 void Playground::setDepotNStack()

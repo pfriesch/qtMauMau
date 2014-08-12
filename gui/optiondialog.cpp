@@ -19,6 +19,10 @@ OptionDialog::OptionDialog(QWidget* parent)
         ui->languageCb->addItem("English");
     }
 
+    if(Settings::getInstance()->getProperty("common/background_music").toInt() == 1){
+        ui->musicCb->setChecked(true);
+    }
+
     ui->carddeck1->setIcon(QIcon(QPixmap("img/deck_1/08.png")));
     ui->carddeck2->setIcon(QIcon(QPixmap("img/deck_2/08.gif")));
 
@@ -51,12 +55,22 @@ void OptionDialog::acceptEvent()
 
     Settings::getInstance()->setProperty("common/volume", QString::number(ui->volumeSlider->value()));
 
-    if (ui->carddeck1radio->isChecked()) {
-        Settings::getInstance()->setProperty("common/card_deck", "1");
-        Settings::getInstance()->setProperty("common/card_img_extension", ".png");
-    } else {
-        Settings::getInstance()->setProperty("common/card_deck", "2");
-        Settings::getInstance()->setProperty("common/card_img_extension", ".gif");
+
+    if(ui->musicCb->isChecked()){
+        Settings::getInstance()->setProperty("common/background_music","1");
+    }
+    else{
+        Settings::getInstance()->setProperty("common/background_music","0");
+    }
+
+    if(ui->carddeck1radio->isChecked()){
+        Settings::getInstance()->setProperty("common/card_deck","1");
+        Settings::getInstance()->setProperty("common/card_img_extension",".png");
+    }
+    else{
+        Settings::getInstance()->setProperty("common/card_deck","2");
+        Settings::getInstance()->setProperty("common/card_img_extension",".gif");
+
     }
 
     Settings::getInstance()->setProperty("game/draw2xCard", QString::number(ui->draw2xcombo->currentIndex() + 1));
