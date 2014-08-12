@@ -8,7 +8,6 @@ HumanPlayer::HumanPlayer(PLAYER::Name playerName, GameControllerProxy _gameContr
 
 void HumanPlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
-    topCard = playedCard;
     emit UIplayerPlaysCard(pName, playedCard);
 }
 
@@ -17,16 +16,16 @@ void HumanPlayer::otherDrawsCard(PLAYER::Name pName)
     emit UIplayerDrawsCard(pName);
 }
 
-void HumanPlayer::doTurn(Card::cardSuit wishedSuit)
+void HumanPlayer::doTurn(Card topCard, Card::cardSuit wishedSuit)
 {
     emit UIdoTurn(this->getPlayableCards(topCard, wishedSuit), wishedSuit);
 }
 
-void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer)
+void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard)
 {
+    wishSuitCard = _wishSuitCard;
     this->hand = hand;
-    this->topCard = topCard;
-    emit UIinitPlayground(hand, otherPlayerCardCount, topCard, startingPlayer);
+    emit UIinitPlayground(hand, otherPlayerCardCount, topCard, startingPlayer, wishSuitCard);
 }
 
 void HumanPlayer::reciveCard(const Card& card)
@@ -44,9 +43,7 @@ void HumanPlayer::playerWon(PLAYER::Name playerName)
 void HumanPlayer::UIplaysCard(const Card& card, Card::cardSuit whishedSuit)
 {
     dropCard(card);
-
     gameController.playCard(card, whishedSuit);
-    topCard = card;
 }
 
 void HumanPlayer::UIdrawsCard()

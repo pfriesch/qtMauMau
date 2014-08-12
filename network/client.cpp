@@ -25,6 +25,7 @@ void MauClient::setupConnection(QString _address, QString _port)
 
 void MauClient::OnError()
 {
+    //TODO perhaps we should think about reconnection, but that might be too much
     qDebug() << "socket error";
     if (server->error()) {
         qCritical() << server->error();
@@ -108,7 +109,8 @@ void MauClient::handleMessage(QString message)
         emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(2)),
                               otherPlayerCardCount,
                               MProtocol::stingToCard(messageSplit.at(4)),
-                              localPlayerOrder[messageSplit.at(5).toInt()]);
+                              localPlayerOrder[messageSplit.at(5).toInt()],
+                              Card::cardValue(messageSplit.at(5).toInt()));
 
         break;
     }

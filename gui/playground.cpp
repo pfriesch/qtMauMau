@@ -46,10 +46,10 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
             for (int j = 0; j < human->getCards()->size(); ++j) {
                 CardItem* c = human->getCards()->at(j);
                 if (c->createImg() == item && c->getPlayable()) {
-                    Card::cardSuit chosenColor;
-                    // TODO: Sometimes the Jack isnt the card you can choose a color, we wanted it to let the player modify the action cards
-                    if (c->getCard().getValue() == Card::cardValue::JACK) {
+                    Card::cardSuit chosenColor = Card::NONE;
+                    if (c->getCard().getValue() == wishSuitCard) {
                         chosenColor = chooseColor();
+                        qDebug() << "CHOOOSEN COLOR: " << chosenColor;
                     }
                     soundMgr.playCard();
                     updateDepotCard(*c, depot);
@@ -67,8 +67,9 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
 // TODO: show starting player
-void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer)
+void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard)
 {
+    wishSuitCard = _wishSuitCard;
     createPlayer(humanPlayerCards, otherPlayerCardCount);
     CardItem depotCard(topDepotCard);
     updateDepotCard(depotCard, depot);

@@ -16,8 +16,8 @@ Das Kartenspiel "MauMau" mit dem QT Framework
 
 Folgende Funktionen sind implementiert oder kommen noch.
 
-1) (1 point) Es können mindestens 2 Menschen gegeneinander oder gegen einen Computer
-spielen.
+~~1) (1 point) Es können mindestens 2 Menschen gegeneinander oder gegen einen Computer
+spielen.~~
 
 ~~2) (1 point) Menschliche Spieler sollen vor Spielbeginn in der GUI ihre(n) Namen eingeben.~~
 
@@ -34,9 +34,9 @@ verknüpft werden können (zwei Karten ziehen, Richtungswechsel, Aussetzen,...).
 
 8) (1 point) Der Spieler soll sich den Spielverlauf ansehen können.
 
-9) (1 point) Die Anwendung soll es Spielern erlauben, über das Netzwerk zu spielen. Es
+~~9) (1 point) Die Anwendung soll es Spielern erlauben, über das Netzwerk zu spielen. Es
 darf davon ausgegangen werden, dass die beiden Anwendungen im selben Subnetz
-sind, und die Ports erreichbar sind (keine Firewall, kein NAT, etc.).
+sind, und die Ports erreichbar sind (keine Firewall, kein NAT, etc.).~~
 
 10) ~~(2 point) Die Spielkarten sollen animiert abgelegt werden.~~
 
@@ -51,16 +51,16 @@ annimmt, oder nicht.
 
 14) (1 point) Der Anwender des Clients wird über die Entscheidung informiert.
 
-15) (1 point) Client und Server sind eine Applikation, jeder kann Client und Server sein, bei
-einer Verbindung gibt es immer nur einen Server und mehrere Clients
+~~15) (1 point) Client und Server sind eine Applikation, jeder kann Client und Server sein, bei
+einer Verbindung gibt es immer nur einen Server und mehrere Clients~~
 
-16) (1 point) Es sollen Beliebig viele Computerspieler/Spieler (bis zu 4) ausgewählt werden
-können.
+~~16) (1 point) Es sollen Beliebig viele Computerspieler/Spieler (bis zu 4) ausgewählt werden
+können.~~
 
-17) (1 point) Die Verbindung soll solange gehalten werden, bis das Spiel beendet ist.
+~~17) (1 point) Die Verbindung soll solange gehalten werden, bis das Spiel beendet ist.~~
 
-18) (5 point) Beim Spiel Mensch gegen Computer soll eine einfache Spielstrategie (KI)
-implementiert werden.
+~~18) (5 point) Beim Spiel Mensch gegen Computer soll eine einfache Spielstrategie (KI)
+implementiert werden.~~
 
 19) (2 point) Bei einem Netzwerkspiel können vorgegebene Chatnachrichten (Chatwheel)
 ausgetauscht werden

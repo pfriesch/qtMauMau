@@ -7,21 +7,20 @@ AIPlayer::AIPlayer(PLAYER::Name pName, GameControllerProxy _gameController)
 
 void AIPlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
-    topCard = playedCard;
 }
 
 void AIPlayer::otherDrawsCard(PLAYER::Name pName)
 {
 }
 
-void AIPlayer::doTurn(Card::cardSuit wishedSuit)
+void AIPlayer::doTurn(Card topCard, Card::cardSuit wishedSuit)
 {
     std::vector<Card> playableCards = getPlayableCards(topCard, wishedSuit);
     if (playableCards.size() > 0) {
         //TODO ai choose better card
         Card playCard = getPlayCard(playableCards);
         Card::cardSuit aiWhischedSuit;
-        if (playCard.getValue() == gameController.getWhishSuitCard()) {
+        if (playCard.getValue() == wishSuitCard) {
             aiWhischedSuit = getWhishedCardSuit();
         } else {
             aiWhischedSuit = Card::NONE;
@@ -35,10 +34,10 @@ void AIPlayer::doTurn(Card::cardSuit wishedSuit)
     }
 }
 
-void AIPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name pName)
+void AIPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name pName, Card::cardValue _wishSuitCard)
 {
+    wishSuitCard = _wishSuitCard;
     this->hand = hand;
-    this->topCard = topCard;
     this->playerName = pName;
 }
 
@@ -60,13 +59,13 @@ Card::cardSuit AIPlayer::getWhishedCardSuit()
 {
     int suitsCount[4] = { 0 };
     for (unsigned i = 0; i < hand.size(); ++i) {
-        if (hand[i].getValue() != gameController.getWhishSuitCard()) {
+        if (hand[i].getValue() != wishSuitCard) {
             suitsCount[hand[i].getSuit()]++;
         }
     }
     int maxIndex = 0;
     int maxCount = 0;
-    for (unsigned i = 0; i < sizeof(suitsCount); ++i) {
+    for (unsigned i = 0; i < 4; ++i) {
         if (suitsCount[i] > maxCount) {
             maxCount = suitsCount[i];
             maxIndex = i;

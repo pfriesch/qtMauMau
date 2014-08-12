@@ -25,7 +25,7 @@ private:
     bool aPlayerWon = false;
 
     bool changedDirection = false;
-    Card::cardSuit wishedSuit = Card::cardSuit(0);
+    Card::cardSuit wishedSuit = Card::NONE;
     bool draw2x = false;
     int draw2xCount = 0;
     bool skipNextPlayer = false;
@@ -54,7 +54,6 @@ public:
     void setskipNextCard(Card::cardValue cardValue);
     void setchangeDirectCard(Card::cardValue cardValue);
 
-    Card::cardValue getWhishSuitCard();
     Player* getBottomPlayer();
 
 private:

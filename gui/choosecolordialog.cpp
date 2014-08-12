@@ -9,17 +9,17 @@ ChooseColorDialog::ChooseColorDialog(QWidget* parent)
     QPixmap pixmap("img/hearts.png");
     QIcon icon(pixmap);
 
-    ui->btnFirst->setIcon(icon);
-    ui->btnFirst->installEventFilter(this);
+    ui->btnHearts->setIcon(icon);
+    ui->btnHearts->installEventFilter(this);
 
-    ui->btnSecond->setIcon(QIcon(QPixmap("img/diamonds.png")));
-    ui->btnSecond->installEventFilter(this);
+    ui->btnDiamonds->setIcon(QIcon(QPixmap("img/diamonds.png")));
+    ui->btnDiamonds->installEventFilter(this);
 
-    ui->btnThird->setIcon(QIcon(QPixmap("img/clubs.png")));
-    ui->btnThird->installEventFilter(this);
+    ui->btnClubs->setIcon(QIcon(QPixmap("img/clubs.png")));
+    ui->btnClubs->installEventFilter(this);
 
-    ui->btnFourth->setIcon(QIcon(QPixmap("img/spades.png")));
-    ui->btnFourth->installEventFilter(this);
+    ui->btnSpades->setIcon(QIcon(QPixmap("img/spades.png")));
+    ui->btnSpades->installEventFilter(this);
 }
 
 bool ChooseColorDialog::eventFilter(QObject* obj, QEvent* event)
@@ -40,14 +40,14 @@ void ChooseColorDialog::mousePressed(QObject* pressedButton)
 
     int cardSuit = 0;
 
-    if (pressedButton == ui->btnFirst) {
-        cardSuit = Card::cardSuit(0);
-    } else if (pressedButton == ui->btnSecond) {
-        cardSuit = Card::cardSuit(1);
-    } else if (pressedButton == ui->btnThird) {
-        cardSuit = Card::cardSuit(2);
-    } else if (pressedButton == ui->btnFourth) {
-        cardSuit = Card::cardSuit(3);
+    if (pressedButton == ui->btnHearts) {
+        cardSuit = Card::HEARTS;
+    } else if (pressedButton == ui->btnDiamonds) {
+        cardSuit = Card::DIAMONDS;
+    } else if (pressedButton == ui->btnClubs) {
+        cardSuit = Card::CLUBS;
+    } else if (pressedButton == ui->btnSpades) {
+        cardSuit = Card::SPADES;
     }
     this->done(cardSuit);
 }

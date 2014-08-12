@@ -22,8 +22,14 @@ std::vector<Card> Player::getPlayableCards(const Card& card, Card::cardSuit wish
 {
     std::vector<Card> playableCards;
     for (unsigned i = 0; i < hand.size(); ++i) {
-        if (card.getSuit() == hand[i].getSuit() || card.getValue() == hand[i].getValue() || (card.getValue() == gameController.getWhishSuitCard())) {
-            playableCards.push_back(hand[i]);
+        if (card.getValue() == wishSuitCard) {
+            if (card.getValue() == hand[i].getValue() || wishedSuit == hand[i].getSuit()) {
+                playableCards.push_back(hand[i]);
+            }
+        } else {
+            if (card.getValue() == hand[i].getValue() || card.getSuit() == hand[i].getSuit() || hand[i].getValue() == wishSuitCard) {
+                playableCards.push_back(hand[i]);
+            }
         }
     }
     return playableCards;

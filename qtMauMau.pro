@@ -44,7 +44,9 @@ SOURCES += main.cpp\
     gui/setnamedialog.cpp \
     gui/soundmanager.cpp \
     network/maumauprotokoll.cpp \
-    network/msocket.cpp
+    network/msocket.cpp \
+    gameLogic/Test/aiplayer_test.cpp \
+    gameLogic/Test/gcproxy_mockup.cpp
 
 
 
@@ -75,7 +77,9 @@ HEADERS  += mainwindow.h \
     gui/setnamedialog.h \
     gui/soundmanager.h \
     network/maumauprotokoll.h \
-    network/msocket.h
+    network/msocket.h \
+    gameLogic/Test/aiplayer_test.h \
+    gameLogic/Test/gcproxy_mockup.h
 
 
 FORMS    += \

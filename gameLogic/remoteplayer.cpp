@@ -9,7 +9,6 @@ RemotePlayer::RemotePlayer(PLAYER::Name playerName, GameControllerProxy _gameCon
 
 void RemotePlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
-    topCard = playedCard;
     emit RemotePlayerPlaysCard(playerName, pName, playedCard);
 }
 
@@ -18,16 +17,16 @@ void RemotePlayer::otherDrawsCard(PLAYER::Name pName)
     emit RemotePlayerDrawsCard(playerName, pName);
 }
 
-void RemotePlayer::doTurn(Card::cardSuit wishedSuit)
+void RemotePlayer::doTurn(Card topCard, Card::cardSuit wishedSuit)
 {
     emit RemoteDoTurn(playerName, this->getPlayableCards(topCard, wishedSuit), wishedSuit);
 }
 
-void RemotePlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer)
+void RemotePlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard)
 {
+    wishSuitCard = _wishSuitCard;
     this->hand = hand;
-    this->topCard = topCard;
-    emit RemoteInitPlayground(playerName, hand, otherPlayerCardCount, topCard, startingPlayer);
+    emit RemoteInitPlayground(playerName, hand, otherPlayerCardCount, topCard, startingPlayer, wishSuitCard);
 }
 
 void RemotePlayer::reciveCard(const Card& card)
@@ -44,7 +43,6 @@ void RemotePlayer::playerWon(PLAYER::Name pName)
 void RemotePlayer::RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card, Card::cardSuit wishedSuit)
 {
     if (playerName == remotePlayerName) {
-        topCard = card;
         dropCard(card);
         gameController.playCard(card, wishedSuit);
     }

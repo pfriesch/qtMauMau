@@ -6,7 +6,7 @@
 MauServer::MauServer(QObject* parent)
     : QObject(parent)
 {
-    connect(&server, SIGNAL(newConnection()), this, SLOT(acceptConnection()));
+    connect(&server, &QTcpServer::newConnection, this, &MauServer::acceptConnection);
 
     int port(Settings::getInstance()->getProperty("network/port").toInt());
     server.listen(QHostAddress::Any, port);
@@ -59,7 +59,7 @@ QList<MSocket*> MauServer::getClients() const
     return clients;
 }
 
-void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer)
+void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard)
 {
     assignSocket(remotePlayerName);
     QString message;
@@ -74,6 +74,8 @@ void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::v
     message.append(MProtocol::cardToSting(topDepotCard));
     message.append(";");
     message.append(QString::number(startingPlayer));
+    message.append(";");
+    message.append(QString::number(_wishSuitCard));
     writeNextData(message, socketByName(remotePlayerName));
 }
 

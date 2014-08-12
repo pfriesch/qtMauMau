@@ -57,25 +57,25 @@ void MainWindow::setupMenuBar()
     menuBar->addMenu(fileMenu);
 
     QAction* startLocalGameMenu = new QAction(QAction::tr("Start Local Game"), this);
-    connect(startLocalGameMenu, SIGNAL(triggered()), this, SLOT(startGameAsLocal()));
+    connect(startLocalGameMenu, &QAction::triggered, this, &MainWindow::startGameAsLocal);
     fileMenu->addAction(startLocalGameMenu);
 
     QAction* connectToServerMenu = new QAction(QAction::tr("Connect to Server..."), this);
     fileMenu->addAction(connectToServerMenu);
-    connect(connectToServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsClientDialog()));
+    connect(connectToServerMenu, &QAction::triggered, this, &MainWindow::startGameAsClientDialog);
 
     QAction* createServerMenu = new QAction(QAction::tr("Create Server..."), this);
-    connect(createServerMenu, SIGNAL(triggered()), this, SLOT(startGameAsServerDialog()));
+    connect(createServerMenu, &QAction::triggered, this, &MainWindow::startGameAsServerDialog);
     fileMenu->addAction(createServerMenu);
 
     QAction* optionsMenu = new QAction(QAction::tr("Options..."), this);
 
-    connect(optionsMenu, SIGNAL(triggered()), this, SLOT(showOptionDialog()));
+    connect(optionsMenu, &QAction::triggered, this, &MainWindow::showOptionDialog);
 
     fileMenu->addAction(optionsMenu);
 
     QAction* exitMenu = new QAction(QAction::tr("Exit"), this);
-    connect(exitMenu, SIGNAL(triggered()), this, SLOT(close()));
+    connect(exitMenu, &QAction::triggered, this, &MainWindow::close);
     fileMenu->addAction(exitMenu);
 
     //Info Menu

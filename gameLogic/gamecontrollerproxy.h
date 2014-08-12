@@ -16,7 +16,7 @@ public:
     explicit GameControllerProxy(GameController* _gameContr, PLAYER::Name _pName);
     void playCard(const Card& card, Card::cardSuit whishedSuit);
     void drawCard();
-    Card::cardValue getWhishSuitCard();
+
 };
 
 #endif // GAMECONTROLLERPROXY_H

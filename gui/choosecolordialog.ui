@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="btnFirst">
+  <widget class="QPushButton" name="btnHearts">
    <property name="geometry">
     <rect>
      <x>7</x>
@@ -32,7 +32,7 @@
     </size>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnSecond">
+  <widget class="QPushButton" name="btnDiamonds">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -51,7 +51,7 @@
     </size>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnThird">
+  <widget class="QPushButton" name="btnClubs">
    <property name="geometry">
     <rect>
      <x>211</x>
@@ -70,7 +70,7 @@
     </size>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnFourth">
+  <widget class="QPushButton" name="btnSpades">
    <property name="geometry">
     <rect>
      <x>310</x>

@@ -40,10 +40,12 @@ void GameController::gameInit(Card::cardValue _draw2xCard,
                               Card::cardValue _skipNextCard,
                               Card::cardValue _changeDirectCard)
 {
-    Card::cardValue draw2xCard = _draw2xCard;
-    Card::cardValue wishSuitCard = _wishSuitCard;
-    Card::cardValue skipNextCard = _skipNextCard;
-    Card::cardValue changeDirectCard = _changeDirectCard;
+    draw2xCard = _draw2xCard;
+    wishSuitCard = _wishSuitCard;
+    skipNextCard = _skipNextCard;
+    changeDirectCard = _changeDirectCard;
+    qDebug() << draw2xCard << wishSuitCard << skipNextCard << changeDirectCard;
+
     cardStack.shuffle();
     std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >();
     for (unsigned i = 0; i < players.size(); i++) {
@@ -60,9 +62,9 @@ void GameController::gameInit(Card::cardValue _draw2xCard,
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, playerOrder[0]);
+        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, playerOrder[0], wishSuitCard);
     }
-    players[playerOrder[0]]->doTurn(Card::NONE);
+    players[playerOrder[0]]->doTurn(cardDepot.back(), Card::NONE);
 }
 
 void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSuit whishedSuit)
@@ -70,6 +72,8 @@ void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSu
     if (playerOrder[0] == pName && !playerPlayed) {
         playerPlayed = true;
         this->wishedSuit = whishedSuit;
+        qDebug() << "gewünschte Farbe: " << wishedSuit << " von Spieler: " << playerOrder[0];
+
         cardDepot.pushCard(card);
         foreach(Player * player, players)
         {
@@ -104,11 +108,6 @@ void GameController::setdraw2xCard(Card::cardValue cardValue)
     draw2xCard = cardValue;
 }
 
-Card::cardValue GameController::getWhishSuitCard()
-{
-    return wishSuitCard;
-}
-
 Player* GameController::getBottomPlayer()
 {
     return players.at(PLAYER::BOTTOM);
@@ -120,7 +119,7 @@ void GameController::nextTurn()
         playerPlayed = false;
         setNextPlayer();
         qDebug() << "Next Payer: " << playerOrder[0];
-        players[playerOrder[0]]->doTurn(wishedSuit);
+        players[playerOrder[0]]->doTurn(cardDepot.back(), wishedSuit);
     } else {
         qDebug() << "some player won !!!!!";
     }

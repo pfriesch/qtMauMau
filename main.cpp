@@ -24,6 +24,7 @@
 #ifdef TEST
 #include "gameLogic/Test/gamecontroller_test.h"
 #include "gameLogic/Test/decktest.h"
+#include "gameLogic/Test/aiplayer_test.h"
 #endif
 
 MauClient* client;
@@ -99,10 +100,12 @@ int main(int argc, char* argv[])
 
 #ifdef TEST
     //TODO TEST
-    GameControllerTest* gcTest = new GameControllerTest();
-    DeckTest* deckTest = new DeckTest();
-    QTest::qExec(gcTest);
-    QTest::qExec(deckTest);
+    //    GameControllerTest* gcTest = new GameControllerTest();
+    //    DeckTest* deckTest = new DeckTest();
+    //    QTest::qExec(gcTest);
+    //    QTest::qExec(deckTest);
+    AIPlayer_test* aiP_test = new AIPlayer_test();
+    QTest::qExec(aiP_test);
 #endif
 
     return app.exec();
