@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     network/maumauprotokoll.cpp \
     network/msocket.cpp \
     gameLogic/Test/aiplayer_test.cpp \
-    gameLogic/Test/gcproxy_mockup.cpp
+    gameLogic/Test/gcproxy_mockup.cpp \
+    gui/infodialog.cpp
     gui/infodialog.cpp
 
 
@@ -82,7 +83,8 @@ HEADERS  += mainwindow.h \
     network/maumauprotokoll.h \
     network/msocket.h \
     gameLogic/Test/aiplayer_test.h \
-    gameLogic/Test/gcproxy_mockup.h
+    gameLogic/Test/gcproxy_mockup.h \
+    gui/infodialog.h
     gui/infodialog.h
 
 

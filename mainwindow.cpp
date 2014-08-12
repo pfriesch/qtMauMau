@@ -7,6 +7,7 @@
 #include "gui/playground.h"
 #include "settings.h"
 #include "gui/setnamedialog.h"
+
 MainWindow::MainWindow(QWidget* parent)
 {
     setupMenuBar();
