@@ -19,7 +19,7 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>-10</x>
      <y>0</y>
      <width>511</width>
      <height>351</height>
@@ -166,6 +166,32 @@
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="musicCb">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>190</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="musicLb">
+     <property name="geometry">
+      <rect>
+       <x>35</x>
+       <y>190</y>
+       <width>41</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Music:</string>
      </property>
     </widget>
    </widget>

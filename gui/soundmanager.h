@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QSoundEffect>
+#include <QMediaPlayer>
+#include <QSound>
 
 class SoundManager : public QObject
 {
@@ -12,13 +14,18 @@ public:
     void playCard();
     void drawCard();
     void startSound();
+    void playBackgroundSong();
     void winnerSound();
     int getRandom(int low, int high);
     ~SoundManager();
 
 private:
-    QSoundEffect *player;
+    QMediaPlayer *player;
+    QSoundEffect *effect;
 signals:
+
+private slots:
+    void stateChanged(QMediaPlayer::State state);
 
 public slots:
 
