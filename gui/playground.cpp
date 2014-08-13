@@ -10,6 +10,7 @@ Playground::Playground(QObject* parent)
 
 void Playground::startGame()
 {
+    soundMgr.startSound();
     stack = (CardItem::specialCards::RED_VERTICAL);
     depot = CardItem(CardItem::specialCards::DEPOT);
 
@@ -263,6 +264,7 @@ void Playground::addPlayerCard(const Card& card)
 
 void Playground::playerWon(PLAYER::Name playerName)
 {
+    soundMgr.winnerSound();
     QMessageBox msgBox;
     msgBox.setText(QMessageBox::tr("Congratulations Player ")+playerName+" won!!");
     msgBox.exec();
