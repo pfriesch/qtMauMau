@@ -26,6 +26,7 @@
 #include <settings.h>
 #include <gui/soundmanager.h>
 #include <QMessageBox>
+#include <gui/gamehistory.h>
 
 class Playground : public AnimatedGraphicsScene {
     Q_OBJECT
@@ -50,6 +51,7 @@ private:
     void createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount);
     Card::cardSuit chooseColor();
 
+    GameHistory history;
     SoundManager soundMgr;
 
     //Layout entities
