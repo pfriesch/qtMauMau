@@ -38,13 +38,13 @@ void SoundManager::drawCard()
 
 void SoundManager::startSound()
 {
-    effect->setSource(QUrl::fromLocalFile("/Users/me/Music/coolsong.mp3"));
+    effect->setSource(QUrl::fromLocalFile("sound/cardShuffle.wav"));
     effect->play();
 }
 
 void SoundManager::winnerSound()
 {
-    effect->setSource(QUrl::fromLocalFile("/Users/me/Music/coolsong.mp3"));
+    effect->setSource(QUrl::fromLocalFile("sound/fanfare.wav"));
     effect->play();
 }
 
