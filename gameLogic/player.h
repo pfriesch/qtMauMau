@@ -28,6 +28,7 @@ protected:
 
 public:
     explicit Player(PLAYER::Name playerName, GameControllerProxy _gameController, std::string title);
+    virtual ~Player();
 
     virtual void otherPlaysCard(PLAYER::Name playerName, const Card& playedCard) = 0;
     virtual void otherDrawsCard(PLAYER::Name playerName) = 0;

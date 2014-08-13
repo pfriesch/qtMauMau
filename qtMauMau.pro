@@ -11,7 +11,7 @@ QT       += multimedia
 QT       += webkitwidgets
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
 TARGET   = qtMauMau
 TEMPLATE = app
@@ -19,7 +19,7 @@ CONFIG += c++11
 CONFIG += testcase
 CONFIG += openssl-linked
 
-
+DEFINES += TEST
 
 SOURCES += main.cpp\
         mainwindow.cpp \

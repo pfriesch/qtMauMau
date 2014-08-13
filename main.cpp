@@ -19,8 +19,6 @@
 
 #include "gameLogic/humanplayer.h"
 
-//#define TEST
-
 #ifdef TEST
 #include "gameLogic/Test/gamecontroller_test.h"
 #include "gameLogic/Test/decktest.h"
@@ -91,9 +89,9 @@ int main(int argc, char* argv[])
 #ifdef TEST
     //TODO TEST
     //    GameControllerTest* gcTest = new GameControllerTest();
-    //    DeckTest* deckTest = new DeckTest();
+    DeckTest* deckTest = new DeckTest();
     //    QTest::qExec(gcTest);
-    //    QTest::qExec(deckTest);
+    QTest::qExec(deckTest);
     AIPlayer_test* aiP_test = new AIPlayer_test();
     QTest::qExec(aiP_test);
 #endif

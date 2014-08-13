@@ -1,8 +1,5 @@
 #include "gamecontroller.h"
 #include "gamecontrollerproxy.h"
-#include "humanplayer.h"
-#include "aiplayer.h"
-#include "remoteplayer.h"
 
 #include <QDebug>
 #include "algorithm"

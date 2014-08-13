@@ -10,12 +10,11 @@ class AIPlayer_test : public QObject {
 
     Q_OBJECT
 private:
-    AIPlayer* player;
+
 private
 slots:
     void initTestCase()
     {
-        player = new AIPlayer(PLAYER::LEFT, GCProxy_mockup(), "hans");
     }
     void myFirstTest()
     {

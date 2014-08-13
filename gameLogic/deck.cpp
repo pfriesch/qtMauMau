@@ -34,12 +34,6 @@ void Deck::shuffle()
         cards[i] = temp;
     }
 }
-#ifdef TEST
-int Deck::size() const
-{
-    return cards.size();
-}
-#endif
 
 void Deck::pushCard(const Card card)
 {

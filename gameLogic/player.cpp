@@ -24,6 +24,11 @@ Player::Player(PLAYER::Name pName, GameControllerProxy _gameController, std::str
 {
 }
 
+Player::~Player()
+{
+
+}
+
 std::vector<Card> Player::getPlayableCards(const Card& card, Card::cardSuit wishedSuit)
 {
     std::vector<Card> playableCards;

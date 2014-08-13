@@ -130,7 +130,7 @@
     <message>
         <location filename="gui/createserverdialog.ui" line="137"/>
         <source>0</source>
-        <translation type="unfinished">0</translation>
+        <translation>0</translation>
     </message>
     <message>
         <location filename="gui/createserverdialog.ui" line="163"/>
@@ -180,9 +180,19 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.cpp" line="161"/>
+        <location filename="mainwindow.cpp" line="171"/>
         <source>Player 1</source>
         <translation>Spieler 1</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="171"/>
+        <source>Player 2</source>
+        <translation>Spieler 2</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="171"/>
+        <source>Player 3</source>
+        <translation>Spieler 3</translation>
     </message>
 </context>
 <context>
@@ -334,49 +344,57 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/optiondialog.ui" line="544"/>
         <source>7</source>
         <comment>1</comment>
-        <translation type="unfinished">7</translation>
+        <translation>7</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="549"/>
         <source>8</source>
         <comment>2</comment>
-        <translation type="unfinished">8</translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="554"/>
         <source>9</source>
         <comment>3</comment>
-        <translation type="unfinished">9</translation>
+        <translation>9</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="559"/>
         <source>10</source>
         <comment>4</comment>
-        <translation type="unfinished">10</translation>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="564"/>
         <source>Jack</source>
         <comment>5</comment>
-        <translation type="unfinished">Bube</translation>
+        <translation>Bube</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="569"/>
         <source>Queen</source>
         <comment>6</comment>
-        <translation type="unfinished">Dame</translation>
+        <translation>Dame</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="574"/>
         <source>King</source>
         <comment>7</comment>
-        <translation type="unfinished">König</translation>
+        <translation>König</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="579"/>
         <source>Ace</source>
         <comment>8</comment>
-        <translation type="unfinished">Ass</translation>
+        <translation>Ass</translation>
+    </message>
+</context>
+<context>
+    <name>Playground</name>
+    <message>
+        <location filename="gui/playground.cpp" line="275"/>
+        <source> won!!</source>
+        <translation> hat gewonnen!!</translation>
     </message>
 </context>
 <context>
@@ -390,32 +408,32 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Optionen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="63"/>
+        <location filename="mainwindow.cpp" line="73"/>
         <source>Start Local Game</source>
         <translation>Starte Lokales Spiel</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="67"/>
+        <location filename="mainwindow.cpp" line="77"/>
         <source>Connect to Server...</source>
         <translation>verbinde zu Server...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="71"/>
+        <location filename="mainwindow.cpp" line="81"/>
         <source>Create Server...</source>
         <translation>Erstelle Server...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="75"/>
+        <location filename="mainwindow.cpp" line="85"/>
         <source>Options...</source>
         <translation>Optionen...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="81"/>
+        <location filename="mainwindow.cpp" line="91"/>
         <source>Exit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="89"/>
+        <location filename="mainwindow.cpp" line="99"/>
         <source>About</source>
         <translation>Über Mau Mau</translation>
     </message>
@@ -423,12 +441,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QMenu</name>
     <message>
-        <location filename="mainwindow.cpp" line="60"/>
+        <location filename="mainwindow.cpp" line="70"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="86"/>
+        <location filename="mainwindow.cpp" line="96"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
@@ -440,9 +458,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QMessageBox</name>
     <message>
-        <location filename="gui/playground.cpp" line="275"/>
         <source>Congratulations Player </source>
-        <translation>Herzlichen Glückwunsch Spieler </translation>
+        <translation type="vanished">Herzlichen Glückwunsch Spieler </translation>
+    </message>
+    <message>
+        <location filename="gui/playground.cpp" line="275"/>
+        <source>Player </source>
+        <translation>Spieler </translation>
     </message>
 </context>
 <context>

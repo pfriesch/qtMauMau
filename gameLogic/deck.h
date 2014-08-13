@@ -8,6 +8,10 @@
 #include "card.h"
 
 class Deck {
+#ifdef TEST
+    friend class DeckTest;
+#endif
+
 public:
     enum InitStatus {
         FULL,
@@ -27,9 +31,6 @@ public:
     void addCards(std::vector<Card> newCards);
     std::vector<Card> getUnderlyingCards();
     bool empty() const;
-#ifdef TEST
-    int size() const;
-#endif
 };
 
 #endif /* DECK_H_ */

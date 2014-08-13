@@ -40,10 +40,10 @@ private:
 
     Playground* playground = NULL;
     GameController* gc = NULL;
-    OptionDialog* optionDialog;
-    ConnectToServer* connectToServer;
-    CreateServerDialog* createServerDialog;
-    InfoDialog* infoDialog;
+    OptionDialog* optionDialog = NULL;
+    ConnectToServer* connectToServer = NULL;
+    CreateServerDialog* createServerDialog = NULL;
+    InfoDialog* infoDialog = NULL;
     MauServer* server = NULL;
     MauClient* client = NULL;
 
