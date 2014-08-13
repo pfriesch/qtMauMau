@@ -21,7 +21,7 @@ void HumanPlayer::doTurn(Card topCard, Card::cardSuit wishedSuit)
     emit UIdoTurn(this->getPlayableCards(topCard, wishedSuit), wishedSuit);
 }
 
-void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
+void HumanPlayer::gameInit(const std::vector<Card> hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
 {
     wishSuitCard = _wishSuitCard;
     this->hand = hand;

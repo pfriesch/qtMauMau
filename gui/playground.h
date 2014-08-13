@@ -50,7 +50,7 @@ private:
 
     void updateDepotCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
     void updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
-    void createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames);
+    void createPlayer(const std::vector<Card> humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames);
     Card::cardSuit chooseColor();
 
     GameHistory history;
@@ -65,7 +65,7 @@ private:
 public
 slots:
 
-    void initPlayground(const std::vector<Card>& humanPlayerCards,
+    void initPlayground(const std::vector<Card> humanPlayerCards,
                         std::map<PLAYER::Name, int> otherPlayerCardCount,
                         const Card& topDepotCard,
                         Card::cardValue _wishSuitCard,

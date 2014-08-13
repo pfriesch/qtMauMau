@@ -53,7 +53,7 @@
     <number>1</number>
    </property>
    <property name="text">
-    <string>Neue Verbindungsanfrage</string>
+    <string>New Connection request</string>
    </property>
   </widget>
   <widget class="QLabel" name="plynamelbl">
@@ -71,7 +71,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Spilername:</string>
+    <string>Playername:</string>
    </property>
   </widget>
   <widget class="QLabel" name="netadrlbl">
@@ -89,7 +89,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Netzwerk Adresse:</string>
+    <string>Network Adress:</string>
    </property>
   </widget>
   <widget class="QLabel" name="playername">

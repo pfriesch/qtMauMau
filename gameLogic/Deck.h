@@ -24,8 +24,8 @@ public:
     Card getLast(Deck& deck);
     Card back() const;
     Card getCard(int index) const;
-    void addCards(std::vector<Card>& newCards);
-    std::vector<Card>& getUnderlyingCards();
+    void addCards(std::vector<Card> newCards);
+    std::vector<Card> getUnderlyingCards();
     bool empty() const;
 #ifdef TEST
     int size() const;

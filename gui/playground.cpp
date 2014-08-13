@@ -71,7 +71,7 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 }
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
-void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
+void Playground::initPlayground(const std::vector<Card> humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
 {
     wishSuitCard = _wishSuitCard;
     createPlayer(humanPlayerCards, otherPlayerCardCount, playerNames);
@@ -79,7 +79,7 @@ void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::
     updateDepotCard(depotCard, depot);
 }
 
-void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames)
+void Playground::createPlayer(const std::vector<Card> humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames)
 {
     QPointF center = this->sceneRect().center();
     PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center.x(), center.y(), QString(playerNames.at(0).c_str()));

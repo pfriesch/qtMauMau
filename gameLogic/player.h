@@ -21,10 +21,10 @@ public:
 
 protected:
     std::vector<Card> hand;
-    std::string title;
     PLAYER::Name playerName;
     Card::cardValue wishSuitCard;
     GameControllerProxy gameController;
+    std::string title;
 
 public:
     explicit Player(PLAYER::Name playerName, GameControllerProxy _gameController, std::string title);
@@ -33,7 +33,7 @@ public:
     virtual void otherDrawsCard(PLAYER::Name playerName) = 0;
 
     virtual void doTurn(Card topCard, Card::cardSuit wishedSuit) = 0;
-    virtual void gameInit(const std::vector<Card>& hand,
+    virtual void gameInit(const std::vector<Card> hand,
                           const Card& topCard,
                           std::map<PLAYER::Name, int> otherPlayerCardCount,
                           Card::cardValue _wishSuitCard,
@@ -47,7 +47,6 @@ public:
     int getCardCount() const;
 
     std::string getTitle() const;
-
 
 protected:
     std::vector<Card> getPlayableCards(const Card& card, Card::cardSuit wishedSuit);

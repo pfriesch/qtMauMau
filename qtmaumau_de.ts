@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de_DE">
 <context>
+    <name>AddRemotePlayer</name>
+    <message>
+        <location filename="gui/addremoteplayer.ui" line="17"/>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <location filename="gui/addremoteplayer.ui" line="56"/>
+        <source>New Connection request</source>
+        <translation>Neue Verbindungsanfrage</translation>
+    </message>
+    <message>
+        <location filename="gui/addremoteplayer.ui" line="74"/>
+        <source>Playername:</source>
+        <translation>Spielername:</translation>
+    </message>
+    <message>
+        <location filename="gui/addremoteplayer.ui" line="92"/>
+        <source>Network Adress:</source>
+        <translation>Netzwerk Adresse:</translation>
+    </message>
+</context>
+<context>
     <name>ChooseColorDialog</name>
     <message>
         <location filename="gui/choosecolordialog.ui" line="14"/>
@@ -45,6 +68,16 @@
         <location filename="gui/connecttoserver.ui" line="117"/>
         <source>Connect to Server</source>
         <translation>verbinde zu Server</translation>
+    </message>
+    <message>
+        <location filename="gui/connecttoserver.cpp" line="29"/>
+        <source>Connection rejected by Host!</source>
+        <translation>Verbindung wurde vom Host abgelehnt!</translation>
+    </message>
+    <message>
+        <location filename="gui/connecttoserver.cpp" line="37"/>
+        <source>Connection accepted by Host!</source>
+        <translation>Verbindung wurde vom Host akzeptiert!</translation>
     </message>
 </context>
 <context>
@@ -97,7 +130,7 @@
     <message>
         <location filename="gui/createserverdialog.ui" line="137"/>
         <source>0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">0</translation>
     </message>
     <message>
         <location filename="gui/createserverdialog.ui" line="163"/>
@@ -108,6 +141,9 @@
         <location filename="gui/createserverdialog.ui" line="182"/>
         <location filename="gui/createserverdialog.ui" line="201"/>
         <location filename="gui/createserverdialog.ui" line="220"/>
+        <location filename="gui/createserverdialog.ui" line="239"/>
+        <location filename="gui/createserverdialog.ui" line="258"/>
+        <location filename="gui/createserverdialog.ui" line="277"/>
         <source>No Player</source>
         <translation>Kein Spieler</translation>
     </message>
@@ -125,8 +161,14 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Hier kommen die Lizenz und so zeug rein blalblablalb&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;licence stuff&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Hier kommen die Lizenz und so zeug rein blalblablalb&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -141,16 +183,6 @@ p, li { white-space: pre-wrap; }
         <location filename="mainwindow.cpp" line="161"/>
         <source>Player 1</source>
         <translation>Spieler 1</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="161"/>
-        <source>Player 1</source>
-        <translation>Spieler 2</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="161"/>
-        <source>Player 1</source>
-        <translation>Spieler 3</translation>
     </message>
 </context>
 <context>
@@ -247,104 +279,104 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/optiondialog.ui" line="435"/>
         <location filename="gui/optiondialog.ui" line="488"/>
         <source>7</source>
-        <translation type="unfinished"></translation>
+        <translation>7</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="387"/>
         <location filename="gui/optiondialog.ui" line="440"/>
         <location filename="gui/optiondialog.ui" line="493"/>
         <source>8</source>
-        <translation type="unfinished"></translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="392"/>
         <location filename="gui/optiondialog.ui" line="445"/>
         <location filename="gui/optiondialog.ui" line="498"/>
         <source>9</source>
-        <translation type="unfinished"></translation>
+        <translation>9</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="397"/>
         <location filename="gui/optiondialog.ui" line="450"/>
         <location filename="gui/optiondialog.ui" line="503"/>
         <source>10</source>
-        <translation type="unfinished"></translation>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="402"/>
         <location filename="gui/optiondialog.ui" line="455"/>
         <location filename="gui/optiondialog.ui" line="508"/>
         <source>Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>Bube</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="407"/>
         <location filename="gui/optiondialog.ui" line="460"/>
         <location filename="gui/optiondialog.ui" line="513"/>
         <source>Queen</source>
-        <translation type="unfinished"></translation>
+        <translation>Dame</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="412"/>
         <location filename="gui/optiondialog.ui" line="465"/>
         <location filename="gui/optiondialog.ui" line="518"/>
         <source>King</source>
-        <translation type="unfinished"></translation>
+        <translation>König</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="417"/>
         <location filename="gui/optiondialog.ui" line="470"/>
         <location filename="gui/optiondialog.ui" line="523"/>
         <source>Ace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ass</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="544"/>
         <source>7</source>
         <comment>1</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">7</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="549"/>
         <source>8</source>
         <comment>2</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">8</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="554"/>
         <source>9</source>
         <comment>3</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">9</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="559"/>
         <source>10</source>
         <comment>4</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">10</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="564"/>
         <source>Jack</source>
         <comment>5</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bube</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="569"/>
         <source>Queen</source>
         <comment>6</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dame</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="574"/>
         <source>King</source>
         <comment>7</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">König</translation>
     </message>
     <message>
         <location filename="gui/optiondialog.ui" line="579"/>
         <source>Ace</source>
         <comment>8</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ass</translation>
     </message>
 </context>
 <context>
@@ -408,7 +440,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QMessageBox</name>
     <message>
-        <location filename="gui/playground.cpp" line="267"/>
+        <location filename="gui/playground.cpp" line="275"/>
         <source>Congratulations Player </source>
         <translation>Herzlichen Glückwunsch Spieler </translation>
     </message>

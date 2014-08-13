@@ -162,7 +162,6 @@ void MainWindow::startGameAsLocal()
 
     std::vector<Player*> players;
     players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(gc, PLAYER::Name::BOTTOM), humanPlayerName.toStdString()));
-    //TODO local game is always with 4 players mb needs to be changed
     for (int i = 1; i < 4; ++i) {
         players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(gc, PLAYER::Name(i)), playerNames.at(i - 1).toStdString()));
     }
@@ -195,6 +194,7 @@ void MainWindow::startGameAsServerDialog()
 
 void MainWindow::startNetworkGame(QVector<Player::Type> players, QStringList otherPlayerNames)
 {
+    setupGraphicsView();
     QString humanPlayerName = Settings::getInstance()->getProperty("common/playername");
     //QStringList otherPlayerNames = { tr("Player 1"), tr("Player 2"), tr("Player 3") };
     qDebug() << otherPlayerNames.size() << otherPlayerNames;

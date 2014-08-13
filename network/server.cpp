@@ -96,7 +96,7 @@ QList<MSocket*> MauServer::getClients() const
     return clients;
 }
 
-void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card>& remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
+void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card> remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
 {
     assignSocket(remotePlayerName);
     QString message;
@@ -171,7 +171,7 @@ void MauServer::writeData(QString data, QTcpSocket* client)
     data.append("\n");
     qint64 writtenByteCount = client->write(data.toStdString().c_str());
     if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
-        //TODO handle network fail
+
         qDebug() << "server -> client write failed";
     }
 }

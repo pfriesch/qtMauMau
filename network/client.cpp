@@ -26,7 +26,6 @@ void MauClient::setupConnection(QString _address, QString _port)
 
 void MauClient::OnError()
 {
-    //TODO perhaps we should think about reconnection, but that might be too much
     qDebug() << "socket error";
     if (server->error()) {
         qCritical() << server->error();
@@ -59,7 +58,7 @@ void MauClient::writeNextData(QString data)
     data.append("\n");
     qint64 writtenByteCount = server->write(data.toStdString().c_str());
     if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
-        //TODO handle network fail
+
         qDebug() << "client -> server write failed";
     }
 }

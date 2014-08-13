@@ -29,7 +29,6 @@ private:
     bool draw2x = false;
     int draw2xCount = 0;
     bool skipNextPlayer = false;
-    //TODO always 4 players, 4+ players unregarded
 
     //special cards
     Card::cardValue draw2xCard;

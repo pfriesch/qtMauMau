@@ -32,22 +32,22 @@ void GameController::gameInit(Card::cardValue _draw2xCard,
     qDebug() << draw2xCard << wishSuitCard << skipNextCard << changeDirectCard;
 
     cardStack.shuffle();
-    std::vector<std::vector<Card> >* playerCards = new std::vector<std::vector<Card> >();
+    std::vector<std::vector<Card> > playerCards;
     for (unsigned i = 0; i < players.size(); i++) {
-        playerCards->push_back(std::vector<Card>());
+        playerCards.push_back(std::vector<Card>());
         for (int j = 0; j < 5; j++) {
-            playerCards->at(i).push_back(cardStack.getLast(cardDepot));
+            playerCards.at(i).push_back(cardStack.getLast(cardDepot));
         }
     }
     cardDepot.pushCard(cardStack.getLast(cardDepot));
 
     std::map<PLAYER::Name, int> otherPlayerCardCount;
     for (unsigned int i = 0; i < players.size(); ++i) {
-        otherPlayerCardCount.insert(std::pair<PLAYER::Name, int>(PLAYER::Name(i), playerCards->at(i).size()));
+        otherPlayerCardCount.insert(std::pair<PLAYER::Name, int>(PLAYER::Name(i), playerCards.at(i).size()));
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, wishSuitCard, getPlayerNames());
+        players[i]->gameInit(playerCards.at(i), cardDepot.back(), otherPlayerCardCount, wishSuitCard, getPlayerNames());
     }
     players[playerOrder[0]]->doTurn(cardDepot.back(), Card::NONE);
 }
@@ -154,7 +154,7 @@ void GameController::playerWon(PLAYER::Name playerName)
 std::vector<std::string> GameController::getPlayerNames()
 {
     std::vector<std::string> playerNames;
-    for (int i = 0; i < players.size(); ++i) {
+    for (unsigned i = 0; i < players.size(); ++i) {
         playerNames.push_back(players[i]->getTitle());
     }
     return playerNames;

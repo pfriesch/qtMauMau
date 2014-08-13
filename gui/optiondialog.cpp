@@ -14,7 +14,6 @@ OptionDialog::OptionDialog(QWidget* parent)
         ui->languageCb->addItem("English");
         ui->languageCb->addItem("Deutsch");
     } else {
-
         ui->languageCb->addItem("Deutsch");
         ui->languageCb->addItem("English");
     }

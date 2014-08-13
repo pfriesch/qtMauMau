@@ -12,7 +12,7 @@ public:
     void otherPlaysCard(PLAYER::Name pName, const Card& playedCard);
     void otherDrawsCard(PLAYER::Name pName);
     void doTurn(Card topCard, Card::cardSuit wishedSuit);
-    void gameInit(const std::vector<Card>& hand,
+    void gameInit(const std::vector<Card> hand,
                   const Card& topCard,
                   std::map<PLAYER::Name, int> otherPlayerCardCount,
                   Card::cardValue _wishSuitCard,
