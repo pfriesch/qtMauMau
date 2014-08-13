@@ -6,7 +6,7 @@
 #include "deck.h"
 
 #include "player.h"
-#include "PlayerName.h"
+#include "playername.h"
 #include "card.h"
 
 class GameController {

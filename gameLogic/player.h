@@ -6,7 +6,7 @@
 #include <map>
 #include "card.h"
 #include "gamecontrollerproxy.h"
-#include "PlayerName.h"
+#include "playername.h"
 
 static const int MAX_PLAYER = 4;
 static const int MIN_PLAYER = 2;

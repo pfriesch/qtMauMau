@@ -85,7 +85,7 @@ void PlayerItem::measureLayout(int cardCount)
         int playerCardsWidth = (cardCount * cardGap);
         x = (xCenter - (playerCardsWidth / 2) - cardGap);
         y = cardHeight - 70;
-        nameX = x - 70;
+        nameX = x - 120;
         nameY = y;
     }
     if (playerDirection == direction::HUMAN) {

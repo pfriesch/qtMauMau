@@ -6,7 +6,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QEvent>
-#include <gameLogic/Card.h>
+#include <gameLogic/card.h>
 
 namespace Ui {
 class ChooseColorDialog;

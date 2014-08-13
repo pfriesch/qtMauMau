@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <gameLogic/remoteplayer.h>
 #include <gameLogic/aiplayer.h>
-#include "gameLogic/PlayerName.h"
+#include "gameLogic/playername.h"
 #include <QVector>
 #include <QStringList>
 

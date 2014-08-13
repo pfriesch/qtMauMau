@@ -6,8 +6,8 @@
 #include <QString>
 #include <QTcpSocket>
 #include <QVector>
-#include "gameLogic/Card.h"
-#include "gameLogic/PlayerName.h"
+#include "gameLogic/card.h"
+#include "gameLogic/playername.h"
 
 class MauClient : public QObject {
     Q_OBJECT

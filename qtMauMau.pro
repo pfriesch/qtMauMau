@@ -78,7 +78,7 @@ HEADERS  += mainwindow.h \
     gameLogic/remoteplayer.h \
     gui/choosecolordialog.h \
     gameLogic/gamecontrollerproxy.h \
-    gameLogic/PlayerName.h \
+    gameLogic/playername.h \
     gui/connecttoserver.h \
     gui/createserverdialog.h \
     gui/setnamedialog.h \
@@ -100,7 +100,7 @@ FORMS    += \
     gui/createserverdialog.ui \
     gui/setnamedialog.ui \
     gui/infodialog.ui \
-    gui/addremoteplayer.ui
+    gui/addremoteplayer.ui \
 
 
 TRANSLATIONS    = qtmaumau_de.ts \

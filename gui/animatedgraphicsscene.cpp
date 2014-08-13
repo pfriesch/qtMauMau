@@ -1,4 +1,4 @@
-#include "AnimatedGraphicsScene.h"
+#include "animatedgraphicsscene.h"
 #include <QTimeLine>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>

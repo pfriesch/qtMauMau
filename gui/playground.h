@@ -17,12 +17,12 @@
 #include <QEventLoop>
 #include <QDialog>
 #include <gameLogic/gamecontroller.h>
-#include <gameLogic/Card.h>
+#include <gameLogic/card.h>
 #include <gui/carditem.h>
 #include <gui/playeritem.h>
 #include <gui/animatedgraphicsscene.h>
 #include <gui/choosecolordialog.h>
-#include <gameLogic/PlayerName.h>
+#include <gameLogic/playername.h>
 #include <settings.h>
 #include <gui/soundmanager.h>
 #include <QMessageBox>

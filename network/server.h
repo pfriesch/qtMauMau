@@ -7,7 +7,7 @@
 #include <QList>
 
 #include "gameLogic/remoteplayer.h"
-#include "gameLogic/PlayerName.h"
+#include "gameLogic/playername.h"
 #include "msocket.h"
 
 class MauServer : public QObject {

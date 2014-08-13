@@ -4,9 +4,9 @@
 #include <QString>
 #include <vector>
 #include <string>
-#include "gameLogic/Card.h"
+#include "gameLogic/card.h"
 #include <map>
-#include "gameLogic/PlayerName.h"
+#include "gameLogic/playername.h"
 
 //MauMauProtokoll
 class MProtocol {

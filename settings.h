@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QVariant>
+#include <QStringList>
 
 class Settings : public QObject {
     Q_OBJECT

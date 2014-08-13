@@ -1,4 +1,4 @@
-#include "RemotePlayer.h"
+#include "remoteplayer.h"
 #include <QDebug>
 
 RemotePlayer::RemotePlayer(PLAYER::Name playerName, GameControllerProxy _gameController, std::string name)

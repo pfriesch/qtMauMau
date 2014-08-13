@@ -2,7 +2,7 @@
 #define CARDITEM_H
 
 #include <QWidget>
-#include <gameLogic/Card.h>
+#include <gameLogic/card.h>
 #include <QPixmap>
 #include <stdlib.h>
 #include <string>

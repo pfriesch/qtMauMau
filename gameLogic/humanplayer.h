@@ -2,7 +2,7 @@
 #define HUMANPLAYER_H
 
 #include "player.h"
-#include "PlayerName.h"
+#include "playername.h"
 #include <QObject>
 
 class HumanPlayer : public QObject, public Player {

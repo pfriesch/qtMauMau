@@ -2,7 +2,7 @@
 #define GAMECONTROLLERPROXY_H
 
 #include "card.h"
-#include "PlayerName.h"
+#include "playername.h"
 
 class GameController;
 

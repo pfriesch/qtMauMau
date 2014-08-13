@@ -1,4 +1,4 @@
-#include "gui\playground.h"
+#include "gui/playground.h"
 
 Playground::Playground(QObject* parent)
     : AnimatedGraphicsScene(parent)

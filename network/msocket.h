@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QTcpSocket>
-#include "gameLogic/PlayerName.h"
+#include "gameLogic/playername.h"
 
 class MSocket : public QObject {
     Q_OBJECT
