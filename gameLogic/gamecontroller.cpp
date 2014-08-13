@@ -12,6 +12,13 @@ GameController::GameController()
 {
 }
 
+GameController::~GameController()
+{
+    for (int i = 0; i < players.size(); ++i) {
+        delete players.at(i);
+    }
+}
+
 void GameController::setPlayers(std::vector<Player*> _players)
 {
     for (unsigned i = 0; i < _players.size(); ++i) {

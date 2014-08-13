@@ -88,13 +88,8 @@ void MauClient::handleMessage(QString message)
 
     switch (messageSplit.at(0).toInt()) {
     case MProtocol::INIT_PLAYGROUND: {
-        if (messageSplit.size() < 6) {
-            qDebug() << "message split error at: " << MProtocol::INIT_PLAYGROUND;
-        }
         emit clientGameStarted();
         playerName = PLAYER::Name(messageSplit.at(1).toInt());
-        qDebug() << "client: local/remote Player Name: " << playerName;
-
         std::map<PLAYER::Name, int> otherPlayerCardCount = MProtocol::stingToCardCountMap(messageSplit.at(3));
         for (unsigned i = 0; i < otherPlayerCardCount.size(); ++i) {
             localPlayerOrder.append(PLAYER::Name(i));
@@ -116,63 +111,50 @@ void MauClient::handleMessage(QString message)
     }
     case MProtocol::DO_TURN:
         if (messageSplit.size() < 3) {
-            qDebug() << "message split error at: " << MProtocol::DO_TURN;
-        }
-        //        void UIdoTurn(std::vector<Card> playableCards,
-        //                      Card::cardSuit wishedSuit);
-        emit UIdoTurn(MProtocol::stringToCardVec(messageSplit.at(1)),
-                      Card::cardSuit(messageSplit.at(2).toInt()));
-        break;
+            //        void UIdoTurn(std::vector<Card> playableCards,
+            //                      Card::cardSuit wishedSuit);
+            emit UIdoTurn(MProtocol::stringToCardVec(messageSplit.at(1)),
+                          Card::cardSuit(messageSplit.at(2).toInt()));
+            break;
 
-    case MProtocol::OTHER_PLAYS_CARD:
-        if (messageSplit.size() < 3) {
-            qDebug() << "message split error at: " << MProtocol::OTHER_PLAYS_CARD;
+        case MProtocol::OTHER_PLAYS_CARD:
+            //        void UIplayerPlaysCard(PLAYER::Name pName,
+            //                               const Card & playedCard);
+            emit UIplayerPlaysCard(localPlayerOrder[messageSplit.at(1).toInt()],
+                                   MProtocol::stingToCard(messageSplit.at(2)));
+            break;
+        case MProtocol::OTHER_DRAWS_CARD:
+            //        void UIplayerDrawsCard(PLAYER::Name pName);
+            emit UIplayerDrawsCard(localPlayerOrder[messageSplit.at(1).toInt()]);
+            break;
+        case MProtocol::ADD_CARD:
+            //        void UIaddPlayerCard(const Card & card);
+            emit UIaddPlayerCard(MProtocol::stingToCard(messageSplit.at(1)));
+            break;
+        case MProtocol::PLAYER_WON:
+            qDebug() << "Player " << messageSplit.at(1) << " won, signal to view not implemented yet";
+            break;
+        case MProtocol::REQUEST_NAME: {
+            QString message;
+            QString playerName = Settings::getInstance()->getProperty("common/playername");
+            message.append(QString::number(MProtocol::SEND_NAME));
+            message.append(";");
+            message.append(QString::number(messageSplit.at(1).toInt()));
+            message.append(";");
+            message.append(playerName);
+            writeNextData(message);
+            break;
         }
-        //        void UIplayerPlaysCard(PLAYER::Name pName,
-        //                               const Card & playedCard);
-        emit UIplayerPlaysCard(localPlayerOrder[messageSplit.at(1).toInt()],
-                               MProtocol::stingToCard(messageSplit.at(2)));
-        break;
-    case MProtocol::OTHER_DRAWS_CARD:
-        if (messageSplit.size() < 2) {
-            qDebug() << "message split error at: " << MProtocol::OTHER_DRAWS_CARD;
+        case MProtocol::CONNECTION_REJECTED:
+            emit connectionRejected();
+            break;
+        case MProtocol::CONNECTION_ACCEPTED:
+            emit connectionAccepted();
+            break;
+        default:
+            qDebug() << "method not found";
+            break;
         }
-        //        void UIplayerDrawsCard(PLAYER::Name pName);
-        emit UIplayerDrawsCard(localPlayerOrder[messageSplit.at(1).toInt()]);
-        break;
-    case MProtocol::ADD_CARD:
-        if (messageSplit.size() < 2) {
-            qDebug() << "message split error at: " << MProtocol::ADD_CARD;
-        }
-        //        void UIaddPlayerCard(const Card & card);
-        emit UIaddPlayerCard(MProtocol::stingToCard(messageSplit.at(1)));
-        break;
-    case MProtocol::PLAYER_WON:
-        if (messageSplit.size() < 2) {
-            qDebug() << "message split error at: " << MProtocol::ADD_CARD;
-        }
-        qDebug() << "Player " << messageSplit.at(1) << " won, signal to view not implemented yet";
-        break;
-    case MProtocol::REQUEST_NAME: {
-        QString message;
-        QString playerName = Settings::getInstance()->getProperty("common/playername");
-        message.append(QString::number(MProtocol::SEND_NAME));
-        message.append(";");
-        message.append(QString::number(messageSplit.at(1).toInt()));
-        message.append(";");
-        message.append(playerName);
-        writeNextData(message);
-        break;
-    }
-    case MProtocol::CONNECTION_REJECTED:
-        emit connectionRejected();
-        break;
-    case MProtocol::CONNECTION_ACCEPTED:
-        emit connectionAccepted();
-        break;
-    default:
-        qDebug() << "method not found";
-        break;
     }
 }
 
@@ -180,43 +162,6 @@ void MauClient::rotatePlayerMap()
 {
     std::rotate(localPlayerOrder.begin(), localPlayerOrder.begin() + playerName, localPlayerOrder.end());
 }
-
-//std::map<PLAYER::Name, int> MauClient::rotatePlayerMap(std::map<PLAYER::Name, int> otherPlayerCardCount)
-//{
-
-//    std::map<PLAYER::Name, int> rotatedMap = otherPlayerCardCount;
-//    std::rotate(rotatedMap.begin(), rotatedMap.begin() + static_cast<int>(playerName), rotatedMap.end());
-//    localPlayerOrder = QMap<PLAYER::Name, int>(rotatedMap).keys();
-//    return rotatedMap;
-//}
-
-///**
-// * @brief Rotates the player names, so the local player is always on bottom.
-// * @param pName the name to be rotated according to the local player position
-// * @return
-// */
-//PLAYER::Name MauClient::getLocalPlayerName(PLAYER::Name pName)
-//{
-//    int backwardsRotations = playerName;
-
-//    for (int i = 0; i < backwardsRotations; ++i) {
-//        switch (pName) {
-//        case PLAYER::BOTTOM:
-//            pName = PLAYER::RIGHT;
-//            break;
-//        case PLAYER::LEFT:
-//            pName = PLAYER::BOTTOM;
-//            break;
-//        case PLAYER::TOP:
-//            pName = PLAYER::LEFT;
-//            break;
-//        case PLAYER::RIGHT:
-//            pName = PLAYER::TOP;
-//            break;
-//        }
-//    }
-//    return pName;
-//}
 
 MauClient::~MauClient()
 {
