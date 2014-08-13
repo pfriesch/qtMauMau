@@ -18,7 +18,7 @@ public:
                   Card::cardValue _wishSuitCard,
                   std::vector<std::string> playerNames);
     void reciveCard(const Card& card);
-    void playerWon(PLAYER::Name pName);
+    void playerWon(std::string _title);
 
 signals:
     void UIinitPlayground(const std::vector<Card>& humanPlayerCards,
@@ -30,7 +30,7 @@ signals:
     void UIplayerPlaysCard(PLAYER::Name pName, const Card& playedCard);
     void UIplayerDrawsCard(PLAYER::Name pName);
     void UIaddPlayerCard(const Card& card);
-    void UIPlayerWon(PLAYER::Name pName);
+    void UIPlayerWon(std::string _title);
 
 public
 slots:

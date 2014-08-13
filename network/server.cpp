@@ -156,12 +156,12 @@ void MauServer::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& c
     writeData(message, socketByName(remotePlayerName));
 }
 
-void MauServer::RemotePlayerWon(PLAYER::Name remotePlayerName, PLAYER::Name pName)
+void MauServer::RemotePlayerWon(PLAYER::Name remotePlayerName, std::string _title)
 {
     QString message;
     message.append(QString::number(MProtocol::PLAYER_WON));
     message.append(";");
-    message.append(QString::number(pName));
+    message.append(QString(_title.c_str()));
     writeData(message, socketByName(remotePlayerName));
 }
 

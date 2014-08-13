@@ -84,7 +84,7 @@ slots:
     void addPlayerCard(const Card& card);
     // Human Spieler hat eine Karte gezogen
 
-    void playerWon(PLAYER::Name playerName);
+    void playerWon(std::string _title);
 
 signals:
     void playCard(const Card& card, Card::cardSuit whishedSuit);
