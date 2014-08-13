@@ -109,7 +109,8 @@ void MauClient::handleMessage(QString message)
         emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(2)),
                               otherPlayerCardCount,
                               MProtocol::stingToCard(messageSplit.at(4)),
-                              Card::cardValue(messageSplit.at(5).toInt()));
+                              Card::cardValue(messageSplit.at(5).toInt()),
+                              MProtocol::stringToStringVec(messageSplit.at(6)));
 
         break;
     }

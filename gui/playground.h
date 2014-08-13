@@ -26,6 +26,7 @@
 #include <settings.h>
 #include <gui/soundmanager.h>
 #include <QMessageBox>
+#include <QStringList>
 
 class Playground : public AnimatedGraphicsScene {
     Q_OBJECT
@@ -47,7 +48,7 @@ private:
 
     void updateDepotCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
     void updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
-    void createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount);
+    void createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames);
     Card::cardSuit chooseColor();
 
     SoundManager soundMgr;
@@ -61,7 +62,11 @@ private:
 public
 slots:
 
-    void initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard);
+    void initPlayground(const std::vector<Card>& humanPlayerCards,
+                        std::map<PLAYER::Name, int> otherPlayerCardCount,
+                        const Card& topDepotCard,
+                        Card::cardValue _wishSuitCard,
+                        std::vector<std::string> playerNames);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
     void playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit);

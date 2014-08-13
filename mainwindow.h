@@ -24,7 +24,7 @@ public:
     void resizeEvent(QResizeEvent* event);
 public
 slots:
-    void startNetworkGame(QVector<QPair<Player::Type, int> > players);
+    void startNetworkGame(QVector<QPair<Player::Type, int> > players); //, QStringList otherPlayerNames);
     void startGameAsClient();
 
 private:
@@ -55,7 +55,6 @@ slots:
     void startGameAsClientDialog();
     void showOptionDialog();
     void aboutDialog();
-
 };
 
 #endif // MAINWINDOW_H

@@ -11,27 +11,12 @@ GameController::GameController()
     : cardStack(Deck::FULL)
 {
 }
-void GameController::localGame(int playerCount)
-{
-    if (playerCount < MIN_PLAYER || playerCount > MAX_PLAYER) {
-        throw std::invalid_argument("playercount has to be between 2 and 4");
-    } else {
-        players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
-        playerOrder.push_back(PLAYER::BOTTOM);
-        for (int i = 1; i < playerCount; ++i) {
-            players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(this, PLAYER::Name(i))));
-            playerOrder.push_back(PLAYER::Name(i));
-        }
-    }
-}
 
-void GameController::networkGame(std::vector<Player*> _players)
+void GameController::setPlayers(std::vector<Player*> _players)
 {
-    players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(this, PLAYER::Name::BOTTOM)));
-    playerOrder.push_back(PLAYER::BOTTOM);
     for (unsigned i = 0; i < _players.size(); ++i) {
         players.push_back(_players.at(i));
-        playerOrder.push_back(PLAYER::Name(i + 1));
+        playerOrder.push_back(PLAYER::Name(i));
     }
 }
 
@@ -62,7 +47,7 @@ void GameController::gameInit(Card::cardValue _draw2xCard,
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, wishSuitCard);
+        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, wishSuitCard, getPlayerNames());
     }
     players[playerOrder[0]]->doTurn(cardDepot.back(), Card::NONE);
 }
@@ -106,11 +91,6 @@ void GameController::drawCard(PLAYER::Name pName)
 void GameController::setdraw2xCard(Card::cardValue cardValue)
 {
     draw2xCard = cardValue;
-}
-
-Player* GameController::getBottomPlayer()
-{
-    return players.at(PLAYER::BOTTOM);
 }
 
 void GameController::nextTurn()
@@ -169,6 +149,15 @@ void GameController::playerWon(PLAYER::Name playerName)
         players[i]->playerWon(playerName);
     }
     aPlayerWon = true;
+}
+
+std::vector<std::string> GameController::getPlayerNames()
+{
+    std::vector<std::string> playerNames;
+    for (int i = 0; i < players.size(); ++i) {
+        playerNames.push_back(players[i]->getTitle());
+    }
+    return playerNames;
 }
 
 void GameController::setNextPlayer()

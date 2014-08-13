@@ -7,11 +7,15 @@
 class RemotePlayer : public QObject, public Player {
     Q_OBJECT
 public:
-    explicit RemotePlayer(PLAYER::Name playerName, GameControllerProxy _gameController);
+    explicit RemotePlayer(PLAYER::Name playerName, GameControllerProxy _gameController, std::string name);
     void otherPlaysCard(PLAYER::Name pName, const Card& playedCard);
     void otherDrawsCard(PLAYER::Name pName);
     void doTurn(Card topCard, Card::cardSuit wishedSuit);
-    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, Card::cardValue _wishSuitCard);
+    void gameInit(const std::vector<Card>& hand,
+                  const Card& topCard,
+                  std::map<PLAYER::Name, int> otherPlayerCardCount,
+                  Card::cardValue _wishSuitCard,
+                  std::vector<std::string> playerNames);
     void reciveCard(const Card& card);
     void playerWon(PLAYER::Name pName);
 
@@ -20,7 +24,8 @@ signals:
                               const std::vector<Card>& remotePlayerCards,
                               std::map<PLAYER::Name, int> otherPlayerCardCount,
                               const Card& topDepotCard,
-                              Card::cardValue wishSuitCard);
+                              Card::cardValue wishSuitCard,
+                              std::vector<std::string> playerNames);
     void RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> playableCards, Card::cardSuit wishedSuit);
     void RemotePlayerPlaysCard(PLAYER::Name remotePlayerName, PLAYER::Name pName, const Card& playedCard);
     void RemotePlayerDrawsCard(PLAYER::Name remotePlayerName, PLAYER::Name pName);

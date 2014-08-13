@@ -68,34 +68,34 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 }
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
-void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard)
+void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
 {
     wishSuitCard = _wishSuitCard;
-    createPlayer(humanPlayerCards, otherPlayerCardCount);
+    createPlayer(humanPlayerCards, otherPlayerCardCount, playerNames);
     CardItem depotCard(topDepotCard);
     updateDepotCard(depotCard, depot);
 }
 
-void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount)
+void Playground::createPlayer(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames)
 {
     QPointF center = this->sceneRect().center();
-    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center.x(), center.y(), Settings::getInstance()->getProperty("common/playername"));
+    PlayerItem* human = new PlayerItem(PlayerItem::direction::HUMAN, humanPlayerCards, center.x(), center.y(), QString(playerNames.at(0).c_str()));
     players.insert(PlayerItem::direction::HUMAN, human);
 
     for (unsigned int i = 0; i < otherPlayerCardCount.size(); i++) {
         switch (i) {
         case 1: {
-            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center.x(), center.y(), "Yoda");
+            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center.x(), center.y(), QString(playerNames.at(1).c_str()));
             players.insert(PlayerItem::direction::LEFT, p1);
             break;
         }
         case 2: {
-            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(PLAYER::Name::TOP), center.x(), center.y(), "Anakin");
+            PlayerItem* p2 = new PlayerItem(PlayerItem::direction::TOP, otherPlayerCardCount.at(PLAYER::Name::TOP), center.x(), center.y(), QString(playerNames.at(2).c_str()));
             players.insert(PlayerItem::direction::TOP, p2);
             break;
         }
         case 3: {
-            PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(PLAYER::Name::RIGHT), center.x(), center.y(), "C3PO");
+            PlayerItem* p3 = new PlayerItem(PlayerItem::direction::RIGHT, otherPlayerCardCount.at(PLAYER::Name::RIGHT), center.x(), center.y(), QString(playerNames.at(3).c_str()));
             players.insert(PlayerItem::direction::RIGHT, p3);
 
             break;

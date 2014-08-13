@@ -39,8 +39,7 @@ private:
 
 public:
     explicit GameController();
-    void localGame(int playerCount = MAX_PLAYER);
-    void networkGame(std::vector<Player*> _players);
+    void setPlayers(std::vector<Player*> _players);
     void gameInit(Card::cardValue _draw2xCard = Card::SEVEN,
                   Card::cardValue _wishSuitCard = Card::JACK,
                   Card::cardValue _skipNextCard = Card::EIGHT,
@@ -54,8 +53,6 @@ public:
     void setskipNextCard(Card::cardValue cardValue);
     void setchangeDirectCard(Card::cardValue cardValue);
 
-    Player* getBottomPlayer();
-
 private:
     void nextTurn();
     void setFlags(const Card& card);
@@ -63,6 +60,7 @@ private:
     void playerDrawCard(PLAYER::Name pName);
     void handleDraw2x();
     void playerWon(PLAYER::Name playerName);
+    std::vector<std::string> getPlayerNames();
 };
 
 #endif // GAMECONTROLLER_H
