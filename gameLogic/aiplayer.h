@@ -21,7 +21,7 @@ public:
                   Card::cardValue _wishSuitCard,
                   std::vector<std::string> playerNames);
     void reciveCard(const Card& card);
-    void playerWon(PLAYER::Name playerName);
+    void playerWon(std::string _title);
 
 private:
     Card getPlayCard(std::vector<Card> playableCards);

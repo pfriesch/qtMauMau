@@ -34,10 +34,10 @@ void HumanPlayer::reciveCard(const Card& card)
     emit UIaddPlayerCard(card);
 }
 
-void HumanPlayer::playerWon(PLAYER::Name playerName)
+void HumanPlayer::playerWon(std::string _title)
 {
     qDebug() << "Player Won, UI doesnt handle it yet";
-    emit UIPlayerWon(playerName);
+    emit UIPlayerWon(_title);
 }
 
 void HumanPlayer::UIplaysCard(const Card& card, Card::cardSuit whishedSuit)

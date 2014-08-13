@@ -37,7 +37,7 @@ slots:
     void RemotePlayerPlaysCard(PLAYER::Name remotePlayerName, PLAYER::Name pName, const Card& playedCard);
     void RemotePlayerDrawsCard(PLAYER::Name remotePlayerName, PLAYER::Name pName);
     void RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card);
-    void RemotePlayerWon(PLAYER::Name remotePlayerName, PLAYER::Name pName);
+    void RemotePlayerWon(PLAYER::Name remotePlayerName, std::string _title);
 
 signals:
     void RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card, Card::cardSuit wishedSuit);

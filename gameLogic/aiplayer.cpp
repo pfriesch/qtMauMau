@@ -45,7 +45,7 @@ void AIPlayer::reciveCard(const Card& card)
     this->hand.push_back(card);
 }
 
-void AIPlayer::playerWon(PLAYER::Name playerName)
+void AIPlayer::playerWon(std::string _title)
 {
 }
 

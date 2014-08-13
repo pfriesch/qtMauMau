@@ -33,15 +33,15 @@ void MainWindow::setupGraphicsView()
     if (playground != NULL) {
         delete playground;
     }
-//    if (gc != NULL) {
-//        delete gc;
-//    }
-//    if (server != NULL) {
-//        delete server;
-//    }
-//    if (client != NULL) {
-//        delete client;
-//    }
+    if (gc != NULL) {
+        delete gc;
+    }
+    if (server != NULL) {
+        delete server;
+    }
+    if (client != NULL) {
+        delete client;
+    }
 
     playground = new Playground();
     view = new QGraphicsView(this);

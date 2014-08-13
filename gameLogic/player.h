@@ -40,7 +40,7 @@ public:
                           std::vector<std::string> playerNames) = 0;
 
     virtual void reciveCard(const Card& card) = 0;
-    virtual void playerWon(PLAYER::Name playerName) = 0;
+    virtual void playerWon(std::string _title) = 0;
 
     PLAYER::Name getPName() const;
 

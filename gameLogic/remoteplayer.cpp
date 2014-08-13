@@ -35,9 +35,9 @@ void RemotePlayer::reciveCard(const Card& card)
     emit RemoteAddPlayerCard(playerName, card);
 }
 
-void RemotePlayer::playerWon(PLAYER::Name pName)
+void RemotePlayer::playerWon(std::string _title)
 {
-    emit RemotePlayerWon(playerName, pName);
+    emit RemotePlayerWon(playerName, _title);
 }
 
 void RemotePlayer::RemotePlaysCard(PLAYER::Name remotePlayerName, const Card& card, Card::cardSuit wishedSuit)

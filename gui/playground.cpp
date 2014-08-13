@@ -50,7 +50,7 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
             for (int j = 0; j < human->getCards()->size(); ++j) {
                 CardItem* c = human->getCards()->at(j);
                 if (c->createImg() == item && c->getPlayable()) {
-                    history.write("You play a Card",c->getCard().getSuit(),c->getCard().getValue());
+                    history.write("You play a Card", c->getCard().getSuit(), c->getCard().getValue());
                     Card::cardSuit chosenColor = Card::NONE;
                     if (c->getCard().getValue() == wishSuitCard) {
                         chosenColor = chooseColor();
@@ -167,7 +167,7 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
 
 void Playground::playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit)
 {
-    history.write("You have to play, your Cards are:",players.value(PlayerItem::direction::HUMAN)->getCards());
+    history.write("You have to play, your Cards are:", players.value(PlayerItem::direction::HUMAN)->getCards());
     qDebug("Player do Turn; cards: ");
     for (unsigned i = 0; i < playableCards.size(); ++i) {
         qDebug() << playableCards[i].getSuit() << ":" << playableCards[i].getValue();
@@ -201,7 +201,7 @@ void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
 
     CardItem* dummyCard = p->findCard(playedCard, true);
     CardItem _playedCard(playedCard);
-    history.write("another Player, plays a Card",_playedCard);
+    history.write("another Player, plays a Card", _playedCard);
     addItem(_playedCard.createImg());
     _playedCard.setPos(dummyCard->getX(), dummyCard->getY());
     p->removeCard(playedCard);
@@ -258,7 +258,7 @@ void Playground::playerDrawsCard(PLAYER::Name player)
  */
 void Playground::addPlayerCard(const Card& card)
 {
-    history.write("You draw Card",card.getSuit(),card.getValue());
+    history.write("You draw Card", card.getSuit(), card.getValue());
     qDebug("VIEW: GET Signal - addPlayerCard");
     CardItem* cardItem = players.value(PlayerItem::direction::HUMAN)->addCard(card);
     CardItem cardFromStack(card);
@@ -268,13 +268,13 @@ void Playground::addPlayerCard(const Card& card)
     players.value(PlayerItem::direction::HUMAN)->rearrangePlayer(this->sceneRect().center().x(), this->sceneRect().center().y());
 }
 
-void Playground::playerWon(PLAYER::Name playerName)
+void Playground::playerWon(std::string _title)
 {
     history.write("WIIIN");
     history.write("GAME OVER\n===================\n");
     soundMgr.winnerSound();
     QMessageBox msgBox;
-    msgBox.setText(QMessageBox::tr("Congratulations Player ") + playerName + " won!!");
+    msgBox.setText(QMessageBox::tr("Player ") + _title.c_str() + tr(" won!!"));
     msgBox.exec();
 }
 

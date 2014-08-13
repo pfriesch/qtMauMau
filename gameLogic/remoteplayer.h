@@ -17,7 +17,7 @@ public:
                   Card::cardValue _wishSuitCard,
                   std::vector<std::string> playerNames);
     void reciveCard(const Card& card);
-    void playerWon(PLAYER::Name pName);
+    void playerWon(std::string _title);
 
 signals:
     void RemoteInitPlayground(PLAYER::Name remotePlayerName,
@@ -30,7 +30,7 @@ signals:
     void RemotePlayerPlaysCard(PLAYER::Name remotePlayerName, PLAYER::Name pName, const Card& playedCard);
     void RemotePlayerDrawsCard(PLAYER::Name remotePlayerName, PLAYER::Name pName);
     void RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card);
-    void RemotePlayerWon(PLAYER::Name remotePlayerName, PLAYER::Name pName);
+    void RemotePlayerWon(PLAYER::Name remotePlayerName, std::string _title);
 
 public
 slots:

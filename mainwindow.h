@@ -48,6 +48,7 @@ private:
     MauClient* client = NULL;
     QGraphicsView *view = NULL;
 
+
     //Game Starts
 private
 slots:

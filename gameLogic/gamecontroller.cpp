@@ -154,7 +154,7 @@ void GameController::handleDraw2x()
 void GameController::playerWon(PLAYER::Name playerName)
 {
     for (unsigned i = 0; i < players.size(); ++i) {
-        players[i]->playerWon(playerName);
+        players[i]->playerWon(players.at(playerName)->getTitle());
     }
     aPlayerWon = true;
 }
