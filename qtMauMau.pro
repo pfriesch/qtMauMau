@@ -49,8 +49,8 @@ SOURCES += main.cpp\
     gameLogic/Test/aiplayer_test.cpp \
     gameLogic/Test/gcproxy_mockup.cpp \
     gui/infodialog.cpp \
-    gui/addremoteplayer.cpp
-
+    gui/addremoteplayer.cpp \
+    gui/gamehistory.cpp \
 
 
 
@@ -86,7 +86,9 @@ HEADERS  += mainwindow.h \
     gameLogic/Test/aiplayer_test.h \
     gameLogic/Test/gcproxy_mockup.h \
     gui/infodialog.h \
-    gui/addremoteplayer.h
+    gui/addremoteplayer.h\
+    gui/gamehistory.h \
+
 
 
 FORMS    += \
