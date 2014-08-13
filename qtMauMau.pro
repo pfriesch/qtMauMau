@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     network/msocket.cpp \
     gameLogic/Test/aiplayer_test.cpp \
     gameLogic/Test/gcproxy_mockup.cpp \
-    gui/infodialog.cpp
+    gui/infodialog.cpp \
+    gui/addremoteplayer.cpp
 
 
 
@@ -84,7 +85,8 @@ HEADERS  += mainwindow.h \
     network/msocket.h \
     gameLogic/Test/aiplayer_test.h \
     gameLogic/Test/gcproxy_mockup.h \
-    gui/infodialog.h
+    gui/infodialog.h \
+    gui/addremoteplayer.h
 
 
 FORMS    += \
@@ -93,7 +95,8 @@ FORMS    += \
     gui/connecttoserver.ui \
     gui/createserverdialog.ui \
     gui/setnamedialog.ui \
-    gui/infodialog.ui
+    gui/infodialog.ui \
+    gui/addremoteplayer.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \

@@ -3,9 +3,11 @@
 
 #include <QDialog>
 #include <QLabel>
-#include <QPair>
 #include <gameLogic/remoteplayer.h>
 #include <gameLogic/aiplayer.h>
+#include "gameLogic/PlayerName.h"
+#include <QVector>
+#include <QStringList>
 
 namespace Ui {
 class CreateServerDialog;
@@ -18,11 +20,13 @@ public:
     explicit CreateServerDialog(QWidget* parent = 0);
     ~CreateServerDialog();
 signals:
-    void startNetworkGame(QVector<QPair<Player::Type, int> > players);
+    void startNetworkGame(QVector<Player::Type> players, QStringList playerNames);
+    void playerRejected(int pendingConIndex);
+    void playerAccepted(int pendingConIndex);
 
 public
 slots:
-    void newPlayer(QString adress, int connectionIndex, QString name);
+    void newPlayer(QString address, int connectionIndex, QString name);
 
 private
 slots:
@@ -34,9 +38,11 @@ slots:
 
 private:
     Ui::CreateServerDialog* ui;
-    QVector<QPair<Player::Type, int> > players;
-    int getFreeSlots();
-    QLabel* getNextFreeSlot();
+    QVector<Player::Type> players;
+    int getFreeSlotsCount();
+    QVector<QLabel*> getNextFreeSlot();
+    bool acceptRemotePlayer(QString address, QString name);
+    QStringList getPlayerNames();
 };
 
 #endif // CREATESERVERDIALOG_H

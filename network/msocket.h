@@ -14,6 +14,9 @@ public:
     PLAYER::Name getPlayerName() const;
     void setPlayerName(const PLAYER::Name& value);
 
+    QString getName() const;
+    void setName(const QString& value);
+
 signals:
     void readyRead(MSocket* client);
 
@@ -24,6 +27,7 @@ slots:
 private:
     QTcpSocket* socket;
     PLAYER::Name playerName = PLAYER::NONE;
+    QString name;
 };
 
 #endif // MSOCKET_H

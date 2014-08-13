@@ -24,7 +24,7 @@ public:
     void resizeEvent(QResizeEvent* event);
 public
 slots:
-    void startNetworkGame(QVector<QPair<Player::Type, int> > players); //, QStringList otherPlayerNames);
+    void startNetworkGame(QVector<Player::Type> players, QStringList otherPlayerNames);
     void startGameAsClient();
 
 private:

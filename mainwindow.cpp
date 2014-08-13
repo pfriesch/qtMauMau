@@ -186,14 +186,18 @@ void MainWindow::startGameAsServerDialog()
     createServerDialog = new CreateServerDialog;
     QObject::connect(server, &MauServer::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
     QObject::connect(createServerDialog, &CreateServerDialog::startNetworkGame, this, &MainWindow::startNetworkGame);
+    QObject::connect(createServerDialog, &CreateServerDialog::playerAccepted, server, &MauServer::acceptConnection);
+    QObject::connect(createServerDialog, &CreateServerDialog::playerRejected, server, &MauServer::rejectConnection);
+
     createServerDialog->setModal(true);
     createServerDialog->show();
 }
 
-void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)//, QStringList otherPlayerNames)
+void MainWindow::startNetworkGame(QVector<Player::Type> players, QStringList otherPlayerNames)
 {
     QString humanPlayerName = Settings::getInstance()->getProperty("common/playername");
-    QStringList otherPlayerNames = { tr("Player 1"), tr("Player 2"), tr("Player 3") };
+    //QStringList otherPlayerNames = { tr("Player 1"), tr("Player 2"), tr("Player 3") };
+    qDebug() << otherPlayerNames.size() << otherPlayerNames;
     playground->startGame();
     gc = new GameController();
     std::vector<Player*> _players;
@@ -201,9 +205,9 @@ void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)//,
 
     _players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(gc, PLAYER::Name::BOTTOM), humanPlayerName.toStdString()));
     for (int i = 0; i < players.size(); ++i) {
-        if (players.at(i).first == Player::AI_PLAYER) {
+        if (players.at(i) == Player::AI_PLAYER) {
             _players.push_back(new AIPlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1)), otherPlayerNames.at(i).toStdString()));
-        } else if (players.at(i).first == Player::REMOTE_PLAYER) {
+        } else if (players.at(i) == Player::REMOTE_PLAYER) {
             _players.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1)), otherPlayerNames.at(i).toStdString()));
             remotePlayers.append(static_cast<RemotePlayer*>(_players.back()));
         }
@@ -238,6 +242,8 @@ void MainWindow::startGameAsClientDialog()
     QObject::connect(connectToServer, &ConnectToServer::connectToServer, client, &MauClient::setupConnection);
     QObject::connect(client, &MauClient::clientGameStarted, connectToServer, &ConnectToServer::clientGameStarted);
     QObject::connect(client, &MauClient::clientGameStarted, this, &MainWindow::startGameAsClient);
+    QObject::connect(client, &MauClient::connectionAccepted, connectToServer, &ConnectToServer::connectionAccepted);
+    QObject::connect(client, &MauClient::connectionRejected, connectToServer, &ConnectToServer::connectionRejected);
     connectToServer->setModal(true);
     connectToServer->show();
 }

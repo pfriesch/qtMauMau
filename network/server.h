@@ -19,8 +19,11 @@ public:
 
 public
 slots:
-    void acceptConnection();
+    void acceptNewConnection();
     void readNextData(MSocket* client);
+    void handleMessage(PLAYER::Name name, QString message);
+    void rejectConnection(int pendingConIndex);
+    void acceptConnection(int pendingConIndex);
 //    void startRead();
 //    void send(int playerId, QString message);
 
@@ -41,10 +44,11 @@ signals:
     void RemoteDrawsCard(PLAYER::Name remotePlayerName);
 
 private:
+    QList<MSocket*> pendingConnections;
     QList<MSocket*> clients;
 
     QTcpServer server;
-    void writeNextData(QString data, QTcpSocket* client);
+    void writeData(QString data, QTcpSocket* client);
     QTcpSocket* socketByName(PLAYER::Name pName);
     void assignSocket(PLAYER::Name remotePlayerName);
 };

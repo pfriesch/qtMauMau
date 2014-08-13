@@ -26,7 +26,8 @@ signals:
     void UIplayerPlaysCard(PLAYER::Name pName, const Card& playedCard);
     void UIplayerDrawsCard(PLAYER::Name pName);
     void UIaddPlayerCard(const Card& card);
-
+    void connectionRejected();
+    void connectionAccepted();
     void clientGameStarted();
 
 public

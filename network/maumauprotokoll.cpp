@@ -51,7 +51,7 @@ QString MProtocol::cardToSting(Card card)
 QString MProtocol::stringVecToSingle(std::vector<std::string> playerNames)
 {
     QString singleString;
-    for (int i = 0; i < playerNames.size(); ++i) {
+    for (unsigned i = 0; i < playerNames.size(); ++i) {
         if (playerNames.at(i) != "") {
             singleString.append(QString(playerNames.at(i).c_str()));
         } else {

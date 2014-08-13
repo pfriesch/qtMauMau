@@ -169,7 +169,7 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>200</x>
      <y>110</y>
      <width>111</width>
      <height>21</height>
@@ -188,7 +188,7 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>200</x>
      <y>160</y>
      <width>111</width>
      <height>21</height>
@@ -202,6 +202,63 @@
    </property>
   </widget>
   <widget class="QLabel" name="player3statlbl">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>210</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string>No Player</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="player1namelbl">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>110</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string>No Player</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="player2namelbl">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>160</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string>No Player</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="player3namelbl">
    <property name="enabled">
     <bool>false</bool>
    </property>

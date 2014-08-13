@@ -4,6 +4,7 @@
 #include "maumauprotokoll.h"
 #include <QMap>
 #include <algorithm>
+#include <settings.h>
 
 MauClient::MauClient(QObject* parent)
     : QObject(parent)
@@ -152,6 +153,23 @@ void MauClient::handleMessage(QString message)
             qDebug() << "message split error at: " << MProtocol::ADD_CARD;
         }
         qDebug() << "Player " << messageSplit.at(1) << " won, signal to view not implemented yet";
+        break;
+    case MProtocol::REQUEST_NAME: {
+        QString message;
+        QString playerName = Settings::getInstance()->getProperty("common/playername");
+        message.append(QString::number(MProtocol::SEND_NAME));
+        message.append(";");
+        message.append(QString::number(messageSplit.at(1).toInt()));
+        message.append(";");
+        message.append(playerName);
+        writeNextData(message);
+        break;
+    }
+    case MProtocol::CONNECTION_REJECTED:
+        emit connectionRejected();
+        break;
+    case MProtocol::CONNECTION_ACCEPTED:
+        emit connectionAccepted();
         break;
     default:
         qDebug() << "method not found";

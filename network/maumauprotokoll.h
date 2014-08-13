@@ -17,11 +17,15 @@ public:
         OTHER_PLAYS_CARD = 2,
         OTHER_DRAWS_CARD = 3,
         ADD_CARD = 4,
-        PLAYER_WON = 5
+        PLAYER_WON = 5,
+        REQUEST_NAME = 10,
+        CONNECTION_REJECTED = 11,
+        CONNECTION_ACCEPTED = 12
     };
     enum toServer {
         PLAY_CARD = 0,
-        DRAW_CARD = 1
+        DRAW_CARD = 1,
+        SEND_NAME = 10
     };
 
 public:
