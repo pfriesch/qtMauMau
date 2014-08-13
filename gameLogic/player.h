@@ -35,7 +35,6 @@ public:
     virtual void gameInit(const std::vector<Card>& hand,
                           const Card& topCard,
                           std::map<PLAYER::Name, int> otherPlayerCardCount,
-                          PLAYER::Name startingPlayer,
                           Card::cardValue _wishSuitCard) = 0;
 
     virtual void reciveCard(const Card& card) = 0;

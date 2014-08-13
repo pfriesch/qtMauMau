@@ -62,7 +62,7 @@ void GameController::gameInit(Card::cardValue _draw2xCard,
     }
     for (unsigned i = 0; i < players.size(); ++i) {
 
-        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, playerOrder[0], wishSuitCard);
+        players[i]->gameInit(playerCards->at(i), cardDepot.back(), otherPlayerCardCount, wishSuitCard);
     }
     players[playerOrder[0]]->doTurn(cardDepot.back(), Card::NONE);
 }

@@ -21,7 +21,7 @@ public:
 //    PLAYER::Name getLocalPlayerName(PLAYER::Name pName);
 
 signals:
-    void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard);
+    void UIinitPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard);
     void UIdoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit);
     void UIplayerPlaysCard(PLAYER::Name pName, const Card& playedCard);
     void UIplayerDrawsCard(PLAYER::Name pName);

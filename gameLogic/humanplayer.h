@@ -12,7 +12,7 @@ public:
     void otherPlaysCard(PLAYER::Name pName, const Card& playedCard);
     void otherDrawsCard(PLAYER::Name pName);
     void doTurn(Card topCard, Card::cardSuit wishedSuit);
-    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard);
+    void gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, Card::cardValue _wishSuitCard);
     void reciveCard(const Card& card);
     void playerWon(PLAYER::Name pName);
 
@@ -20,7 +20,6 @@ signals:
     void UIinitPlayground(const std::vector<Card>& humanPlayerCards,
                           std::map<PLAYER::Name, int> otherPlayerCardCount,
                           const Card& topDepotCard,
-                          PLAYER::Name startingPlayer,
                           Card::cardValue wishSuitCard);
     void UIdoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit);
     void UIplayerPlaysCard(PLAYER::Name pName, const Card& playedCard);

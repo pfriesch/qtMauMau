@@ -61,7 +61,7 @@ private:
 public
 slots:
 
-    void initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard);
+    void initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
     void playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit);
