@@ -54,7 +54,7 @@ private:
     int yCenter;
 
     QString wish = "";
-    QGraphicsTextItem *playername;
+    QGraphicsTextItem *playername = NULL;
 
     int nameX;
     int nameY;

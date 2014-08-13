@@ -44,11 +44,12 @@ void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem &item, QG
 
     _destinationPositions[&item] = destinationItem.pos();
 
-    newAnimation = new QGraphicsItemAnimation ( timeLine );
+    newAnimation = new QGraphicsItemAnimation ( timeLine);
     newAnimation->setTimeLine ( timeLine );
     newAnimation->setItem ( &item );
     newAnimation->setPosAt ( 0, srcPos );
     newAnimation->setPosAt ( 1, destinationItem.pos() );
+    newAnimation->deleteLater();
 }
 
 

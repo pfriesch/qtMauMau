@@ -56,15 +56,15 @@ void SoundManager::playBackgroundSong()
     }
 }
 
-SoundManager::~SoundManager()
-{
-    delete effect;
-    delete player;
-}
-
 void SoundManager::stateChanged(QMediaPlayer::State state)
 {
     if (state == QMediaPlayer::StoppedState) {
         player->play();
     }
+}
+SoundManager::~SoundManager(){
+    effect->stop();
+    player->stop();
+    delete effect;
+    delete player;
 }

@@ -38,6 +38,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void rearrangeLayout();
     void setDepotNStack();
+    ~Playground();
 
 private:
     QVector<CardItem*> graphicalItems;
@@ -49,7 +50,7 @@ private:
     Card::cardValue wishSuitCard;
 
     void updateDepotCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
-    void updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation = true);
+    void updatePlayerCard(CardItem& fromCard, CardItem &toCard, bool withAnimation = true);
     void createPlayer(const std::vector<Card> humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames);
     Card::cardSuit chooseColor();
 

@@ -1,7 +1,6 @@
 #include "playeritem.h"
 
-PlayerItem::PlayerItem(direction dir, int cardCount, int xCenter, int yCenter, QString _playername, QObject* parent)
-    : QObject(parent)
+PlayerItem::PlayerItem(direction dir, int cardCount, int xCenter, int yCenter, QString _playername, QObject* parent): QObject(parent)
 {
 
     this->xCenter = xCenter;
@@ -247,5 +246,14 @@ QGraphicsTextItem* PlayerItem::getPlayername()
 
 PlayerItem::~PlayerItem()
 {
-    delete[] cards;
+    if(cards != NULL){
+    for(int i = 0; i < cards->size();i++){
+        if(cards->at(i) != NULL)
+        delete cards->at(i);
+    }
+    delete cards;
+    }
+
+    if(playername != NULL)
+        delete playername;
 }

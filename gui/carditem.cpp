@@ -38,7 +38,11 @@ CardItem& CardItem::operator=(const CardItem& _cardItem)
     specialCode = _cardItem.getSpecialCode();
 
     //neu erstellen des Bildes
-    graphicsItem = NULL;
+    if(graphicsItem != NULL){
+        delete graphicsItem;
+        graphicsItem = NULL;
+   }
+
     createImg();
 
     setPos(x, y);
@@ -157,10 +161,3 @@ CardItem::~CardItem()
 {
     delete graphicsItem;
 }
-
-/*
-void CardItem::setCard(const Card &_card){
-    specialCode = specialCards::NOT_USED;
-    card = _card;
-    graphicsItem = NULL;
-}*/

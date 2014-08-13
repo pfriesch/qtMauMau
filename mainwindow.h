@@ -40,12 +40,13 @@ private:
 
     Playground* playground = NULL;
     GameController* gc = NULL;
-    OptionDialog* optionDialog;
-    ConnectToServer* connectToServer;
-    CreateServerDialog* createServerDialog;
-    InfoDialog* infoDialog;
-    MauServer* server;
-    MauClient* client;
+    OptionDialog* optionDialog = NULL;
+    ConnectToServer* connectToServer = NULL;
+    CreateServerDialog* createServerDialog = NULL;
+    InfoDialog* infoDialog = NULL;
+    MauServer* server = NULL;
+    MauClient* client = NULL;
+    QGraphicsView *view = NULL;
 
     //Game Starts
 private

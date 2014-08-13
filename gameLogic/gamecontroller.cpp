@@ -15,7 +15,8 @@ GameController::GameController()
 GameController::~GameController()
 {
     for (int i = 0; i < players.size(); ++i) {
-        delete players.at(i);
+            if(players.at(i) != NULL)
+                delete players.at(i);
     }
 }
 

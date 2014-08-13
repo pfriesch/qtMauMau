@@ -44,7 +44,7 @@ void MainWindow::setupGraphicsView()
 //    }
 
     playground = new Playground();
-    QGraphicsView* view = new QGraphicsView(this);
+    view = new QGraphicsView(this);
     playground->setSceneRect(0, 0, this->width() - 50, this->height() - 50);
     view->setScene(playground);
     setCentralWidget(view);
@@ -64,10 +64,10 @@ void MainWindow::resizeEvent(QResizeEvent* event)
  */
 void MainWindow::setupMenuBar()
 {
-    QMenuBar* menuBar = new QMenuBar();
+    QMenuBar* menuBar = new QMenuBar(this);
 
     // File Menu
-    QMenu* fileMenu = new QMenu(QMenu::tr("File"));
+    QMenu* fileMenu = new QMenu(QMenu::tr("File"),this);
     menuBar->addMenu(fileMenu);
 
     QAction* startLocalGameMenu = new QAction(QAction::tr("Start Local Game"), this);
@@ -93,7 +93,7 @@ void MainWindow::setupMenuBar()
     fileMenu->addAction(exitMenu);
 
     //Info Menu
-    QMenu* infoMenu = new QMenu(QMenu::tr("Info"));
+    QMenu* infoMenu = new QMenu(QMenu::tr("Info"),this);
     menuBar->addMenu(infoMenu);
 
     QAction* aboutMenu = new QAction(QAction::tr("About"), this);
@@ -274,4 +274,22 @@ void MainWindow::aboutDialog()
 
 MainWindow::~MainWindow()
 {
+    if(playground != NULL)
+    delete playground;
+    if(gc != NULL)
+        delete gc;
+    if(optionDialog != NULL)
+    delete optionDialog;
+    if(connectToServer != NULL)
+    delete connectToServer;
+    if(createServerDialog != NULL)
+    delete createServerDialog;
+    if(infoDialog != NULL)
+    delete infoDialog;
+    if(server != NULL)
+    delete server;
+    if(client != NULL)
+    delete client;
+    if(view != NULL)
+    delete view;
 }

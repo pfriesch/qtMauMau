@@ -76,3 +76,6 @@ QString GameHistory::cardToString(CardItem item){
         }
         return hand;
 }
+GameHistory::~GameHistory(){
+    delete file;
+}
