@@ -67,7 +67,6 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 }
 
 //bekomme alle Karten und anzahl karten der anderen Mitspieler
-// TODO: show starting player
 void Playground::initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard)
 {
     wishSuitCard = _wishSuitCard;
@@ -119,7 +118,6 @@ void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool with
     qreal y = toCard.getY();
 
     if (withAnimation) {
-        //TODO: Die QEventLoop geht glaub ich noch nicht richtig
         QEventLoop pause;
         prepareNewAnimation(pause);
         addPositionAnimation(*fromCard.createImg(), *toCard.createImg());
@@ -231,7 +229,7 @@ void Playground::playerDrawsCard(PLAYER::Name player)
         break;
     }
     default:
-        qFatal("Error in playerDrawsCard, bekomme anderen Wert als erwartet!");
+        qFatal("Error in playerDrawsCard, shouldn't happen!");
         break;
     }
 
@@ -259,6 +257,13 @@ void Playground::addPlayerCard(const Card& card)
     soundMgr.playCard();
     updatePlayerCard(cardFromStack, *cardItem);
     players.value(PlayerItem::direction::HUMAN)->rearrangePlayer(this->sceneRect().center().x(), this->sceneRect().center().y());
+}
+
+void Playground::playerWon(PLAYER::Name playerName)
+{
+    QMessageBox msgBox;
+    msgBox.setText(QMessageBox::tr("Congratulations Player ")+playerName+" won!!");
+    msgBox.exec();
 }
 
 Card::cardSuit Playground::chooseColor()

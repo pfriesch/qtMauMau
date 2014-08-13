@@ -9,6 +9,6 @@ enum Name {
     RIGHT = 3,
     NONE = -1
 };
-};
+}
 
 #endif // PLAYERNAME_H

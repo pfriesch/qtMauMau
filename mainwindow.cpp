@@ -30,6 +30,9 @@ void MainWindow::showNameDialog()
  */
 void MainWindow::setupGraphicsView()
 {
+    if (playground != NULL) {
+        delete playground;
+    }
     playground = new Playground();
     QGraphicsView* view = new QGraphicsView(this);
     playground->setSceneRect(0, 0, this->width() - 50, this->height() - 50);
@@ -83,15 +86,11 @@ void MainWindow::setupMenuBar()
     QMenu* infoMenu = new QMenu(QMenu::tr("Info"));
     menuBar->addMenu(infoMenu);
 
-    QAction *aboutMenu = new QAction(QAction::tr("About"),this);
+    QAction* aboutMenu = new QAction(QAction::tr("About"), this);
     connect(aboutMenu, SIGNAL(triggered()), this, SLOT(aboutDialog()));
     infoMenu->addAction(aboutMenu);
 
     setMenuBar(menuBar);
-}
-
-void MainWindow::resetGame()
-{
 }
 
 void MainWindow::connectSignalsForLocal(HumanPlayer* humanPlayer)
@@ -102,6 +101,7 @@ void MainWindow::connectSignalsForLocal(HumanPlayer* humanPlayer)
     QObject::connect(humanPlayer, &HumanPlayer::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
     QObject::connect(humanPlayer, &HumanPlayer::UIaddPlayerCard, playground, &Playground::addPlayerCard);
     QObject::connect(humanPlayer, &HumanPlayer::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
+    QObject::connect(humanPlayer, &HumanPlayer::UIPlayerWon, playground, &Playground::playerWon);
 
     //From Playground(View) ---> HumanPlayer(Logic)
     QObject::connect(playground, &Playground::playCard, humanPlayer, &HumanPlayer::UIplaysCard);
@@ -154,7 +154,7 @@ void MainWindow::connectSignalsForClient()
 
 void MainWindow::startGameAsLocal()
 {
-    resetGame();
+    setupGraphicsView();
     gc = new GameController();
     gc->localGame();
     connectSignalsForLocal(static_cast<HumanPlayer*>(gc->getBottomPlayer()));
@@ -172,7 +172,6 @@ void MainWindow::startGameAsLocal()
 
 void MainWindow::startGameAsServerDialog()
 {
-
     server = new MauServer();
     createServerDialog = new CreateServerDialog;
     QObject::connect(server, &MauServer::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
@@ -183,7 +182,6 @@ void MainWindow::startGameAsServerDialog()
 
 void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)
 {
-    resetGame();
 
     playground->startGame();
     gc = new GameController();
@@ -214,14 +212,14 @@ void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)
 
 void MainWindow::startGameAsClient()
 {
-    resetGame();
+    setupGraphicsView();
     playground->startGame();
     connectSignalsForClient();
 }
 
 void MainWindow::startGameAsClientDialog()
 {
-    resetGame();
+    setupGraphicsView();
     client = new MauClient();
     connectToServer = new ConnectToServer;
     QObject::connect(connectToServer, &ConnectToServer::connectToServer, client, &MauClient::setupConnection);
@@ -238,7 +236,8 @@ void MainWindow::showOptionDialog()
     optionDialog->show();
 }
 
-void MainWindow::aboutDialog(){
+void MainWindow::aboutDialog()
+{
     infoDialog = new InfoDialog();
     infoDialog->setModal(true);
     infoDialog->show();

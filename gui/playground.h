@@ -25,6 +25,7 @@
 #include <gameLogic/PlayerName.h>
 #include <settings.h>
 #include <gui/soundmanager.h>
+#include <QMessageBox>
 
 class Playground : public AnimatedGraphicsScene {
     Q_OBJECT
@@ -73,7 +74,9 @@ slots:
     // Spieler zieht eine Karte
 
     void addPlayerCard(const Card& card);
-// Human Spieler hat eine Karte gezogen
+    // Human Spieler hat eine Karte gezogen
+
+    void playerWon(PLAYER::Name playerName);
 
 signals:
     void playCard(const Card& card, Card::cardSuit whishedSuit);
