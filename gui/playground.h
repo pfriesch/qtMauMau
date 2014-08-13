@@ -64,7 +64,7 @@ slots:
     void initPlayground(const std::vector<Card>& humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard);
     //bekomme alle Karten und anzahl karten der anderen Mitspieler
 
-    void playerDoTurn(std::vector<Card> playableCards);
+    void playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit);
     // bekomme alle Spielbaren Karten von Human player
 
     void playerPlaysCard(PLAYER::Name player, const Card& playedCard);

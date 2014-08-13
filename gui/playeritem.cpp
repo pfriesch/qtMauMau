@@ -149,13 +149,22 @@ void PlayerItem::unsetPlayableCards()
     }
 }
 
-void PlayerItem::setActive()
+void PlayerItem::setActive(Card::cardSuit wishSuitCard)
 {
-    playername->setHtml("<p style='text-decoration:underline;font-style:oblique;'>" + playername->toPlainText() + "</p>");
+    switch(wishSuitCard){
+    case Card::cardSuit::HEARTS: wish = "♥"; break;
+    case Card::cardSuit::DIAMONDS: wish = "♦"; break;
+    case Card::cardSuit::CLUBS: wish = "♣"; break;
+    case Card::cardSuit::SPADES: wish = "♠"; break;
+    default: wish = ""; break;
+    }
+
+    playername->setHtml("<p style='text-decoration:underline;font-style:oblique;'>" + playername->toPlainText()+" "+wish+"</p>");
 }
 
 void PlayerItem::setUnactive()
 {
+    playername->setHtml(playername->toHtml().replace(wish,""));
     playername->setHtml(playername->toPlainText());
 }
 

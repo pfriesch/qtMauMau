@@ -40,6 +40,7 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
             if (item == stack.createImg()) {
                 qDebug("VIEW: Sende drawCard()");
                 players.value(PlayerItem::direction::HUMAN)->unsetPlayableCards();
+                players.value(PlayerItem::direction::HUMAN)->setUnactive();
                 emit drawCard();
             }
             //Clicked on Human Card
@@ -160,13 +161,14 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
     update(sceneRect());
 }
 
-void Playground::playerDoTurn(std::vector<Card> playableCards)
+void Playground::playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit)
 {
     qDebug("Player do Turn; cards: ");
     for (unsigned i = 0; i < playableCards.size(); ++i) {
         qDebug() << playableCards[i].getSuit() << ":" << playableCards[i].getValue();
     }
-    players.value(PlayerItem::direction::HUMAN)->setActive();
+
+    players.value(PlayerItem::direction::HUMAN)->setActive(wishedSuit);
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }
 

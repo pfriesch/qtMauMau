@@ -39,7 +39,7 @@ public:
     CardItem* findCard(const Card& card, bool returnLastCard = false);
     CardItem::specialCards getSpecialCard();
     QGraphicsTextItem* getPlayername();
-    void setActive();
+    void setActive(Card::cardSuit wishSuitCard = Card::cardSuit::NONE);
     void setUnactive();
     void rearrangePlayer(int xCenter, int yCenter);
     ~PlayerItem();
@@ -53,6 +53,7 @@ private:
     int xCenter;
     int yCenter;
 
+    QString wish = "";
     QGraphicsTextItem *playername;
 
     int nameX;
