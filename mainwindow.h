@@ -46,6 +46,8 @@ private:
     InfoDialog* infoDialog = NULL;
     MauServer* server = NULL;
     MauClient* client = NULL;
+    QGraphicsView *view = NULL;
+
 
     //Game Starts
 private
