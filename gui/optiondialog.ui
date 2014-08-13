@@ -26,11 +26,11 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="general">
     <attribute name="title">
-     <string>Allgemein</string>
+     <string>General</string>
     </attribute>
     <widget class="QSlider" name="volumeSlider">
      <property name="geometry">
@@ -123,10 +123,10 @@
     <widget class="QLabel" name="volumeLb">
      <property name="geometry">
       <rect>
-       <x>25</x>
+       <x>10</x>
        <y>143</y>
-       <width>46</width>
-       <height>13</height>
+       <width>61</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="text">
@@ -305,7 +305,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Ziehe 2 Karte</string>
+      <string>Draw 2 Cards</string>
      </property>
     </widget>
     <widget class="QLabel" name="wishCardlbl">
@@ -323,7 +323,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Wünsche Karte</string>
+      <string>Wish Card</string>
      </property>
     </widget>
     <widget class="QLabel" name="switchDirectionlbl">
@@ -341,7 +341,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Richtungs Wechsel Karte</string>
+      <string>Change Direction Card</string>
      </property>
     </widget>
     <widget class="QLabel" name="skipPlayerlbl">
@@ -359,7 +359,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Aussetzen Karte</string>
+      <string>Skip Player Card</string>
      </property>
     </widget>
     <widget class="QComboBox" name="draw2xcombo">
