@@ -20,7 +20,12 @@ void AnimatedGraphicsScene::prepareNewAnimation(QEventLoop &loop)
     bool bOk = connect ( timeLine, SIGNAL ( finished() ), this, SLOT ( animationEnded() ) );
     Q_ASSERT ( bOk );
 }
-
+/**
+    * Add Position from one point to an other point
+    * @brief AnimatedGraphicsScene::addPositionAnimation
+    * @param item
+    * @param destinationItem
+    */
 void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem &item, QGraphicsPixmapItem &destinationItem )
 {
     //item->setZValue(1);
@@ -53,7 +58,10 @@ void AnimatedGraphicsScene::addPositionAnimation ( QGraphicsPixmapItem &item, QG
 }
 
 
-
+/**
+ * start the animation on the graphicscene
+ * @brief AnimatedGraphicsScene::startAnimation
+ */
 void AnimatedGraphicsScene::startAnimation()
 {
     //_activeTimeLine->start();
@@ -69,6 +77,10 @@ void AnimatedGraphicsScene::startAnimation()
     }
 }
 
+/**
+ * If animation is ended, we need to cleanup
+ * @brief AnimatedGraphicsScene::animationEnded
+ */
 void AnimatedGraphicsScene::animationEnded()
 {
     // restart

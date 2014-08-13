@@ -13,6 +13,11 @@ GameHistory::GameHistory()
     }
 }
 
+/**
+ * Write a Text in the History Doc
+ * @brief GameHistory::write
+ * @param text
+ */
 void GameHistory::write(QString text)
 {
     QTextStream out(file);
@@ -20,6 +25,12 @@ void GameHistory::write(QString text)
     out << text << "\n";
 }
 
+/**
+ * writes a Text + the Card suites + values in the History Doc
+ * @brief GameHistory::write
+ * @param text
+ * @param cards
+ */
 void GameHistory::write(QString text, QVector<CardItem*>* cards)
 {
     QString hand;
@@ -33,6 +44,12 @@ void GameHistory::write(QString text, QVector<CardItem*>* cards)
     out << full << "\n";
 }
 
+/**
+ * writes a Text + the Card suit and value in the History Doc
+ * @brief GameHistory::write
+ * @param text
+ * @param card
+ */
 void GameHistory::write(QString text, CardItem &card)
 {
     QString hand;
@@ -43,6 +60,13 @@ void GameHistory::write(QString text, CardItem &card)
     out << full << "\n";
 }
 
+/**
+ * writes a Text + the Card suit and value in the History doc
+ * @brief GameHistory::write
+ * @param text
+ * @param suit
+ * @param value
+ */
 void GameHistory::write(QString text, Card::cardSuit suit, Card::cardValue value)
 {
     QString hand;
