@@ -86,16 +86,6 @@ int main(int argc, char* argv[])
             QSize(Settings::getInstance()->getProperty("common/width").toInt(), Settings::getInstance()->getProperty("common/height").toInt()),
             app.desktop()->availableGeometry()));
 
-    // Anfang Server
-    //Server *server = new Server();
-    //RemotePlayer *player = new RemotePlayer(server,1);
-
-    //client = new Client();
-    //client->setupConnection(QHostAddress("192.168.0.150"));
-    //client->write();
-
-    // Ende Server
-
     window.show();
 
 #ifdef TEST

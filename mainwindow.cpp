@@ -33,6 +33,16 @@ void MainWindow::setupGraphicsView()
     if (playground != NULL) {
         delete playground;
     }
+//    if (gc != NULL) {
+//        delete gc;
+//    }
+//    if (server != NULL) {
+//        delete server;
+//    }
+//    if (client != NULL) {
+//        delete client;
+//    }
+
     playground = new Playground();
     QGraphicsView* view = new QGraphicsView(this);
     playground->setSceneRect(0, 0, this->width() - 50, this->height() - 50);

@@ -38,6 +38,7 @@ private:
 
 public:
     explicit GameController();
+    ~GameController();
     void setPlayers(std::vector<Player*> _players);
     void gameInit(Card::cardValue _draw2xCard = Card::SEVEN,
                   Card::cardValue _wishSuitCard = Card::JACK,

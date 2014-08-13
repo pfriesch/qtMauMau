@@ -5,6 +5,12 @@ MSocket::MSocket(QTcpSocket* _socket)
 {
     connect(socket, &QTcpSocket::readyRead, this, &MSocket::socketReadyRead);
 }
+
+MSocket::~MSocket()
+{
+    socket->close();
+    delete socket;
+}
 QTcpSocket* MSocket::getSocket() const
 {
     return socket;
