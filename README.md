@@ -30,7 +30,7 @@ verknüpft werden können (zwei Karten ziehen, Richtungswechsel, Aussetzen,...).
 
 6) ~~(1 point) Die Anwendung lässt illegale Züge nicht zu und zeigt dieses an.~~
 
-7) (1 point) Die Anwendung erkennt eine Gewinnposition und zeigt das Resultat an.
+~~7) (1 point) Die Anwendung erkennt eine Gewinnposition und zeigt das Resultat an.~~
 
 8) (1 point) Der Spieler soll sich den Spielverlauf ansehen können.
 
@@ -62,8 +62,8 @@ können.~~
 ~~18) (5 point) Beim Spiel Mensch gegen Computer soll eine einfache Spielstrategie (KI)
 implementiert werden.~~
 
-19) (2 point) Bei einem Netzwerkspiel können vorgegebene Chatnachrichten (Chatwheel)
-ausgetauscht werden
+~~19) (2 point) Bei einem Netzwerkspiel können vorgegebene Chatnachrichten (Chatwheel)
+ausgetauscht werden (Anstelle wurde Musik und Twitter gemacht)~~
 
 20) ~~(2 point) Es wird ein sinnvoller effizienter Mischalgorithmus implementiert z.b.
 (FisherYates)~~
@@ -75,9 +75,9 @@ Bonuspunkte:
 
 2) (1 point) Achivements
 
-3) (1 point) Hintergrundmusik kann angeschalten werden
+~~3) (1 point) Hintergrundmusik kann angeschalten werden~~
 
-4) (1 point) TwitterAnbindung (z. B.Gewinn kann getwittert werden)
+~~4) (1 point) TwitterAnbindung~~
 
 5) (1 point) Spieler können ein Profilbild setzten
 
