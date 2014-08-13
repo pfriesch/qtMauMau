@@ -1,8 +1,8 @@
 #include "humanplayer.h"
 #include <QDebug>
 
-HumanPlayer::HumanPlayer(PLAYER::Name playerName, GameControllerProxy _gameController)
-    : Player(playerName, _gameController)
+HumanPlayer::HumanPlayer(PLAYER::Name playerName, GameControllerProxy _gameController, std::string name)
+    : Player(playerName, _gameController, name)
 {
 }
 
@@ -21,11 +21,11 @@ void HumanPlayer::doTurn(Card topCard, Card::cardSuit wishedSuit)
     emit UIdoTurn(this->getPlayableCards(topCard, wishedSuit), wishedSuit);
 }
 
-void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, PLAYER::Name startingPlayer, Card::cardValue _wishSuitCard)
+void HumanPlayer::gameInit(const std::vector<Card>& hand, const Card& topCard, std::map<PLAYER::Name, int> otherPlayerCardCount, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
 {
     wishSuitCard = _wishSuitCard;
     this->hand = hand;
-    emit UIinitPlayground(hand, otherPlayerCardCount, topCard, startingPlayer, wishSuitCard);
+    emit UIinitPlayground(hand, otherPlayerCardCount, topCard, wishSuitCard, playerNames);
 }
 
 void HumanPlayer::reciveCard(const Card& card)

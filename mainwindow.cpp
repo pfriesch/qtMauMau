@@ -156,8 +156,18 @@ void MainWindow::startGameAsLocal()
 {
     setupGraphicsView();
     gc = new GameController();
-    gc->localGame();
-    connectSignalsForLocal(static_cast<HumanPlayer*>(gc->getBottomPlayer()));
+    QString humanPlayerName = Settings::getInstance()->getProperty("common/playername");
+
+    QStringList playerNames = { tr("Player 1"), tr("Player 2"), tr("Player 3") };
+
+    std::vector<Player*> players;
+    players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(gc, PLAYER::Name::BOTTOM), humanPlayerName.toStdString()));
+    //TODO local game is always with 4 players mb needs to be changed
+    for (int i = 1; i < 4; ++i) {
+        players.push_back(new AIPlayer(PLAYER::Name(i), GameControllerProxy(gc, PLAYER::Name(i)), playerNames.at(i - 1).toStdString()));
+    }
+    gc->setPlayers(players);
+    connectSignalsForLocal(static_cast<HumanPlayer*>(players.at(0)));
     playground->startGame();
 
     if (Settings::getInstance()->contains("game/draw2xCard")) {
@@ -180,23 +190,26 @@ void MainWindow::startGameAsServerDialog()
     createServerDialog->show();
 }
 
-void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)
+void MainWindow::startNetworkGame(QVector<QPair<Player::Type, int> > players)//, QStringList otherPlayerNames)
 {
-
+    QString humanPlayerName = Settings::getInstance()->getProperty("common/playername");
+    QStringList otherPlayerNames = { tr("Player 1"), tr("Player 2"), tr("Player 3") };
     playground->startGame();
     gc = new GameController();
     std::vector<Player*> _players;
     QVector<RemotePlayer*> remotePlayers;
+
+    _players.push_back(new HumanPlayer(PLAYER::Name::BOTTOM, GameControllerProxy(gc, PLAYER::Name::BOTTOM), humanPlayerName.toStdString()));
     for (int i = 0; i < players.size(); ++i) {
         if (players.at(i).first == Player::AI_PLAYER) {
-            _players.push_back(new AIPlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
+            _players.push_back(new AIPlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1)), otherPlayerNames.at(i).toStdString()));
         } else if (players.at(i).first == Player::REMOTE_PLAYER) {
-            _players.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1))));
+            _players.push_back(new RemotePlayer(PLAYER::Name(i + 1), GameControllerProxy(gc, PLAYER::Name(i + 1)), otherPlayerNames.at(i).toStdString()));
             remotePlayers.append(static_cast<RemotePlayer*>(_players.back()));
         }
     }
-    gc->networkGame(_players);
-    connectSignalsForServer(static_cast<HumanPlayer*>(gc->getBottomPlayer()), remotePlayers);
+    gc->setPlayers(_players);
+    connectSignalsForServer(static_cast<HumanPlayer*>(_players.at(0)), remotePlayers);
     createServerDialog->hide();
     playground->startGame();
 

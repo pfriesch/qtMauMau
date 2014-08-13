@@ -48,6 +48,36 @@ QString MProtocol::cardToSting(Card card)
     return cardAsString;
 }
 
+QString MProtocol::stringVecToSingle(std::vector<std::string> playerNames)
+{
+    QString singleString;
+    for (int i = 0; i < playerNames.size(); ++i) {
+        if (playerNames.at(i) != "") {
+            singleString.append(QString(playerNames.at(i).c_str()));
+        } else {
+            singleString.append("$");
+        }
+        singleString.append(",");
+    }
+    //chop the last ","
+    singleString.chop(1);
+    return singleString;
+}
+
+std::vector<std::string> MProtocol::stringToStringVec(QString stringVec)
+{
+    std::vector<std::string> playerNames;
+    QStringList strings = stringVec.split(",");
+    for (int i = 0; i < strings.size(); ++i) {
+        if (strings.at(i) == "$") {
+            playerNames.push_back("");
+        } else {
+            playerNames.push_back(strings.at(i).toStdString());
+        }
+    }
+    return playerNames;
+}
+
 std::vector<Card> MProtocol::stringToCardVec(QString vecAsSting)
 {
     std::vector<Card> cards;

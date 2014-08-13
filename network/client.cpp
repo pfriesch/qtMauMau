@@ -101,16 +101,16 @@ void MauClient::handleMessage(QString message)
         }
         rotatePlayerMap();
 
-        //        void UIinitPlayground(const std::vector<Card> & humanPlayerCards,
+        //        void UIinitPlayground(const std::vector<Card> & remotePlayerCards,
         //                              std::map<PLAYER::Name, int> otherPlayerCardCount,
         //                              const Card & topDepotCard,
-        //                              PLAYER::Name startingPlayer);
+        //                              Card::cardValue _wishSuitCard);
 
         emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(2)),
                               otherPlayerCardCount,
                               MProtocol::stingToCard(messageSplit.at(4)),
-                              localPlayerOrder[messageSplit.at(5).toInt()],
-                              Card::cardValue(messageSplit.at(5).toInt()));
+                              Card::cardValue(messageSplit.at(5).toInt()),
+                              MProtocol::stringToStringVec(messageSplit.at(6)));
 
         break;
     }

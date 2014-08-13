@@ -136,6 +136,24 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="mainwindow.cpp" line="161"/>
+        <source>Player 1</source>
+        <translation>Spieler 1</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="161"/>
+        <source>Player 1</source>
+        <translation>Spieler 2</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="161"/>
+        <source>Player 1</source>
+        <translation>Spieler 3</translation>
+    </message>
+</context>
+<context>
     <name>OptionDialog</name>
     <message>
         <location filename="gui/optiondialog.ui" line="17"/>

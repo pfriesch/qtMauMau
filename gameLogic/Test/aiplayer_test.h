@@ -15,7 +15,7 @@ private
 slots:
     void initTestCase()
     {
-        player = new AIPlayer(PLAYER::LEFT, GCProxy_mockup());
+        player = new AIPlayer(PLAYER::LEFT, GCProxy_mockup(), "hans");
     }
     void myFirstTest()
     {

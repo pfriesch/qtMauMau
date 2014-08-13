@@ -21,12 +21,13 @@ public:
 
 protected:
     std::vector<Card> hand;
+    std::string title;
     PLAYER::Name playerName;
     Card::cardValue wishSuitCard;
     GameControllerProxy gameController;
 
 public:
-    explicit Player(PLAYER::Name playerName, GameControllerProxy _gameController);
+    explicit Player(PLAYER::Name playerName, GameControllerProxy _gameController, std::string title);
 
     virtual void otherPlaysCard(PLAYER::Name playerName, const Card& playedCard) = 0;
     virtual void otherDrawsCard(PLAYER::Name playerName) = 0;
@@ -35,8 +36,8 @@ public:
     virtual void gameInit(const std::vector<Card>& hand,
                           const Card& topCard,
                           std::map<PLAYER::Name, int> otherPlayerCardCount,
-                          PLAYER::Name startingPlayer,
-                          Card::cardValue _wishSuitCard) = 0;
+                          Card::cardValue _wishSuitCard,
+                          std::vector<std::string> playerNames) = 0;
 
     virtual void reciveCard(const Card& card) = 0;
     virtual void playerWon(PLAYER::Name playerName) = 0;
@@ -44,6 +45,9 @@ public:
     PLAYER::Name getPName() const;
 
     int getCardCount() const;
+
+    std::string getTitle() const;
+
 
 protected:
     std::vector<Card> getPlayableCards(const Card& card, Card::cardSuit wishedSuit);

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <vector>
+#include <string>
 #include "gameLogic/Card.h"
 #include <map>
 #include "gameLogic/PlayerName.h"
@@ -28,7 +29,9 @@ public:
     static QString cardVectorToSting(std::vector<Card> cards);
     static QString playerCardCountToSting(std::map<PLAYER::Name, int> otherPlayerCardCount);
     static QString cardToSting(Card card);
+    static QString stringVecToSingle(std::vector<std::string> playerNames);
 
+    static std::vector<std::string> stringToStringVec(QString stringVec);
     static std::vector<Card> stringToCardVec(QString vecAsSting);
     static std::map<PLAYER::Name, int> stingToCardCountMap(QString mapAsSting);
     static Card stingToCard(QString cardAsSting);

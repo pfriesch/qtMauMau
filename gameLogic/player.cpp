@@ -12,9 +12,15 @@ int Player::getCardCount() const
     return this->hand.size();
 }
 
-Player::Player(PLAYER::Name pName, GameControllerProxy _gameController)
+std::string Player::getTitle() const
+{
+    return title;
+}
+
+Player::Player(PLAYER::Name pName, GameControllerProxy _gameController, std::string title)
     : playerName(pName)
     , gameController(_gameController)
+    , title(title)
 {
 }
 
