@@ -19,7 +19,8 @@ CONFIG += c++11
 CONFIG += testcase
 CONFIG += openssl-linked
 
-#DEFINES += TEST
+DEFINES += TEST
+DEFINES += UNUSED(expr)=(void)(expr)
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -32,8 +33,6 @@ SOURCES += main.cpp\
     gui/optiondialog.cpp \
     gui/carditem.cpp \
     gui/playeritem.cpp \
-    gameLogic/Test/gamecontroller_test.cpp \
-    gameLogic/Test/decktest.cpp \
     gui/animatedgraphicsscene.cpp \
     gameLogic/gamecontroller.cpp \
     gameLogic/humanplayer.cpp \
@@ -48,7 +47,6 @@ SOURCES += main.cpp\
     gui/soundmanager.cpp \
     network/maumauprotokoll.cpp \
     network/msocket.cpp \
-    gameLogic/Test/aiplayer_test.cpp \
     gameLogic/Test/gcproxy_mockup.cpp \
     gui/infodialog.cpp \
     gui/addremoteplayer.cpp \

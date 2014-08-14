@@ -19,8 +19,6 @@
 
 #include "gameLogic/humanplayer.h"
 
-#undef TEST
-
 #ifdef TEST
 #include "gameLogic/Test/gamecontroller_test.h"
 #include "gameLogic/Test/decktest.h"
@@ -31,6 +29,7 @@ MauClient* client;
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
+    UNUSED(context);
     QString txt;
     QTime time;
     std::cout << message.toStdString() << std::endl;
@@ -90,12 +89,16 @@ int main(int argc, char* argv[])
 
 #ifdef TEST
     //TODO TEST
-    //    GameControllerTest* gcTest = new GameControllerTest();
+    GameControllerTest* gcTest = new GameControllerTest();
+    QTest::qExec(gcTest);
+//    delete gcTest;
     DeckTest* deckTest = new DeckTest();
-    //    QTest::qExec(gcTest);
     QTest::qExec(deckTest);
+//    delete deckTest;
     AIPlayer_test* aiP_test = new AIPlayer_test();
     QTest::qExec(aiP_test);
+//    delete aiP_test;
+
 #endif
 
     return app.exec();

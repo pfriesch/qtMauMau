@@ -9,8 +9,14 @@
 #include "playername.h"
 #include "card.h"
 
+/**
+ *
+ * @brief The GameController class handle the logic of the maumau game
+ */
 class GameController {
-
+#ifdef TEST
+    friend class GameControllerTest;
+#endif
 private:
     std::vector<Player*> players;
     //The stack of cards where cards are taken if a player has to draw.

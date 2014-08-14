@@ -11,7 +11,7 @@ GameController::GameController()
 
 GameController::~GameController()
 {
-    for (int i = 0; i < players.size(); ++i) {
+    for (unsigned i = 0; i < players.size(); ++i) {
             if(players.at(i) != NULL)
                 delete players.at(i);
     }
@@ -34,7 +34,6 @@ void GameController::gameInit(Card::cardValue _draw2xCard,
     wishSuitCard = _wishSuitCard;
     skipNextCard = _skipNextCard;
     changeDirectCard = _changeDirectCard;
-    qDebug() << draw2xCard << wishSuitCard << skipNextCard << changeDirectCard;
 
     cardStack.shuffle();
     std::vector<std::vector<Card> > playerCards;

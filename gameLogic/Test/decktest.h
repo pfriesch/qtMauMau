@@ -1,3 +1,4 @@
+#ifdef TEST
 #ifndef DECKTEST_H
 #define DECKTEST_H
 
@@ -61,8 +62,15 @@ slots:
     void getUnderlyingCardsTest()
     {
         Deck fulldeck = Deck(Deck::FULL);
-        Deck emptyDeck = Deck(Deck::EMPTY);
+        unsigned fulldeckSize = fulldeck.cards.size();
+        std::vector<Card> cards;
+        Card firstcardDeck = fulldeck.cards.front();
+        cards = fulldeck.getUnderlyingCards();
+        QVERIFY(fulldeck.cards.size() == 1);
+        QVERIFY(cards.size() == (fulldeckSize - 1));
+        QVERIFY(cards.front() == firstcardDeck);
     }
 };
 
 #endif // DECKTEST_H
+#endif //TEST

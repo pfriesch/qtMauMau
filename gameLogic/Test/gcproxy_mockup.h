@@ -1,3 +1,4 @@
+#ifdef TEST
 #ifndef GCPROXY_MOCKUP_H
 #define GCPROXY_MOCKUP_H
 #include "gameLogic/gamecontrollerproxy.h"
@@ -10,3 +11,4 @@ public:
 };
 
 #endif // GCPROXY_MOCKUP_H
+#endif //TEST

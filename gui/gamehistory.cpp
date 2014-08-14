@@ -97,6 +97,7 @@ QString GameHistory::cardToString(CardItem item){
         case Card::cardSuit::SPADES: hand += "Spades"; break;
         case Card::cardSuit::DIAMONDS: hand += "Diamonds"; break;
         case Card::cardSuit::CLUBS: hand += "Clubs"; break;
+        default: break;
         }
         return hand;
 }

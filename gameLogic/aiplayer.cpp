@@ -1,16 +1,22 @@
 #include "aiplayer.h"
+#include <cstdlib>
+#include <ctime>
 
 AIPlayer::AIPlayer(PLAYER::Name pName, GameControllerProxy _gameController, std::string name)
     : Player(pName, _gameController, name)
 {
+    srand(time(NULL));
 }
 
 void AIPlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)
 {
+    UNUSED(pName);
+    UNUSED(playedCard);
 }
 
 void AIPlayer::otherDrawsCard(PLAYER::Name pName)
 {
+    UNUSED(pName);
 }
 
 void AIPlayer::doTurn(Card topCard, Card::cardSuit wishedSuit)
@@ -38,6 +44,9 @@ void AIPlayer::gameInit(const std::vector<Card> hand, const Card& topCard, std::
 {
     wishSuitCard = _wishSuitCard;
     this->hand = hand;
+    UNUSED(topCard);
+    UNUSED(otherPlayerCardCount);
+    UNUSED(playerNames);
 }
 
 void AIPlayer::reciveCard(const Card& card)
@@ -47,11 +56,12 @@ void AIPlayer::reciveCard(const Card& card)
 
 void AIPlayer::playerWon(std::string _title)
 {
+    UNUSED(_title);
 }
 
 Card AIPlayer::getPlayCard(std::vector<Card> playableCards)
 {
-    return playableCards.at(0);
+    return playableCards.at(rand() % playableCards.size());
 }
 
 Card::cardSuit AIPlayer::getWhishedCardSuit()

@@ -2,16 +2,16 @@
 #define AIPLAYER_H
 
 #include "player.h"
-#ifdef TEST
-#include "gameLogic/Test/aiplayer_test.h"
-#endif
+
 
 class AIPlayer : public Player {
 #ifdef TEST
     friend class AIPlayer_test;
 #endif
 public:
-    explicit AIPlayer(PLAYER::Name playerName, GameControllerProxy _gameController, std::string name);
+    explicit AIPlayer(PLAYER::Name playerName,
+                      GameControllerProxy _gameController,
+                      std::string name);
     void otherPlaysCard(PLAYER::Name playerName, const Card& playedCard);
     void otherDrawsCard(PLAYER::Name playerName);
     void doTurn(Card topCard, Card::cardSuit wishedSuit);

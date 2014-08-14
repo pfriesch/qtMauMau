@@ -199,10 +199,10 @@ void MauServer::assignSocket(PLAYER::Name remotePlayerName)
 
 MauServer::~MauServer()
 {
-    for (unsigned i = 0; i < pendingConnections.size(); ++i) {
+    for (int i = 0; i < pendingConnections.size(); ++i) {
         delete pendingConnections.at(i);
     }
-    for (unsigned i = 0; i < clients.size(); ++i) {
+    for (int i = 0; i < clients.size(); ++i) {
         delete clients.at(i);
     }
     server.close();

@@ -9,6 +9,7 @@
 #include "gui/setnamedialog.h"
 
 MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent)
 {
     setupMenuBar();
     setupGraphicsView();
