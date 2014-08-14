@@ -13,16 +13,6 @@ MainWindow::MainWindow(QWidget* parent)
 {
     setupMenuBar();
     setupGraphicsView();
-    //if(Settings::getInstance()->getProperty("common/changed_playername").toInt(0,10) == 0){
-    //    showNameDialog();
-    //}
-}
-
-void MainWindow::showNameDialog()
-{
-    //    SetNameDialog *dialog = new SetNameDialog();
-    //    dialog->setModal(true);
-    //    dialog->show();
 }
 
 /**
@@ -101,7 +91,10 @@ void MainWindow::setupMenuBar()
 
     setMenuBar(menuBar);
 }
-
+/**
+ * @brief MainWindow::connectSignalsForLocal connects signal for a local game
+ * @param humanPlayer
+ */
 void MainWindow::connectSignalsForLocal(HumanPlayer* humanPlayer)
 {
     // From HumandPlayer(Logic) ----> Playground(View)
@@ -116,7 +109,11 @@ void MainWindow::connectSignalsForLocal(HumanPlayer* humanPlayer)
     QObject::connect(playground, &Playground::playCard, humanPlayer, &HumanPlayer::UIplaysCard);
     QObject::connect(playground, &Playground::drawCard, humanPlayer, &HumanPlayer::UIdrawsCard);
 }
-
+/**
+ * @brief MainWindow::connectSignalsForServer connect signals for a network game in the server role
+ * @param humanPlayer
+ * @param remotePlayers
+ */
 void MainWindow::connectSignalsForServer(HumanPlayer* humanPlayer, QVector<RemotePlayer*> remotePlayers)
 {
 
@@ -148,7 +145,9 @@ void MainWindow::connectSignalsForServer(HumanPlayer* humanPlayer, QVector<Remot
         QObject::connect(server, &MauServer::RemoteDrawsCard, remotePlayer, &RemotePlayer::RemoteDrawsCard);
     }
 }
-
+/**
+ * @brief MainWindow::connectSignalsForClient connects signals for a network game in the client role
+ */
 void MainWindow::connectSignalsForClient()
 {
     // From HumandPlayer(Logic) ----> Playground(View)
@@ -163,7 +162,9 @@ void MainWindow::connectSignalsForClient()
     QObject::connect(playground, &Playground::playCard, client, &MauClient::UIplaysCard);
     QObject::connect(playground, &Playground::drawCard, client, &MauClient::UIdrawsCard);
 }
-
+/**
+ * @brief MainWindow::startGameAsLocal initializes a game as a local game
+ */
 void MainWindow::startGameAsLocal()
 {
     setupGraphicsView();
@@ -190,7 +191,9 @@ void MainWindow::startGameAsLocal()
         gc->gameInit();
     }
 }
-
+/**
+ * @brief MainWindow::startGameAsServerDialog initializes a creat server dialog
+ */
 void MainWindow::startGameAsServerDialog()
 {
     if (server != NULL) {
@@ -209,7 +212,11 @@ void MainWindow::startGameAsServerDialog()
     createServerDialog->setModal(true);
     createServerDialog->show();
 }
-
+/**
+ * @brief MainWindow::startNetworkGame initializes network game in the server role
+ * @param players
+ * @param otherPlayerNames
+ */
 void MainWindow::startNetworkGame(QVector<Player::Type> players, QStringList otherPlayerNames)
 {
     setupGraphicsView();
@@ -241,14 +248,18 @@ void MainWindow::startNetworkGame(QVector<Player::Type> players, QStringList oth
         gc->gameInit();
     }
 }
-
+/**
+ * @brief MainWindow::startGameAsClient initializes game in the client role
+ */
 void MainWindow::startGameAsClient()
 {
     setupGraphicsView();
     playground->startGame();
     connectSignalsForClient();
 }
-
+/**
+ * @brief MainWindow::startGameAsClientDialog initializes the connect to server dialog
+ */
 void MainWindow::startGameAsClientDialog()
 {
     setupGraphicsView();

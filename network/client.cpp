@@ -27,10 +27,8 @@ void MauClient::setupConnection(QString _address, QString _port)
 
     server->connectToHost(address, port);
 
-    //connect(client, SIGNAL(connected()), this, SLOT(write()));
     connect(server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(OnError()));
     connect(server, &QTcpSocket::readyRead, this, &MauClient::readNextData);
-    //connect(&client, SIGNAL(readyRead()), this, SLOT(read()));
 }
 /**
  * @brief MauClient::OnError slot handles errors of the connection
@@ -43,7 +41,11 @@ void MauClient::OnError()
         qCritical() << server->state();
     }
 }
-
+/**
+ * @brief MauClient::UIplaysCard constructs a MProtocol message of the slot type and sends it
+ * @param card the card the player played
+ * @param wishedSuit the wished suit
+ */
 void MauClient::UIplaysCard(const Card& card, Card::cardSuit wishedSuit)
 {
     QString message;
@@ -54,20 +56,30 @@ void MauClient::UIplaysCard(const Card& card, Card::cardSuit wishedSuit)
     message.append(QString::number(wishedSuit));
     writeNextData(message);
 }
-
+/**
+ * @brief MauClient::UIdrawsCard constructs a MProtocol message of the slot type and sends it
+ */
 void MauClient::UIdrawsCard()
 {
     QString message;
     message.append(QString::number(MProtocol::DRAW_CARD));
     writeNextData(message);
 }
-
+/**
+ * @brief MauClient::writeNextData sends the given string to the server
+ * @param data
+ */
 void MauClient::writeNextData(QString data)
 {
     data.append("\n");
     server->write(data.toStdString().c_str());
 }
 
+/**
+ * Called uppon a readyread signal is emited.
+ * Reads all availavle data and processes it
+ * @brief MauClient::readNextData reads available data
+ */
 void MauClient::readNextData()
 {
     int availableBytes = server->bytesAvailable();
@@ -80,7 +92,12 @@ void MauClient::readNextData()
         availableBytes = server->bytesAvailable();
     }
 }
-
+/**
+ * Each message type has its defined order. Each part of a message is seperated by a semicolon.
+ * The first part is the method type followed by MProtocol encoded parameters.
+ * @brief MauClient::handleMessage handles a MProtocol encoded message and emits the corresponding singals
+ * @param message the recived message
+ */
 void MauClient::handleMessage(QString message)
 {
 
@@ -152,17 +169,27 @@ void MauClient::handleMessage(QString message)
         break;
     }
 }
-
+/**
+ * @brief MauClient::rotatePlayerMap rotates the player order given by the server in order to have the local player on the bottom.
+ */
 void MauClient::rotatePlayerMap()
 {
     std::rotate(localPlayerOrder.begin(), localPlayerOrder.begin() + playerName, localPlayerOrder.end());
 }
-
+/**
+ * @brief MauClient::getLocalPlayerPosition returns the local player position differing to the remote player position
+ * @param remoteName the remote position
+ * @return the local player position differing to the remote player position
+ */
 PLAYER::Name MauClient::getLocalPlayerPosition(PLAYER::Name remoteName)
 {
     return PLAYER::Name(localPlayerOrder.indexOf(remoteName));
 }
-
+/**
+ * @brief MauClient::getLocalPlayerNames returns the vector of strings rotated like the rotated player map.
+ * @param playerNames the local players position in the remote player order
+ * @return the vector of strings rotated like the rotated player map.
+ */
 std::vector<std::string> MauClient::getLocalPlayerNames(std::vector<std::string> playerNames)
 {
     std::vector<std::string> localPlayerNames = playerNames;

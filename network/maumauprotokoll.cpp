@@ -4,7 +4,11 @@
 MProtocol::MProtocol()
 {
 }
-
+/**
+ * @brief MProtocol::cardVectorToSting encodes a card vector to a string
+ * @param cards
+ * @return encoded string
+ */
 QString MProtocol::cardVectorToSting(std::vector<Card> cards)
 {
     //sting structure suit:value,suit:value,...
@@ -21,7 +25,11 @@ QString MProtocol::cardVectorToSting(std::vector<Card> cards)
     }
     return vecSting;
 }
-
+/**
+ * @brief MProtocol::playerCardCountToSting encodes a map of the other players card count
+ * @param otherPlayerCardCount
+ * @return encoded string
+ */
 QString MProtocol::playerCardCountToSting(std::map<PLAYER::Name, int> otherPlayerCardCount)
 {
     //sting structure: name:count,name:count,...
@@ -36,7 +44,11 @@ QString MProtocol::playerCardCountToSting(std::map<PLAYER::Name, int> otherPlaye
     cardCountString.chop(1);
     return cardCountString;
 }
-
+/**
+ * @brief MProtocol::cardToSting encodes a card
+ * @param card
+ * @return encoded string
+ */
 QString MProtocol::cardToSting(Card card)
 {
     //sting structure: suit:value
@@ -46,7 +58,11 @@ QString MProtocol::cardToSting(Card card)
     cardAsString.append(QString::number(card.getValue()));
     return cardAsString;
 }
-
+/**
+ * @brief MProtocol::stringVecToSingle encodes a vector of player names
+ * @param playerNames
+ * @return encoded string
+ */
 QString MProtocol::stringVecToSingle(std::vector<std::string> playerNames)
 {
     QString singleString;
@@ -62,7 +78,11 @@ QString MProtocol::stringVecToSingle(std::vector<std::string> playerNames)
     singleString.chop(1);
     return singleString;
 }
-
+/**
+ * @brief MProtocol::stringToStringVec decodes a string to a vector of player name strings
+ * @param stringVec
+ * @return the vector of player names
+ */
 std::vector<std::string> MProtocol::stringToStringVec(QString stringVec)
 {
     std::vector<std::string> playerNames;
@@ -76,7 +96,11 @@ std::vector<std::string> MProtocol::stringToStringVec(QString stringVec)
     }
     return playerNames;
 }
-
+/**
+ * @brief MProtocol::stringToCardVec decodes a sting to a card vector
+ * @param vecAsSting
+ * @return decoded cardvector
+ */
 std::vector<Card> MProtocol::stringToCardVec(QString vecAsSting)
 {
     std::vector<Card> cards;
@@ -89,7 +113,11 @@ std::vector<Card> MProtocol::stringToCardVec(QString vecAsSting)
     }
     return cards;
 }
-
+/**
+ * @brief MProtocol::stingToCardCountMap decodes a string to a map of player card counts
+ * @param mapAsSting
+ * @return  map of player card counts
+ */
 std::map<PLAYER::Name, int> MProtocol::stingToCardCountMap(QString mapAsSting)
 {
     std::map<PLAYER::Name, int> otherPlayerCardCount;
@@ -101,7 +129,11 @@ std::map<PLAYER::Name, int> MProtocol::stingToCardCountMap(QString mapAsSting)
     }
     return otherPlayerCardCount;
 }
-
+/**
+ * @brief MProtocol::stingToCard decodes a string to a card
+ * @param cardAsSting
+ * @return decoded card
+ */
 Card MProtocol::stingToCard(QString cardAsSting)
 {
     QStringList cardAttrib = cardAsSting.split(":");
