@@ -1,6 +1,8 @@
 #ifndef CARD_H_
 #define CARD_H_
-
+/**
+ * @brief The Card class represents a card with a card suit and a card value
+ */
 class Card {
 public:
     enum cardSuit {
@@ -32,7 +34,11 @@ public:
     Card();
     cardSuit getSuit() const;
     cardValue getValue() const;
-
+    /**
+     * @brief operator == checks if the values of the two cards are equal
+     * @param card
+     * @return
+     */
     bool operator==(const Card& card) const;
 };
 

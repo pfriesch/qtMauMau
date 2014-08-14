@@ -10,12 +10,10 @@ MauServer::MauServer(QObject* parent)
 
     int port(Settings::getInstance()->getProperty("network/port").toInt());
     server.listen(QHostAddress::Any, port);
-    qDebug() << "Server is now listening";
 }
 
 void MauServer::acceptNewConnection()
 {
-    qDebug() << "Server acceptedConection";
     QTcpSocket* client = server.nextPendingConnection();
     pendingConnections.append(new MSocket(client));
     connect(pendingConnections.back(), &MSocket::readyRead, this, &MauServer::readNextData);
@@ -49,7 +47,6 @@ void MauServer::readNextData(MSocket* _client)
 void MauServer::handleMessage(PLAYER::Name name, QString message)
 {
     message = message.trimmed();
-    qDebug() << "recieved Data: " << message;
     QStringList messageSplit = message.split(";");
     switch (MProtocol::toServer(messageSplit.at(0).toInt())) {
     case MProtocol::PLAY_CARD:
@@ -65,7 +62,6 @@ void MauServer::handleMessage(PLAYER::Name name, QString message)
         break;
     }
     default:
-        qDebug() << "method not found";
         break;
     }
 }
@@ -167,13 +163,8 @@ void MauServer::RemotePlayerWon(PLAYER::Name remotePlayerName, std::string _titl
 
 void MauServer::writeData(QString data, QTcpSocket* client)
 {
-    qDebug() << "send Data: " << data;
     data.append("\n");
-    qint64 writtenByteCount = client->write(data.toStdString().c_str());
-    if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
-
-        qDebug() << "server -> client write failed";
-    }
+    client->write(data.toStdString().c_str());
 }
 
 QTcpSocket* MauServer::socketByName(PLAYER::Name pName)
@@ -183,7 +174,6 @@ QTcpSocket* MauServer::socketByName(PLAYER::Name pName)
             return clients.at(i)->getSocket();
         }
     }
-    qDebug() << "CRITICAL: socket not found! this should never happen";
     return NULL;
 }
 

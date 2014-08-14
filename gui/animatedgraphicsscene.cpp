@@ -2,7 +2,6 @@
 #include <QTimeLine>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsItem>
-#include <QDebug>
 #include <settings.h>
 
 AnimatedGraphicsScene::AnimatedGraphicsScene ( QObject * parent ) : QGraphicsScene ( parent ), _activeTimeLines (  ), _animationActive ( false )

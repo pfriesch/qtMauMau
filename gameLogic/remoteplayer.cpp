@@ -1,10 +1,8 @@
 #include "remoteplayer.h"
-#include <QDebug>
 
 RemotePlayer::RemotePlayer(PLAYER::Name playerName, GameControllerProxy _gameController, std::string name)
     : Player(playerName, _gameController, name)
 {
-    qDebug() << "server: remote Player Name: " << playerName;
 }
 
 void RemotePlayer::otherPlaysCard(PLAYER::Name pName, const Card& playedCard)

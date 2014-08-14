@@ -1,7 +1,5 @@
 #include "gamecontroller.h"
 #include "gamecontrollerproxy.h"
-
-#include <QDebug>
 #include "algorithm"
 
 GameController::GameController()
@@ -12,8 +10,8 @@ GameController::GameController()
 GameController::~GameController()
 {
     for (unsigned i = 0; i < players.size(); ++i) {
-            if(players.at(i) != NULL)
-                delete players.at(i);
+        if (players.at(i) != NULL)
+            delete players.at(i);
     }
 }
 
@@ -61,13 +59,10 @@ void GameController::playCard(PLAYER::Name pName, const Card& card, Card::cardSu
     if (playerOrder[0] == pName && !playerPlayed) {
         playerPlayed = true;
         this->wishedSuit = whishedSuit;
-        qDebug() << "gewünschte Farbe: " << wishedSuit << " von Spieler: " << playerOrder[0];
-
         cardDepot.pushCard(card);
-        foreach(Player * player, players)
-        {
-            if (player->getPName() != pName) {
-                player->otherPlaysCard(pName, cardDepot.back());
+        for (unsigned i = 0; i < players.size(); ++i) {
+            if (players.at(i)->getPName() != pName) {
+                players.at(i)->otherPlaysCard(pName, cardDepot.back());
             }
         }
         setFlags(card);
@@ -97,10 +92,8 @@ void GameController::nextTurn()
     if (!aPlayerWon) {
         playerPlayed = false;
         setNextPlayer();
-        qDebug() << "Next Payer: " << playerOrder[0];
         players[playerOrder[0]]->doTurn(cardDepot.back(), wishedSuit);
     } else {
-        qDebug() << "some player won !!!!!";
     }
 }
 
@@ -171,10 +164,9 @@ void GameController::setNextPlayer()
 void GameController::playerDrawCard(PLAYER::Name pName)
 {
     players[pName]->reciveCard(cardStack.getLast(cardDepot));
-    foreach(Player * player, players)
-    {
-        if (player->getPName() != pName) {
-            player->otherDrawsCard(pName);
+    for (unsigned i = 0; i < players.size(); ++i) {
+        if (players.at(i)->getPName() != pName) {
+            players.at(i)->otherDrawsCard(pName);
         }
     }
 }

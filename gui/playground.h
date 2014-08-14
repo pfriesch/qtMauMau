@@ -12,7 +12,6 @@
 #include <QImage>
 #include <QBrush>
 #include <QGraphicsItem>
-#include <QDebug>
 #include <QMouseEvent>
 #include <QEventLoop>
 #include <QDialog>

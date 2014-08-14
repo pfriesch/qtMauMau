@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <QObject>
 #include <QFile>
-#include <QDebug>
 #include <QVariant>
 #include <QStringList>
 
@@ -15,7 +14,6 @@ public:
     static Settings* getInstance();
     void setProperty(QString key, QString value);
     QString getProperty(QString key);
-    void showAllKeys();
     bool contains(QString key);
     ~Settings();
 

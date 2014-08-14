@@ -1,4 +1,5 @@
 #include "settings.h"
+#include <QDebug>
 
 Settings* instance;
 // config.ini should store all the additional configurations
@@ -46,13 +47,6 @@ void Settings::setProperty(const QString key, const QString value)
 QString Settings::getProperty(const QString key)
 {
     return this->settings->value(key, "").toString();
-}
-
-void Settings::showAllKeys()
-{
-    for (QString key : settings->allKeys()) {
-        qDebug() << key;
-    }
 }
 
 bool Settings::contains(QString key)

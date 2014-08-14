@@ -22,8 +22,6 @@ Deck::Deck(Deck::InitStatus status)
  */
 void Deck::shuffle()
 {
-
-    //    std::random_shuffle(cards.begin(), cards.end());
     int m = cards.size();
     Card temp;
     int i;

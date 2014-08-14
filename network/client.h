@@ -9,6 +9,11 @@
 #include "gameLogic/card.h"
 #include "gameLogic/playername.h"
 
+/**
+ * All communication with the maumau server goes through this client class.
+ * Network communication is encoded through the mamau protokoll.
+ * @brief The MauClient class handles the client side of a maumau game.
+ */
 class MauClient : public QObject {
     Q_OBJECT
 public:

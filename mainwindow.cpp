@@ -214,8 +214,6 @@ void MainWindow::startNetworkGame(QVector<Player::Type> players, QStringList oth
 {
     setupGraphicsView();
     QString humanPlayerName = Settings::getInstance()->getProperty("common/playername");
-    //QStringList otherPlayerNames = { tr("Player 1"), tr("Player 2"), tr("Player 3") };
-    qDebug() << "otherplayernames: " << otherPlayerNames.size() << otherPlayerNames;
     playground->startGame();
     gc = new GameController();
     std::vector<Player*> _players;

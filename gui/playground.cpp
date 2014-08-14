@@ -53,7 +53,6 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
             //Clicked on Stack
             if (item == stack.createImg()) {
-                qDebug("VIEW: Sende drawCard()");
                 players.value(PlayerItem::direction::HUMAN)->unsetPlayableCards();
                 players.value(PlayerItem::direction::HUMAN)->setUnactive();
                 emit drawCard();
@@ -67,14 +66,12 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
                     Card::cardSuit chosenColor = Card::NONE;
                     if (c->getCard().getValue() == wishSuitCard) {
                         chosenColor = chooseColor();
-                        qDebug() << "CHOOOSEN COLOR: " << chosenColor;
                     }
                     soundMgr.playCard();
                     updateDepotCard(*c, depot);
                     soundMgr.drawCard();
                     human->removeCard(c->getCard());
                     human->unsetPlayableCards();
-                    qDebug("VIEW: sende playCard()");
                     human->setUnactive();
                     emit playCard(depot.getCard(), chosenColor);
                 }
@@ -216,11 +213,6 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
 void Playground::playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit)
 {
     history.write("You have to play, your Cards are:", players.value(PlayerItem::direction::HUMAN)->getCards());
-    qDebug("Player do Turn; cards: ");
-    for (unsigned i = 0; i < playableCards.size(); ++i) {
-        qDebug() << playableCards[i].getSuit() << ":" << playableCards[i].getValue();
-    }
-
     players.value(PlayerItem::direction::HUMAN)->setActive(wishedSuit);
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }
@@ -233,7 +225,6 @@ void Playground::playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wi
  */
 void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
 {
-    qDebug() << "VIEW: GET Signal - playerPlaysCard, player: " << QString::number(player);
     PlayerItem* p = NULL;
     switch (player) {
     case PLAYER::Name::LEFT: {
@@ -273,7 +264,6 @@ void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
 void Playground::playerDrawsCard(PLAYER::Name player)
 {
     history.write("Another Player draws a Card");
-    qDebug("VIEW: GET Signal - playerDrawsCard");
     PlayerItem* p;
 
     switch (player) {
@@ -313,7 +303,6 @@ void Playground::playerDrawsCard(PLAYER::Name player)
 void Playground::addPlayerCard(const Card& card)
 {
     history.write("You draw Card", card.getSuit(), card.getValue());
-    qDebug("VIEW: GET Signal - addPlayerCard");
     CardItem* cardItem = players.value(PlayerItem::direction::HUMAN)->addCard(card);
     CardItem cardFromStack(card);
     soundMgr.playCard();

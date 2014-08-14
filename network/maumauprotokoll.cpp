@@ -1,6 +1,5 @@
 #include "maumauprotokoll.h"
 #include <QStringList>
-#include <QDebug>
 
 MProtocol::MProtocol()
 {
@@ -82,7 +81,6 @@ std::vector<Card> MProtocol::stringToCardVec(QString vecAsSting)
 {
     std::vector<Card> cards;
     if (!vecAsSting.contains("$")) {
-        qDebug() << vecAsSting;
         QStringList vecAsStingList = vecAsSting.split(",");
         foreach(QString string, vecAsStingList)
         {

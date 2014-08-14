@@ -6,11 +6,20 @@
 #include <algorithm>
 #include <settings.h>
 
+/**
+ * @brief MauClient::MauClient
+ * @param parent
+ */
 MauClient::MauClient(QObject* parent)
     : QObject(parent)
 {
 }
-
+/**
+ * Connects readyread and error signals woth the corresponding slots in this class
+ * @brief MauClient::setupConnection sets up the connection with the given address and port
+ * @param _address the address to connect to
+ * @param _port the port of the connection
+ */
 void MauClient::setupConnection(QString _address, QString _port)
 {
     QHostAddress address = QHostAddress(_address);
@@ -23,10 +32,11 @@ void MauClient::setupConnection(QString _address, QString _port)
     connect(server, &QTcpSocket::readyRead, this, &MauClient::readNextData);
     //connect(&client, SIGNAL(readyRead()), this, SLOT(read()));
 }
-
+/**
+ * @brief MauClient::OnError slot handles errors of the connection
+ */
 void MauClient::OnError()
 {
-    qDebug() << "socket error";
     if (server->error()) {
         qCritical() << server->error();
         qCritical() << server->errorString();
@@ -54,13 +64,8 @@ void MauClient::UIdrawsCard()
 
 void MauClient::writeNextData(QString data)
 {
-    qDebug() << "send Data: " << data;
     data.append("\n");
-    qint64 writtenByteCount = server->write(data.toStdString().c_str());
-    if (writtenByteCount == -1 || writtenByteCount < qstrlen(data.toStdString().c_str())) {
-
-        qDebug() << "client -> server write failed";
-    }
+    server->write(data.toStdString().c_str());
 }
 
 void MauClient::readNextData()
@@ -71,8 +76,6 @@ void MauClient::readNextData()
         qint64 lineLength = server->readLine(buff, sizeof(buff));
         if (lineLength > 0) {
             handleMessage(QString(buff));
-        } else {
-            qDebug() << "message length error occured";
         }
         availableBytes = server->bytesAvailable();
     }
@@ -82,10 +85,7 @@ void MauClient::handleMessage(QString message)
 {
 
     message = message.trimmed();
-    qDebug() << "recived Data: " << message;
     QStringList messageSplit = message.split(";");
-    qDebug() << "message split size: " << messageSplit.size();
-
     switch (messageSplit.at(0).toInt()) {
     case MProtocol::INIT_PLAYGROUND: {
         emit clientGameStarted();
@@ -149,7 +149,6 @@ void MauClient::handleMessage(QString message)
         emit connectionAccepted();
         break;
     default:
-        qDebug() << "method not found";
         break;
     }
 }

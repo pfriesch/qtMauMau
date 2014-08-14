@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QMouseEvent>
 #include <QPushButton>
-#include <QDebug>
 #include <QEvent>
 #include <gameLogic/card.h>
 

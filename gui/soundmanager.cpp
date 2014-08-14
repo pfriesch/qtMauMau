@@ -1,5 +1,4 @@
 #include "soundmanager.h"
-#include "QDebug"
 #include "settings.h"
 
 SoundManager::SoundManager(QObject* parent)

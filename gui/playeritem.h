@@ -3,7 +3,6 @@
 
 #include <gui/carditem.h>
 #include <vector>
-#include <QDebug>
 #include <QString>
 #include <QGraphicsColorizeEffect>
 #include <QGraphicsTextItem>

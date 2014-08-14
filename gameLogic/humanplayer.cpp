@@ -1,5 +1,4 @@
 #include "humanplayer.h"
-#include <QDebug>
 
 HumanPlayer::HumanPlayer(PLAYER::Name playerName, GameControllerProxy _gameController, std::string name)
     : Player(playerName, _gameController, name)
@@ -36,7 +35,6 @@ void HumanPlayer::reciveCard(const Card& card)
 
 void HumanPlayer::playerWon(std::string _title)
 {
-    qDebug() << "Player Won, UI doesnt handle it yet";
     emit UIPlayerWon(_title);
 }
 

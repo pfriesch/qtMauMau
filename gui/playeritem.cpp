@@ -267,7 +267,6 @@ CardItem* PlayerItem::findCard(const Card& card, bool returnLastCard)
         }
     }
     if(returnLastCard){
-        qDebug("Couldnt find Card, return last");
         return cards->last();
     }
     return NULL;

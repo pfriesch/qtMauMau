@@ -10,7 +10,6 @@
 #include <QGraphicsPixmapItem>
 #include <QString>
 #include <QPixmap>
-#include <QDebug>
 
 class CardItem {
 
