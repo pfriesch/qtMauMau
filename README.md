@@ -23,16 +23,16 @@ spielen.~~
 
 ~~3) (2 point) Für die Spielkarten sollen mehrere Designs zur Auswahl stehen.~~ !Vielleicht noch eins dazu machen!
 
-4) (2 point) Aktionskarten (8,Ass,König,...) sollen mit einer vorgegebenen Aktion beliebig
-verknüpft werden können (zwei Karten ziehen, Richtungswechsel, Aussetzen,...).
+~~4) (2 point) Aktionskarten (8,Ass,König,...) sollen mit einer vorgegebenen Aktion beliebig
+verknüpft werden können (zwei Karten ziehen, Richtungswechsel, Aussetzen,...).~~
 
-5) (1 point) Beim Sieg oder besonderen Aktionen soll ein Sound abgespielt werden können.
+~~5) (1 point) Beim Sieg oder besonderen Aktionen soll ein Sound abgespielt werden können.~~
 
 6) ~~(1 point) Die Anwendung lässt illegale Züge nicht zu und zeigt dieses an.~~
 
 ~~7) (1 point) Die Anwendung erkennt eine Gewinnposition und zeigt das Resultat an.~~
 
-8) (1 point) Der Spieler soll sich den Spielverlauf ansehen können.
+~~8) (1 point) Der Spieler soll sich den Spielverlauf ansehen können.~~
 
 ~~9) (1 point) Die Anwendung soll es Spielern erlauben, über das Netzwerk zu spielen. Es
 darf davon ausgegangen werden, dass die beiden Anwendungen im selben Subnetz
@@ -44,12 +44,12 @@ sind, und die Ports erreichbar sind (keine Firewall, kein NAT, etc.).~~
 Neustart der Anwendung) wieder aufrufbar sein (Netzwerkspieler werden durch
 Computer ersetzt).
 
-12) (1 point) Eintreffende Verbindungswünsche sollen angezeigt werden.
+~~12) (1 point) Eintreffende Verbindungswünsche sollen angezeigt werden.~~
 
-13) (1 point) Der Anwender des Servers kann entscheiden, ob er den Verbindungswunsch
-annimmt, oder nicht.
+~~13) (1 point) Der Anwender des Servers kann entscheiden, ob er den Verbindungswunsch
+annimmt, oder nicht.~~
 
-14) (1 point) Der Anwender des Clients wird über die Entscheidung informiert.
+~~14) (1 point) Der Anwender des Clients wird über die Entscheidung informiert.~~
 
 ~~15) (1 point) Client und Server sind eine Applikation, jeder kann Client und Server sein, bei
 einer Verbindung gibt es immer nur einen Server und mehrere Clients~~
