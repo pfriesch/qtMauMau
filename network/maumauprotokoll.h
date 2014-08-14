@@ -8,7 +8,10 @@
 #include <map>
 #include "gameLogic/playername.h"
 
-//MauMauProtokoll
+/**
+ *
+ * @brief The MProtocol class holds static methods to encode and decode network communication done by a mau mau game.
+ */
 class MProtocol {
 public:
     enum toClient {

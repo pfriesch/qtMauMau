@@ -11,10 +11,11 @@
 #include "network/client.h"
 #include "gui/infodialog.h"
 
+
 namespace Ui {
+
 class MainWindow;
 }
-
 class MainWindow : public QMainWindow {
     Q_OBJECT
 

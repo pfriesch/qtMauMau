@@ -10,6 +10,10 @@
 #include "gameLogic/playername.h"
 #include "msocket.h"
 
+/**
+ *
+ * @brief The MauServer class handles all network communication on the server side in a mau mau game.
+ */
 class MauServer : public QObject {
     Q_OBJECT
 public:

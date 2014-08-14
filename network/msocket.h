@@ -4,7 +4,9 @@
 #include <QObject>
 #include <QTcpSocket>
 #include "gameLogic/playername.h"
-
+/**
+ * @brief The MSocket class a wrapper class around a QTcpSocket to identify it when a readyread signal is emited
+ */
 class MSocket : public QObject {
     Q_OBJECT
 public:

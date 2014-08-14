@@ -3,6 +3,10 @@
 #include <settings.h>
 #include "maumauprotokoll.h"
 
+/**
+ * @brief MauServer::MauServer sets the server to listen
+ * @param parent
+ */
 MauServer::MauServer(QObject* parent)
     : QObject(parent)
 {
@@ -11,7 +15,9 @@ MauServer::MauServer(QObject* parent)
     int port(Settings::getInstance()->getProperty("network/port").toInt());
     server.listen(QHostAddress::Any, port);
 }
-
+/**
+ * @brief MauServer::acceptNewConnection accepts a connection and sets it to pending connections
+ */
 void MauServer::acceptNewConnection()
 {
     QTcpSocket* client = server.nextPendingConnection();
@@ -23,7 +29,10 @@ void MauServer::acceptNewConnection()
     message.append(QString::number(pendingConnections.size() - 1));
     writeData(message, client);
 }
-
+/**
+ * @brief MauServer::readNextData called when a readyread signal is emited. Reads all available data
+ * @param _client the client to read from
+ */
 void MauServer::readNextData(MSocket* _client)
 {
 
@@ -43,7 +52,11 @@ void MauServer::readNextData(MSocket* _client)
         availableBytes = client->bytesAvailable();
     }
 }
-
+/**
+ * @brief MauServer::handleMessage handles a given string and emits signals accordingly
+ * @param name the player who send the message
+ * @param message
+ */
 void MauServer::handleMessage(PLAYER::Name name, QString message)
 {
     message = message.trimmed();
@@ -65,7 +78,10 @@ void MauServer::handleMessage(PLAYER::Name name, QString message)
         break;
     }
 }
-
+/**
+ * @brief MauServer::rejectConnection called when a pending connection is rejceted
+ * @param pendingConIndex the index of the connection to be rejected
+ */
 void MauServer::rejectConnection(int pendingConIndex)
 {
     MSocket* client = pendingConnections.at(pendingConIndex);
@@ -76,7 +92,10 @@ void MauServer::rejectConnection(int pendingConIndex)
     delete client;
     pendingConnections.removeAt(pendingConIndex);
 }
-
+/**
+ * @brief MauServer::acceptConnection called when a pendig connection is accepted
+ * @param pendingConIndex the index of the connection the be accepted
+ */
 void MauServer::acceptConnection(int pendingConIndex)
 {
     MSocket* client = pendingConnections.at(pendingConIndex);
@@ -86,12 +105,23 @@ void MauServer::acceptConnection(int pendingConIndex)
     writeData(message, client->getSocket());
     pendingConnections.removeAt(pendingConIndex);
 }
-
+/**
+ * @brief MauServer::getClients
+ * @return
+ */
 QList<MSocket*> MauServer::getClients() const
 {
     return clients;
 }
-
+/**
+ * @brief MauServer::RemoteInitPlayground constructs a MProtocol message of the slot type and sends it
+ * @param remotePlayerName
+ * @param remotePlayerCards
+ * @param otherPlayerCardCount
+ * @param topDepotCard
+ * @param _wishSuitCard
+ * @param playerNames
+ */
 void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::vector<Card> remotePlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
 {
     assignSocket(remotePlayerName);
@@ -111,7 +141,12 @@ void MauServer::RemoteInitPlayground(PLAYER::Name remotePlayerName, const std::v
     message.append(MProtocol::stringVecToSingle(playerNames));
     writeData(message, socketByName(remotePlayerName));
 }
-
+/**
+ * @brief MauServer::RemoteDoTurn constructs a MProtocol message of the slot type and sends it
+ * @param remotePlayerName
+ * @param playableCards
+ * @param wishedSuit
+ */
 void MauServer::RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> playableCards, Card::cardSuit wishedSuit)
 {
     QString message;
@@ -122,7 +157,12 @@ void MauServer::RemoteDoTurn(PLAYER::Name remotePlayerName, std::vector<Card> pl
     message.append(QString::number(wishedSuit));
     writeData(message, socketByName(remotePlayerName));
 }
-
+/**
+ * @brief MauServer::RemotePlayerPlaysCard constructs a MProtocol message of the slot type and sends it
+ * @param remotePlayerName
+ * @param pName
+ * @param playedCard
+ */
 void MauServer::RemotePlayerPlaysCard(PLAYER::Name remotePlayerName, PLAYER::Name pName, const Card& playedCard)
 {
     QString message;
@@ -133,7 +173,11 @@ void MauServer::RemotePlayerPlaysCard(PLAYER::Name remotePlayerName, PLAYER::Nam
     message.append(MProtocol::cardToSting(playedCard));
     writeData(message, socketByName(remotePlayerName));
 }
-
+/**
+ * @brief MauServer::RemotePlayerDrawsCard constructs a MProtocol message of the slot type and sends it
+ * @param remotePlayerName
+ * @param pName
+ */
 void MauServer::RemotePlayerDrawsCard(PLAYER::Name remotePlayerName, PLAYER::Name pName)
 {
     QString message;
@@ -142,7 +186,11 @@ void MauServer::RemotePlayerDrawsCard(PLAYER::Name remotePlayerName, PLAYER::Nam
     message.append(QString::number(pName));
     writeData(message, socketByName(remotePlayerName));
 }
-
+/**
+ * @brief MauServer::RemoteAddPlayerCard constructs a MProtocol message of the slot type and sends it
+ * @param remotePlayerName
+ * @param card
+ */
 void MauServer::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& card)
 {
     QString message;
@@ -151,7 +199,11 @@ void MauServer::RemoteAddPlayerCard(PLAYER::Name remotePlayerName, const Card& c
     message.append(MProtocol::cardToSting(card));
     writeData(message, socketByName(remotePlayerName));
 }
-
+/**
+ * @brief MauServer::RemotePlayerWon constructs a MProtocol message of the slot type and sends it
+ * @param remotePlayerName
+ * @param _title
+ */
 void MauServer::RemotePlayerWon(PLAYER::Name remotePlayerName, std::string _title)
 {
     QString message;
@@ -160,13 +212,21 @@ void MauServer::RemotePlayerWon(PLAYER::Name remotePlayerName, std::string _titl
     message.append(QString(_title.c_str()));
     writeData(message, socketByName(remotePlayerName));
 }
-
+/**
+ * @brief MauServer::writeData writes the given string to the given socket
+ * @param data
+ * @param client
+ */
 void MauServer::writeData(QString data, QTcpSocket* client)
 {
     data.append("\n");
     client->write(data.toStdString().c_str());
 }
-
+/**
+ * @brief MauServer::socketByName returns the socket wich is connected to the given player name
+ * @param pName
+ * @return the socket wich is connected to the given player name
+ */
 QTcpSocket* MauServer::socketByName(PLAYER::Name pName)
 {
     for (int i = 0; i < clients.size(); ++i) {
@@ -176,7 +236,10 @@ QTcpSocket* MauServer::socketByName(PLAYER::Name pName)
     }
     return NULL;
 }
-
+/**
+ * @brief MauServer::assignSocket assigns the next free socket to the given name
+ * @param remotePlayerName
+ */
 void MauServer::assignSocket(PLAYER::Name remotePlayerName)
 {
     for (int i = 0; i < clients.size(); ++i) {

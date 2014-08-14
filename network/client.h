@@ -23,7 +23,6 @@ public:
     PLAYER::Name playerName;
     QVector<PLAYER::Name> localPlayerOrder;
     void setupConnection(QString _address, QString _port);
-//    PLAYER::Name getLocalPlayerName(PLAYER::Name pName);
 
 signals:
     void UIinitPlayground(const std::vector<Card> humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames);
