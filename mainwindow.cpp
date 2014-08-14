@@ -36,12 +36,6 @@ void MainWindow::setupGraphicsView()
     if (gc != NULL) {
         delete gc;
     }
-    if (server != NULL) {
-        delete server;
-    }
-    if (client != NULL) {
-        delete client;
-    }
 
     playground = new Playground();
     view = new QGraphicsView(this);
@@ -67,7 +61,7 @@ void MainWindow::setupMenuBar()
     QMenuBar* menuBar = new QMenuBar(this);
 
     // File Menu
-    QMenu* fileMenu = new QMenu(QMenu::tr("File"),this);
+    QMenu* fileMenu = new QMenu(QMenu::tr("File"), this);
     menuBar->addMenu(fileMenu);
 
     QAction* startLocalGameMenu = new QAction(QAction::tr("Start Local Game"), this);
@@ -93,7 +87,7 @@ void MainWindow::setupMenuBar()
     fileMenu->addAction(exitMenu);
 
     //Info Menu
-    QMenu* infoMenu = new QMenu(QMenu::tr("Info"),this);
+    QMenu* infoMenu = new QMenu(QMenu::tr("Info"), this);
     menuBar->addMenu(infoMenu);
 
     QAction* aboutMenu = new QAction(QAction::tr("About"), this);
@@ -120,31 +114,33 @@ void MainWindow::connectSignalsForLocal(HumanPlayer* humanPlayer)
 
 void MainWindow::connectSignalsForServer(HumanPlayer* humanPlayer, QVector<RemotePlayer*> remotePlayers)
 {
+
     // From HumandPlayer(Logic) ----> Playground(View)
     QObject::connect(humanPlayer, &HumanPlayer::UIinitPlayground, playground, &Playground::initPlayground);
     QObject::connect(humanPlayer, &HumanPlayer::UIdoTurn, playground, &Playground::playerDoTurn);
     QObject::connect(humanPlayer, &HumanPlayer::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
     QObject::connect(humanPlayer, &HumanPlayer::UIaddPlayerCard, playground, &Playground::addPlayerCard);
     QObject::connect(humanPlayer, &HumanPlayer::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
+    QObject::connect(humanPlayer, &HumanPlayer::UIPlayerWon, playground, &Playground::playerWon);
 
     //From Playground(View) ---> HumanPlayer(Logic)
     QObject::connect(playground, &Playground::playCard, humanPlayer, &HumanPlayer::UIplaysCard);
     QObject::connect(playground, &Playground::drawCard, humanPlayer, &HumanPlayer::UIdrawsCard);
 
-    foreach(Player * remotePlayer, remotePlayers)
+    foreach(RemotePlayer * remotePlayer, remotePlayers)
     {
-        RemotePlayer* _remotePlayer = static_cast<RemotePlayer*>(remotePlayer);
-        // From RemotePlayer(Logic) ----> Server(Network)
-        QObject::connect(_remotePlayer, &RemotePlayer::RemoteInitPlayground, server, &MauServer::RemoteInitPlayground);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemoteDoTurn, server, &MauServer::RemoteDoTurn);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &MauServer::RemotePlayerPlaysCard);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &MauServer::RemotePlayerDrawsCard);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &MauServer::RemoteAddPlayerCard);
-        QObject::connect(_remotePlayer, &RemotePlayer::RemotePlayerWon, server, &MauServer::RemotePlayerWon);
+        server->dumpObjectInfo();
 
+        // From RemotePlayer(Logic) ----> Server(Network)
+        QObject::connect(remotePlayer, &RemotePlayer::RemoteInitPlayground, server, &MauServer::RemoteInitPlayground);
+        QObject::connect(remotePlayer, &RemotePlayer::RemoteDoTurn, server, &MauServer::RemoteDoTurn);
+        QObject::connect(remotePlayer, &RemotePlayer::RemotePlayerPlaysCard, server, &MauServer::RemotePlayerPlaysCard);
+        QObject::connect(remotePlayer, &RemotePlayer::RemotePlayerDrawsCard, server, &MauServer::RemotePlayerDrawsCard);
+        QObject::connect(remotePlayer, &RemotePlayer::RemoteAddPlayerCard, server, &MauServer::RemoteAddPlayerCard);
+        QObject::connect(remotePlayer, &RemotePlayer::RemotePlayerWon, server, &MauServer::RemotePlayerWon);
         // From  Server(Network) ----> RemotePlayer(Logic)
-        QObject::connect(server, &MauServer::RemotePlaysCard, _remotePlayer, &RemotePlayer::RemotePlaysCard);
-        QObject::connect(server, &MauServer::RemoteDrawsCard, _remotePlayer, &RemotePlayer::RemoteDrawsCard);
+        QObject::connect(server, &MauServer::RemotePlaysCard, remotePlayer, &RemotePlayer::RemotePlaysCard);
+        QObject::connect(server, &MauServer::RemoteDrawsCard, remotePlayer, &RemotePlayer::RemoteDrawsCard);
     }
 }
 
@@ -191,6 +187,13 @@ void MainWindow::startGameAsLocal()
 
 void MainWindow::startGameAsServerDialog()
 {
+    if (server != NULL) {
+        delete server;
+    }
+    if (client != NULL) {
+        delete client;
+    }
+
     server = new MauServer();
     createServerDialog = new CreateServerDialog;
     QObject::connect(server, &MauServer::newConnection, createServerDialog, &CreateServerDialog::newPlayer);
@@ -207,7 +210,7 @@ void MainWindow::startNetworkGame(QVector<Player::Type> players, QStringList oth
     setupGraphicsView();
     QString humanPlayerName = Settings::getInstance()->getProperty("common/playername");
     //QStringList otherPlayerNames = { tr("Player 1"), tr("Player 2"), tr("Player 3") };
-    qDebug() << otherPlayerNames.size() << otherPlayerNames;
+    qDebug() << "otherplayernames: " << otherPlayerNames.size() << otherPlayerNames;
     playground->startGame();
     gc = new GameController();
     std::vector<Player*> _players;
@@ -222,11 +225,10 @@ void MainWindow::startNetworkGame(QVector<Player::Type> players, QStringList oth
             remotePlayers.append(static_cast<RemotePlayer*>(_players.back()));
         }
     }
-    gc->setPlayers(_players);
     connectSignalsForServer(static_cast<HumanPlayer*>(_players.at(0)), remotePlayers);
+    gc->setPlayers(_players);
     createServerDialog->hide();
     playground->startGame();
-
     if (Settings::getInstance()->contains("game/draw2xCard")) {
         gc->gameInit(Card::cardValue(Settings::getInstance()->getProperty("game/draw2xCard").toInt()),
                      Card::cardValue(Settings::getInstance()->getProperty("game/wishSuitCard").toInt()),
@@ -274,22 +276,22 @@ void MainWindow::aboutDialog()
 
 MainWindow::~MainWindow()
 {
-    if(playground != NULL)
-    delete playground;
-    if(gc != NULL)
+    if (playground != NULL)
+        delete playground;
+    if (gc != NULL)
         delete gc;
-    if(optionDialog != NULL)
-    delete optionDialog;
-    if(connectToServer != NULL)
-    delete connectToServer;
-    if(createServerDialog != NULL)
-    delete createServerDialog;
-    if(infoDialog != NULL)
-    delete infoDialog;
-    if(server != NULL)
-    delete server;
-    if(client != NULL)
-    delete client;
-    if(view != NULL)
-    delete view;
+    if (optionDialog != NULL)
+        delete optionDialog;
+    if (connectToServer != NULL)
+        delete connectToServer;
+    if (createServerDialog != NULL)
+        delete createServerDialog;
+    if (infoDialog != NULL)
+        delete infoDialog;
+    if (server != NULL)
+        delete server;
+    if (client != NULL)
+        delete client;
+    if (view != NULL)
+        delete view;
 }

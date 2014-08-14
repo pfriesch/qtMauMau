@@ -46,7 +46,7 @@ void CreateServerDialog::newPlayer(QString address, int connectionIndex, QString
 void CreateServerDialog::on_startgamebtn_clicked()
 {
     if (players.size() < 1) {
-        qDebug() << "hanlde to few players";
+        qDebug() << "too few players";
     } else {
         emit startNetworkGame(players, getPlayerNames());
         close();

@@ -19,6 +19,8 @@
 
 #include "gameLogic/humanplayer.h"
 
+#undef TEST
+
 #ifdef TEST
 #include "gameLogic/Test/gamecontroller_test.h"
 #include "gameLogic/Test/decktest.h"

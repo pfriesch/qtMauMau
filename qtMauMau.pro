@@ -19,7 +19,7 @@ CONFIG += c++11
 CONFIG += testcase
 CONFIG += openssl-linked
 
-DEFINES += TEST
+#DEFINES += TEST
 
 SOURCES += main.cpp\
         mainwindow.cpp \

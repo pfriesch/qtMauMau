@@ -33,9 +33,7 @@ private:
     void connectSignalsForLocal(HumanPlayer* humanPlayer);
     void connectSignalsForServer(HumanPlayer* humanPlayer, QVector<RemotePlayer*> remotePlayers);
     void connectSignalsForClient();
-
     void showNameDialog();
-
     void resetGame();
 
     Playground* playground = NULL;

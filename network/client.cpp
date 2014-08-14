@@ -95,66 +95,61 @@ void MauClient::handleMessage(QString message)
             localPlayerOrder.append(PLAYER::Name(i));
         }
         rotatePlayerMap();
-
         //        void UIinitPlayground(const std::vector<Card> & remotePlayerCards,
         //                              std::map<PLAYER::Name, int> otherPlayerCardCount,
         //                              const Card & topDepotCard,
         //                              Card::cardValue _wishSuitCard);
-
         emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(2)),
                               otherPlayerCardCount,
                               MProtocol::stingToCard(messageSplit.at(4)),
                               Card::cardValue(messageSplit.at(5).toInt()),
                               MProtocol::stringToStringVec(messageSplit.at(6)));
-
         break;
     }
     case MProtocol::DO_TURN:
-        if (messageSplit.size() < 3) {
-            //        void UIdoTurn(std::vector<Card> playableCards,
-            //                      Card::cardSuit wishedSuit);
-            emit UIdoTurn(MProtocol::stringToCardVec(messageSplit.at(1)),
-                          Card::cardSuit(messageSplit.at(2).toInt()));
-            break;
-
-        case MProtocol::OTHER_PLAYS_CARD:
-            //        void UIplayerPlaysCard(PLAYER::Name pName,
-            //                               const Card & playedCard);
-            emit UIplayerPlaysCard(localPlayerOrder[messageSplit.at(1).toInt()],
-                                   MProtocol::stingToCard(messageSplit.at(2)));
-            break;
-        case MProtocol::OTHER_DRAWS_CARD:
-            //        void UIplayerDrawsCard(PLAYER::Name pName);
-            emit UIplayerDrawsCard(localPlayerOrder[messageSplit.at(1).toInt()]);
-            break;
-        case MProtocol::ADD_CARD:
-            //        void UIaddPlayerCard(const Card & card);
-            emit UIaddPlayerCard(MProtocol::stingToCard(messageSplit.at(1)));
-            break;
-        case MProtocol::PLAYER_WON:
-            qDebug() << "Player " << messageSplit.at(1) << " won, signal to view not implemented yet";
-            break;
-        case MProtocol::REQUEST_NAME: {
-            QString message;
-            QString playerName = Settings::getInstance()->getProperty("common/playername");
-            message.append(QString::number(MProtocol::SEND_NAME));
-            message.append(";");
-            message.append(QString::number(messageSplit.at(1).toInt()));
-            message.append(";");
-            message.append(playerName);
-            writeNextData(message);
-            break;
-        }
-        case MProtocol::CONNECTION_REJECTED:
-            emit connectionRejected();
-            break;
-        case MProtocol::CONNECTION_ACCEPTED:
-            emit connectionAccepted();
-            break;
-        default:
-            qDebug() << "method not found";
-            break;
-        }
+        //        void UIdoTurn(std::vector<Card> playableCards,
+        //                      Card::cardSuit wishedSuit);
+        emit UIdoTurn(MProtocol::stringToCardVec(messageSplit.at(1)),
+                      Card::cardSuit(messageSplit.at(2).toInt()));
+        break;
+    case MProtocol::OTHER_PLAYS_CARD:
+        //        void UIplayerPlaysCard(PLAYER::Name pName,
+        //                               const Card & playedCard);
+        emit UIplayerPlaysCard(localPlayerOrder[messageSplit.at(1).toInt()],
+                               MProtocol::stingToCard(messageSplit.at(2)));
+        break;
+    case MProtocol::OTHER_DRAWS_CARD:
+        //        void UIplayerDrawsCard(PLAYER::Name pName);
+        emit UIplayerDrawsCard(localPlayerOrder[messageSplit.at(1).toInt()]);
+        break;
+    case MProtocol::ADD_CARD:
+        //        void UIaddPlayerCard(const Card & card);
+        emit UIaddPlayerCard(MProtocol::stingToCard(messageSplit.at(1)));
+        break;
+    case MProtocol::PLAYER_WON:
+        //void UIPlayerWon(std::string _title);
+        emit UIPlayerWon(messageSplit.at(1).toStdString());
+        break;
+    case MProtocol::REQUEST_NAME: {
+        QString message;
+        QString playerName = Settings::getInstance()->getProperty("common/playername");
+        message.append(QString::number(MProtocol::SEND_NAME));
+        message.append(";");
+        message.append(QString::number(messageSplit.at(1).toInt()));
+        message.append(";");
+        message.append(playerName);
+        writeNextData(message);
+        break;
+    }
+    case MProtocol::CONNECTION_REJECTED:
+        emit connectionRejected();
+        break;
+    case MProtocol::CONNECTION_ACCEPTED:
+        emit connectionAccepted();
+        break;
+    default:
+        qDebug() << "method not found";
+        break;
     }
 }
 
