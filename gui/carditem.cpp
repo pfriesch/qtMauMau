@@ -1,11 +1,20 @@
 #include "carditem.h"
 #include "settings.h"
 
+/**
+ * Constructor with Depot Card as Default
+ * @brief CardItem::CardItem
+ */
 CardItem::CardItem()
     : specialCode(specialCards::DEPOT)
 {
 }
 
+/**
+ * Copy Constructor with special Card
+ * @brief CardItem::CardItem
+ * @param _card
+ */
 CardItem::CardItem(const Card& _card)
     : specialCode(CardItem::specialCards::NOT_USED)
     , card(_card)
@@ -13,11 +22,21 @@ CardItem::CardItem(const Card& _card)
     createImg();
 }
 
+/**
+ * Create new Special Card Carditem
+ * @brief CardItem::CardItem
+ * @param _specialCode
+ */
 CardItem::CardItem(CardItem::specialCards _specialCode)
 {
     specialCode = _specialCode;
 }
 
+/**
+ * Copy Constructor
+ * @brief CardItem::CardItem
+ * @param _cardItem
+ */
 CardItem::CardItem(const CardItem& _cardItem)
     : graphicsItem(NULL)
     , x(_cardItem.getX())
@@ -30,6 +49,12 @@ CardItem::CardItem(const CardItem& _cardItem)
     specialCode = _cardItem.getSpecialCode();
 }
 
+/**
+ * overwritten = operator
+ * @brief CardItem::operator =
+ * @param _cardItem
+ * @return
+ */
 CardItem& CardItem::operator=(const CardItem& _cardItem)
 {
     card = _cardItem.getCard();
@@ -49,6 +74,12 @@ CardItem& CardItem::operator=(const CardItem& _cardItem)
     return *this;
 }
 
+/**
+ * SetPosition for Card on Scene
+ * @brief CardItem::setPos
+ * @param _x
+ * @param _y
+ */
 void CardItem::setPos(qreal _x, qreal _y)
 {
     x = _x;
@@ -58,26 +89,48 @@ void CardItem::setPos(qreal _x, qreal _y)
     }
 }
 
+/**
+ * get primitive Logic Card
+ * @brief CardItem::getCard
+ * @return Card
+ */
 Card CardItem::getCard() const
 {
     return card;
 }
 
+/**
+ * deletes the Image
+ * @brief CardItem::removeImg
+ */
 void CardItem::removeImg() const
 {
     delete graphicsItem;
 }
 
+/**
+ * @brief CardItem::getSpecialCode
+ * @return
+ */
 CardItem::specialCards CardItem::getSpecialCode() const
 {
     return specialCode;
 }
 
+/**
+ * @brief CardItem::getGraphicsItem
+ * @return
+ */
 QGraphicsPixmapItem* CardItem::getGraphicsItem() const
 {
     return this->graphicsItem;
 }
 
+/**
+ * creates Image for this card with this suit and value
+ * @brief CardItem::createImg
+ * @return
+ */
 QGraphicsPixmapItem* CardItem::createImg()
 {
 
@@ -102,6 +155,11 @@ QGraphicsPixmapItem* CardItem::createImg()
     return graphicsItem;
 }
 
+/**
+ * Returns the specialCardName
+ * @brief CardItem::getSpecialCardName
+ * @return
+ */
 std::string CardItem::getSpecialCardName()
 {
     std::string imgName("");
@@ -136,11 +194,21 @@ std::string CardItem::getNormalCardName()
 
     return imgName;
 }
+/**
+ * returns if this card is playable
+ * @brief CardItem::getPlayable
+ * @return
+ */
 bool CardItem::getPlayable() const
 {
     return playable;
 }
 
+/**
+ * Sets this card as playable
+ * @brief CardItem::setPlayable
+ * @param value
+ */
 void CardItem::setPlayable(bool value)
 {
     playable = value;

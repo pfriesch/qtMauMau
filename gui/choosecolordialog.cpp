@@ -24,6 +24,13 @@ ChooseColorDialog::ChooseColorDialog(QWidget* parent)
     ui->btnSpades->installEventFilter(this);
 }
 
+/**
+ * mouseButtonPress event
+ * @brief ChooseColorDialog::eventFilter
+ * @param obj
+ * @param event
+ * @return
+ */
 bool ChooseColorDialog::eventFilter(QObject* obj, QEvent* event)
 {
     switch (event->type()) {
@@ -37,6 +44,11 @@ bool ChooseColorDialog::eventFilter(QObject* obj, QEvent* event)
     return QDialog::eventFilter(obj, event);
 }
 
+/**
+ * User clicked on one of the Card Buttons
+ * @brief ChooseColorDialog::mousePressed
+ * @param pressedButton
+ */
 void ChooseColorDialog::mousePressed(QObject* pressedButton)
 {
 

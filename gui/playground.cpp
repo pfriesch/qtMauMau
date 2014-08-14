@@ -8,6 +8,10 @@ Playground::Playground(QObject* parent)
     this->setBackgroundBrush(brush);
 }
 
+/**
+ * Starts the game and initializes the Depot/Stack and so on
+ * @brief Playground::startGame
+ */
 void Playground::startGame()
 {
     history.write("Start new Game\n=====================");
@@ -22,6 +26,10 @@ void Playground::startGame()
     soundMgr.playBackgroundSong();
 }
 
+/**
+ * Sets the position of Depot and Stack
+ * @brief Playground::setDepotNStack
+ */
 void Playground::setDepotNStack()
 {
     QPointF sceneCenterPointRaw = this->sceneRect().center();
@@ -32,6 +40,11 @@ void Playground::setDepotNStack()
     stack.setPos(sceneCenter_X, sceneCenter_Y);
 }
 
+/**
+ * MouseEvent for clicking on a humanCard or on the Stack
+ * @brief Playground::mousePressEvent
+ * @param event
+ */
 void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton) {
@@ -70,7 +83,16 @@ void Playground::mousePressEvent(QGraphicsSceneMouseEvent* event)
     }
 }
 
-//bekomme alle Karten und anzahl karten der anderen Mitspieler
+
+/**
+ * Get all Cards from HumanPlayer, with otherPlayerCardCount, with the topDepotCard and so on
+ * @brief Playground::initPlayground
+ * @param humanPlayerCards
+ * @param otherPlayerCardCount
+ * @param topDepotCard
+ * @param _wishSuitCard
+ * @param playerNames
+ */
 void Playground::initPlayground(const std::vector<Card> humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, const Card& topDepotCard, Card::cardValue _wishSuitCard, std::vector<std::string> playerNames)
 {
     wishSuitCard = _wishSuitCard;
@@ -79,6 +101,13 @@ void Playground::initPlayground(const std::vector<Card> humanPlayerCards, std::m
     updateDepotCard(depotCard, depot);
 }
 
+/**
+ * Creates the player for initialization
+ * @brief Playground::createPlayer
+ * @param humanPlayerCards
+ * @param otherPlayerCardCount
+ * @param playerNames
+ */
 void Playground::createPlayer(const std::vector<Card> humanPlayerCards, std::map<PLAYER::Name, int> otherPlayerCardCount, std::vector<std::string> playerNames)
 {
     QPointF center = this->sceneRect().center();
@@ -115,6 +144,13 @@ void Playground::createPlayer(const std::vector<Card> humanPlayerCards, std::map
     }
 }
 
+/**
+ * updates the Depot Card
+ * @brief Playground::updateDepotCard
+ * @param fromCard
+ * @param toCard
+ * @param withAnimation with Animation or without
+ */
 void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool withAnimation)
 {
     qreal x = toCard.getX();
@@ -138,6 +174,13 @@ void Playground::updateDepotCard(CardItem& fromCard, CardItem& toCard, bool with
     update(sceneRect());
 }
 
+/**
+ * updates the Player card with animation from stack to the playerhand
+ * @brief Playground::updatePlayerCard
+ * @param fromCard
+ * @param toCard
+ * @param withAnimation
+ */
 void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool withAnimation)
 {
     fromCard.setPos(stack.getX(), stack.getY());
@@ -164,6 +207,12 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
     update(sceneRect());
 }
 
+/**
+ * Slot, the human player is on turn and have to select a Card, you get the wished suit and the playableCards
+ * @brief Playground::playerDoTurn
+ * @param playableCards
+ * @param wishedSuit
+ */
 void Playground::playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wishedSuit)
 {
     history.write("You have to play, your Cards are:", players.value(PlayerItem::direction::HUMAN)->getCards());
@@ -176,6 +225,12 @@ void Playground::playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wi
     players.value(PlayerItem::direction::HUMAN)->setPlayableCards(playableCards);
 }
 
+/**
+ * An other player plays a card from his hand to the stack
+ * @brief Playground::playerPlaysCard
+ * @param player
+ * @param playedCard
+ */
 void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
 {
     qDebug() << "VIEW: GET Signal - playerPlaysCard, player: " << QString::number(player);
@@ -267,6 +322,11 @@ void Playground::addPlayerCard(const Card& card)
         players.value(PlayerItem::direction::HUMAN)->rearrangePlayer(this->sceneRect().center().x(), this->sceneRect().center().y());
 }
 
+/**
+ * Yea, a player one the game congratulations
+ * @brief Playground::playerWon
+ * @param _title
+ */
 void Playground::playerWon(std::string _title)
 {
     history.write("WIIIN");
@@ -277,6 +337,11 @@ void Playground::playerWon(std::string _title)
     msgBox.exec();
 }
 
+/**
+ * show dialog for choosing color
+ * @brief Playground::chooseColor
+ * @return
+ */
 Card::cardSuit Playground::chooseColor()
 {
 
@@ -284,6 +349,10 @@ Card::cardSuit Playground::chooseColor()
     return Card::cardSuit(dialog.exec());
 }
 
+/**
+ * If we resize the scene, we have to rearrange all the players
+ * @brief Playground::rearrangeLayout
+ */
 void Playground::rearrangeLayout()
 {
     if (players.size() > 0) {

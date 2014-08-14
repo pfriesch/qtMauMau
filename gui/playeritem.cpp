@@ -1,5 +1,15 @@
 #include "playeritem.h"
 
+/**
+ * Constructor of Playeritem
+ * @brief PlayerItem::PlayerItem
+ * @param dir direction of Player
+ * @param cardCount how many cards have this player
+ * @param xCenter where is the scene centerX
+ * @param yCenter where is he scene centerY
+ * @param _playername Sets the playername
+ * @param parent
+ */
 PlayerItem::PlayerItem(direction dir, int cardCount, int xCenter, int yCenter, QString _playername, QObject* parent): QObject(parent)
 {
 
@@ -20,10 +30,10 @@ PlayerItem::PlayerItem(direction dir, int cardCount, int xCenter, int yCenter, Q
 /**
  * Own Constructor for the Human Player
  * @brief PlayerItem::PlayerItem
- * @param dir
- * @param humanCards
- * @param centerPoint
- * @param _playername
+ * @param dir direction
+ * @param humanCards set human Cards
+ * @param centerPoint set the Center Point x and y
+ * @param _playername set the Playername
  */
 PlayerItem::PlayerItem(direction dir, std::vector<Card> humanCards, int xCenter, int yCenter, QString _playername)
 {
@@ -44,6 +54,11 @@ PlayerItem::direction PlayerItem::getDirection()
     return playerDirection;
 }
 
+/**
+ * create Cards for this player
+ * @brief PlayerItem::createCards
+ * @param cardCount how many cards you want create
+ */
 void PlayerItem::createCards(int cardCount)
 {
     for (int i = 0; i < cardCount; i++) {
@@ -56,7 +71,7 @@ void PlayerItem::createCards(int cardCount)
 /**
  * Sry, but we need a own method for the human player, otherwise i go insane
  * @brief PlayerItem::createHumanCards
- * @param humanCards
+ * @param humanCards give the humand cards pls
  */
 void PlayerItem::createHumanCards(std::vector<Card> humanCards)
 {
@@ -103,6 +118,12 @@ void PlayerItem::measureLayout(int cardCount)
     }
 }
 
+/**
+ * rearrange this player on this scene
+ * @brief PlayerItem::rearrangePlayer
+ * @param xCenter give the xcenter of this scene
+ * @param yCenter give the ycenter of this scene
+ */
 void PlayerItem::rearrangePlayer(int xCenter, int yCenter)
 {
     this->xCenter = xCenter;
@@ -128,6 +149,11 @@ void PlayerItem::rearrangePlayer(int xCenter, int yCenter)
     }
 }
 
+/**
+ * Sets the Playable Cards for this player
+ * @brief PlayerItem::setPlayableCards
+ * @param playableCards
+ */
 void PlayerItem::setPlayableCards(std::vector<Card> playableCards)
 {
     for (unsigned int i = 0; i < playableCards.size(); ++i) {
@@ -137,6 +163,10 @@ void PlayerItem::setPlayableCards(std::vector<Card> playableCards)
     }
 }
 
+/**
+ * unsets the Playable cards for this player
+ * @brief PlayerItem::unsetPlayableCards
+ */
 void PlayerItem::unsetPlayableCards()
 {
     for (int i = 0; i < cards->size(); ++i) {
@@ -148,6 +178,11 @@ void PlayerItem::unsetPlayableCards()
     }
 }
 
+/**
+ * Is this player in turn
+ * @brief PlayerItem::setActive
+ * @param wishSuitCard what is the whised suit?
+ */
 void PlayerItem::setActive(Card::cardSuit wishSuitCard)
 {
     switch(wishSuitCard){
@@ -161,12 +196,22 @@ void PlayerItem::setActive(Card::cardSuit wishSuitCard)
     playername->setHtml("<p style='text-decoration:underline;font-style:oblique;'>" + playername->toPlainText()+" "+wish+"</p>");
 }
 
+/**
+ * Set this player Inactive
+ * @brief PlayerItem::setUnactive
+ */
 void PlayerItem::setUnactive()
 {
     playername->setHtml(playername->toHtml().replace(wish,""));
     playername->setHtml(playername->toPlainText());
 }
 
+/**
+ * Add a Card for this player
+ * @brief PlayerItem::addCard
+ * @param card
+ * @return CardItem
+ */
 CardItem* PlayerItem::addCard(const Card& card)
 {
     if (playerDirection == direction::LEFT || playerDirection == direction::RIGHT) {
@@ -187,6 +232,11 @@ CardItem* PlayerItem::addCard(const Card& card)
     return cardItem;
 }
 
+/**
+ * remove a Player Card
+ * @brief PlayerItem::removeCard
+ * @param card what card do you want remove
+ */
 void PlayerItem::removeCard(const Card& card)
 {
     CardItem* cardItem = findCard(card,true);
@@ -202,6 +252,13 @@ void PlayerItem::removeCard(const Card& card)
     delete cardItem;
 }
 
+/**
+ * Find card in playerhand
+ * @brief PlayerItem::findCard
+ * @param card
+ * @param returnLastCard
+ * @return
+ */
 CardItem* PlayerItem::findCard(const Card& card, bool returnLastCard)
 {
     for (int i = 0; i < cards->size(); ++i) {
@@ -216,6 +273,10 @@ CardItem* PlayerItem::findCard(const Card& card, bool returnLastCard)
     return NULL;
 }
 
+/**
+ * @brief PlayerItem::getSpecialCard
+ * @return
+ */
 CardItem::specialCards PlayerItem::getSpecialCard()
 {
     switch (playerDirection) {
