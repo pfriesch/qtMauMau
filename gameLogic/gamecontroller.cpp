@@ -92,11 +92,6 @@ void GameController::drawCard(PLAYER::Name pName)
     }
 }
 
-void GameController::setdraw2xCard(Card::cardValue cardValue)
-{
-    draw2xCard = cardValue;
-}
-
 void GameController::nextTurn()
 {
     if (!aPlayerWon) {
