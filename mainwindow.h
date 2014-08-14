@@ -44,8 +44,7 @@ private:
     InfoDialog* infoDialog = NULL;
     MauServer* server = NULL;
     MauClient* client = NULL;
-    QGraphicsView *view = NULL;
-
+    QGraphicsView* view = NULL;
 
     //Game Starts
 private
@@ -55,6 +54,7 @@ slots:
     void startGameAsClientDialog();
     void showOptionDialog();
     void aboutDialog();
+    void toggleFullscreen();
 };
 
 #endif // MAINWINDOW_H

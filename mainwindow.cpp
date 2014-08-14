@@ -95,6 +95,10 @@ void MainWindow::setupMenuBar()
     connect(aboutMenu, SIGNAL(triggered()), this, SLOT(aboutDialog()));
     infoMenu->addAction(aboutMenu);
 
+    QAction* toggleFullscreen = new QAction(QAction::tr("Toggle Fullscreen"), this);
+    connect(toggleFullscreen, &QAction::triggered, this, &MainWindow::toggleFullscreen);
+    infoMenu->addAction(toggleFullscreen);
+
     setMenuBar(menuBar);
 }
 
@@ -273,6 +277,15 @@ void MainWindow::aboutDialog()
     infoDialog = new InfoDialog();
     infoDialog->setModal(true);
     infoDialog->show();
+}
+
+void MainWindow::toggleFullscreen()
+{
+    if (this->isFullScreen()) {
+        this->showNormal();
+    } else {
+        this->showFullScreen();
+    }
 }
 
 MainWindow::~MainWindow()
