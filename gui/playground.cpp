@@ -88,7 +88,7 @@ void Playground::createPlayer(const std::vector<Card> humanPlayerCards, std::map
     for (unsigned int i = 0; i < otherPlayerCardCount.size(); i++) {
         switch (i) {
         case 1: {
-            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center.x(), center.y(), QString(playerNames.at(1).c_str()),this);
+            PlayerItem* p1 = new PlayerItem(PlayerItem::direction::LEFT, otherPlayerCardCount.at(PLAYER::Name::LEFT), center.x(), center.y(), QString(playerNames.at(1).c_str()), this);
             players.insert(PlayerItem::direction::LEFT, p1);
             break;
         }
@@ -153,8 +153,7 @@ void Playground::updatePlayerCard(CardItem& fromCard, CardItem& toCard, bool wit
         startAnimation();
         pause.exec();
     }
-    if((&toCard) != NULL){
-
+    if ((&toCard) != NULL) {
     }
     toCard = CardItem(fromCard);
     toCard.setPos(x, y);
@@ -179,7 +178,7 @@ void Playground::playerDoTurn(std::vector<Card> playableCards, Card::cardSuit wi
 
 void Playground::playerPlaysCard(PLAYER::Name player, const Card& playedCard)
 {
-    qDebug("VIEW: GET Signal - playerPlaysCard");
+    qDebug() << "VIEW: GET Signal - playerPlaysCard, player: " << QString::number(player);
     PlayerItem* p = NULL;
     switch (player) {
     case PLAYER::Name::LEFT: {
@@ -264,8 +263,8 @@ void Playground::addPlayerCard(const Card& card)
     CardItem cardFromStack(card);
     soundMgr.playCard();
     updatePlayerCard(cardFromStack, *cardItem);
-    if(cardItem )
-    players.value(PlayerItem::direction::HUMAN)->rearrangePlayer(this->sceneRect().center().x(), this->sceneRect().center().y());
+    if (cardItem)
+        players.value(PlayerItem::direction::HUMAN)->rearrangePlayer(this->sceneRect().center().x(), this->sceneRect().center().y());
 }
 
 void Playground::playerWon(std::string _title)
@@ -297,14 +296,15 @@ void Playground::rearrangeLayout()
     }
 }
 
-Playground::~Playground(){
-    for(CardItem *items : graphicalItems){
-        if(items != NULL)
-        delete items;
+Playground::~Playground()
+{
+    for (CardItem* items : graphicalItems) {
+        if (items != NULL)
+            delete items;
     }
 
-    for(PlayerItem *player : players){
-        if(player != NULL)
-        delete player;
+    for (PlayerItem* player : players) {
+        if (player != NULL)
+            delete player;
     }
 }

@@ -152,6 +152,7 @@ void MainWindow::connectSignalsForClient()
     QObject::connect(client, &MauClient::UIplayerPlaysCard, playground, &Playground::playerPlaysCard);
     QObject::connect(client, &MauClient::UIaddPlayerCard, playground, &Playground::addPlayerCard);
     QObject::connect(client, &MauClient::UIplayerDrawsCard, playground, &Playground::playerDrawsCard);
+    QObject::connect(client, &MauClient::UIPlayerWon, playground, &Playground::playerWon);
 
     //From Playground(View) ---> HumanPlayer(Logic)
     QObject::connect(playground, &Playground::playCard, client, &MauClient::UIplaysCard);
@@ -193,7 +194,6 @@ void MainWindow::startGameAsServerDialog()
     if (client != NULL) {
         delete client;
     }
-
     server = new MauServer();
     createServerDialog = new CreateServerDialog;
     QObject::connect(server, &MauServer::newConnection, createServerDialog, &CreateServerDialog::newPlayer);

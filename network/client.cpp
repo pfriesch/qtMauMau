@@ -95,15 +95,16 @@ void MauClient::handleMessage(QString message)
             localPlayerOrder.append(PLAYER::Name(i));
         }
         rotatePlayerMap();
-        //        void UIinitPlayground(const std::vector<Card> & remotePlayerCards,
-        //                              std::map<PLAYER::Name, int> otherPlayerCardCount,
-        //                              const Card & topDepotCard,
-        //                              Card::cardValue _wishSuitCard);
+        //        void initPlayground(const std::vector<Card> humanPlayerCards,
+        //                            std::map<PLAYER::Name, int> otherPlayerCardCount,
+        //                            const Card& topDepotCard,
+        //                            Card::cardValue _wishSuitCard,
+        //                            std::vector<std::string> playerNames);
         emit UIinitPlayground(MProtocol::stringToCardVec(messageSplit.at(2)),
                               otherPlayerCardCount,
                               MProtocol::stingToCard(messageSplit.at(4)),
                               Card::cardValue(messageSplit.at(5).toInt()),
-                              MProtocol::stringToStringVec(messageSplit.at(6)));
+                              getLocalPlayerNames(MProtocol::stringToStringVec(messageSplit.at(6))));
         break;
     }
     case MProtocol::DO_TURN:
@@ -115,12 +116,12 @@ void MauClient::handleMessage(QString message)
     case MProtocol::OTHER_PLAYS_CARD:
         //        void UIplayerPlaysCard(PLAYER::Name pName,
         //                               const Card & playedCard);
-        emit UIplayerPlaysCard(localPlayerOrder[messageSplit.at(1).toInt()],
+        emit UIplayerPlaysCard(getLocalPlayerPosition(PLAYER::Name(messageSplit.at(1).toInt())),
                                MProtocol::stingToCard(messageSplit.at(2)));
         break;
     case MProtocol::OTHER_DRAWS_CARD:
         //        void UIplayerDrawsCard(PLAYER::Name pName);
-        emit UIplayerDrawsCard(localPlayerOrder[messageSplit.at(1).toInt()]);
+        emit UIplayerDrawsCard(getLocalPlayerPosition(PLAYER::Name(messageSplit.at(1).toInt())));
         break;
     case MProtocol::ADD_CARD:
         //        void UIaddPlayerCard(const Card & card);
@@ -156,6 +157,18 @@ void MauClient::handleMessage(QString message)
 void MauClient::rotatePlayerMap()
 {
     std::rotate(localPlayerOrder.begin(), localPlayerOrder.begin() + playerName, localPlayerOrder.end());
+}
+
+PLAYER::Name MauClient::getLocalPlayerPosition(PLAYER::Name remoteName)
+{
+    return PLAYER::Name(localPlayerOrder.indexOf(remoteName));
+}
+
+std::vector<std::string> MauClient::getLocalPlayerNames(std::vector<std::string> playerNames)
+{
+    std::vector<std::string> localPlayerNames = playerNames;
+    std::rotate(localPlayerNames.begin(), localPlayerNames.begin() + playerName, localPlayerNames.end());
+    return localPlayerNames;
 }
 
 MauClient::~MauClient()

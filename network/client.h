@@ -46,5 +46,7 @@ private:
     void writeNextData(QString data);
     void handleMessage(QString message);
     void rotatePlayerMap();
+    PLAYER::Name getLocalPlayerPosition(PLAYER::Name remoteName);
+    std::vector<std::string> getLocalPlayerNames(std::vector<std::string> playerNames);
 };
 #endif
