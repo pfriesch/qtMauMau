@@ -1,13 +1,13 @@
 #ifndef CARDITEM_H
 #define CARDITEM_H
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 #include <gameLogic/card.h>
 #include <QPixmap>
 #include <stdlib.h>
 #include <string>
 #include <sstream>
-#include <QGraphicsPixmapItem>
+#include <QtWidgets/QGraphicsPixmapItem>
 #include <QString>
 #include <QPixmap>
 

@@ -1,8 +1,8 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QVector>
 #include <QPointF>
 #include <QHash>
@@ -11,10 +11,10 @@
 #include <map>
 #include <QImage>
 #include <QBrush>
-#include <QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QMouseEvent>
 #include <QEventLoop>
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include <gameLogic/gamecontroller.h>
 #include <gameLogic/card.h>
 #include <gui/carditem.h>
@@ -24,7 +24,7 @@
 #include <gameLogic/playername.h>
 #include <settings.h>
 #include <gui/soundmanager.h>
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <gui/gamehistory.h>
 #include <QStringList>
 

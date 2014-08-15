@@ -1,7 +1,7 @@
 #ifndef SETNAMEDIALOG_H
 #define SETNAMEDIALOG_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include <settings.h>
 
 namespace Ui {

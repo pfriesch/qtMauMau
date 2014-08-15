@@ -4,8 +4,8 @@
 #include <gui/carditem.h>
 #include <vector>
 #include <QString>
-#include <QGraphicsColorizeEffect>
-#include <QGraphicsTextItem>
+#include <QtWidgets/QGraphicsColorizeEffect>
+#include <QtWidgets/QGraphicsTextItem>
 #include <QColor>
 #include <stdlib.h>
 #include <string>

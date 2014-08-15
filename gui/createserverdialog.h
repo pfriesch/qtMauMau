@@ -1,8 +1,8 @@
 #ifndef CREATESERVERDIALOG_H
 #define CREATESERVERDIALOG_H
 
-#include <QDialog>
-#include <QLabel>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
 #include <gameLogic/remoteplayer.h>
 #include <gameLogic/aiplayer.h>
 #include "gameLogic/playername.h"

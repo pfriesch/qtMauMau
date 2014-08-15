@@ -1,11 +1,11 @@
 #ifndef ANIMATEDGRAPHICSSCENE_H
 #define ANIMATEDGRAPHICSSCENE_H
 
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include <QQueue>
 #include <QMap>
 #include <QEventLoop>
-#include <QGraphicsItemAnimation>
+#include <QtWidgets/QGraphicsItemAnimation>
 #include <QEventLoop>
 
 class QTimeLine;

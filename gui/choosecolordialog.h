@@ -1,9 +1,9 @@
 #ifndef CHOOSECOLORDIALOG_H
 #define CHOOSECOLORDIALOG_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include <QMouseEvent>
-#include <QPushButton>
+#include <QtWidgets/QPushButton>
 #include <QEvent>
 #include <gameLogic/card.h>
 

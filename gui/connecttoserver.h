@@ -1,7 +1,7 @@
 #ifndef CONNECTTOSERVER_H
 #define CONNECTTOSERVER_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include <settings.h>
 
 namespace Ui {

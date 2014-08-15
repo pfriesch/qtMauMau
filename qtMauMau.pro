@@ -4,25 +4,27 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core \
+            gui
 QT       += network
 QT       += testlib
 QT       += multimedia
-QT       += webkitwidgets
 
 
-greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET   = qtMauMau
 TEMPLATE = app
 CONFIG += c++11
 CONFIG += testcase
 CONFIG += openssl-linked
+CONFIG += mobility
 
 #DEFINES += TEST
 #DEFINES += "UNUSED(expr)"="(void)(expr)"
 
-SOURCES += main.cpp\
+SOURCES += main.cpp \
         mainwindow.cpp \
     settings.cpp \
     network/server.cpp \
@@ -100,7 +102,7 @@ FORMS    += \
     gui/addremoteplayer.ui
 
 
-TRANSLATIONS    = qtmaumau_de.ts \
+TRANSLATIONS    = qtmaumau_de.ts
 
 
 # Decide if its Debug or Release
@@ -116,5 +118,10 @@ config.path    = $$DESTDIR/
 config.files   = config.ini
 translation.path    = $$DESTDIR/
 translation.files   = qtmaumau_de.qm
-INSTALLS       += images config translation sound
+
+TARGETPATH = Machinekit/HalRemote
+target.path = $$[QT_INSTALL_QML]/$$TARGETPATH
+
+INSTALLS       += images config translation sound target
+
 

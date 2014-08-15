@@ -1,8 +1,8 @@
 #include "mainwindow.h"
-#include <QAction>
-#include <QMenuBar>
-#include <QAction>
-#include <QGraphicsView>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QGraphicsView>
 #include <QBrush>
 #include "gui/playground.h"
 #include "settings.h"

@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QtDebug>
 #include <QFile>
 #include <QTextStream>
@@ -10,8 +10,8 @@
 #include <stdlib.h>
 #include <QTime>
 #include <QObject>
-#include <QDesktopWidget>
-#include <QStyle>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QStyle>
 #include <network/server.h>
 #include <network/client.h>
 #include <gui/playground.h>
