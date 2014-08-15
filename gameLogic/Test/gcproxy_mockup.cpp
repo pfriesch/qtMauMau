@@ -8,8 +8,8 @@ GCProxy_mockup::GCProxy_mockup()
 
 void GCProxy_mockup::playCard(const Card& card, Card::cardSuit whishedSuit)
 {
-    UNUSED(card);
-    UNUSED(whishedSuit);
+    (void)(card);
+    (void)(whishedSuit);
 }
 
 void GCProxy_mockup::drawCard()

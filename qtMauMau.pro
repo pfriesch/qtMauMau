@@ -20,7 +20,7 @@ CONFIG += testcase
 CONFIG += openssl-linked
 
 #DEFINES += TEST
-DEFINES += UNUSED(expr)=(void)(expr)
+#DEFINES += "UNUSED(expr)"="(void)(expr)"
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -50,7 +50,7 @@ SOURCES += main.cpp\
     gameLogic/Test/gcproxy_mockup.cpp \
     gui/infodialog.cpp \
     gui/addremoteplayer.cpp \
-    gui/gamehistory.cpp \
+    gui/gamehistory.cpp
 
 
 
@@ -66,7 +66,6 @@ HEADERS  += mainwindow.h \
     gui/optiondialog.h \
     gui/carditem.h \
     gui/playeritem.h \
-    gameLogic/Deck.h \
     gameLogic/Test/gamecontroller_test.h \
     gameLogic/Test/decktest.h \
     gui/animatedgraphicsscene.h \
@@ -87,7 +86,7 @@ HEADERS  += mainwindow.h \
     gameLogic/Test/gcproxy_mockup.h \
     gui/infodialog.h \
     gui/addremoteplayer.h\
-    gui/gamehistory.h \
+    gui/gamehistory.h
 
 
 
@@ -98,7 +97,7 @@ FORMS    += \
     gui/createserverdialog.ui \
     gui/setnamedialog.ui \
     gui/infodialog.ui \
-    gui/addremoteplayer.ui \
+    gui/addremoteplayer.ui
 
 
 TRANSLATIONS    = qtmaumau_de.ts \

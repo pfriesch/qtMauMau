@@ -29,7 +29,7 @@ MauClient* client;
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
-    UNUSED(context);
+    (void)(context);
     QString txt;
     QTime time;
     std::cout << message.toStdString() << std::endl;
