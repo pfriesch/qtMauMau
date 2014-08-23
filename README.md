@@ -10,7 +10,7 @@ What you need is a custom build step.
    - Choose Make from the menu.
    - Write install into Make arguments: text input box.
 
-!!To generate the documentation run "doxygen" on the source folder.!!
+**To generate the documentation run "doxygen" on the source folder.**
 
 
 Das Kartenspiel "MauMau" mit dem QT Framework
