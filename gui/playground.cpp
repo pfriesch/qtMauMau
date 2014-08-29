@@ -5,6 +5,14 @@ Playground::Playground(QObject* parent)
 {
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
+
+    if(img.isNull()){
+         QMessageBox msgBox;
+         msgBox.setText(tr("Couldn't find any images, there is a problem with this build!"));
+         msgBox.setIcon(QMessageBox::Critical);
+         msgBox.exec();
+    }
+
     this->setBackgroundBrush(brush);
     QFont font("Arial");
     font.setBold(true);
