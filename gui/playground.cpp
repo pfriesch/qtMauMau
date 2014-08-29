@@ -6,6 +6,7 @@ Playground::Playground(QObject* parent)
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
     this->setBackgroundBrush(brush);
+    this->addText("Welcome to QT Mau Mau, you may start a game if you click on the menubar");
 }
 
 /**
