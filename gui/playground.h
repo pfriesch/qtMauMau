@@ -56,6 +56,8 @@ private:
     GameHistory history;
     SoundManager soundMgr;
 
+    QGraphicsTextItem *textItem = NULL;
+
     //Layout entities
     int cardWidth = 71;
     int cardHeight = 96;

@@ -6,7 +6,14 @@ Playground::Playground(QObject* parent)
     QImage img("img/green_background.jpg", "jpg");
     QBrush brush(img);
     this->setBackgroundBrush(brush);
-    this->addText("Welcome to QT Mau Mau, you may start a game if you click on the menubar");
+    QFont font("Arial");
+    font.setBold(true);
+    textItem = this->addText("Welcome to QT Mau Mau");
+    textItem->setFont(font);
+    textItem->setDefaultTextColor(QColor("white"));
+    textItem->setX(this->sceneRect().center().x()+textItem->textWidth()+100);
+    textItem->setY(this->sceneRect().center().y());
+    textItem->setScale(3);
 }
 
 /**
@@ -15,6 +22,7 @@ Playground::Playground(QObject* parent)
  */
 void Playground::startGame()
 {
+    this->removeItem(textItem);
     history.write("Start new Game\n=====================");
     soundMgr.startSound();
     stack = (CardItem::specialCards::RED_VERTICAL);
@@ -365,5 +373,8 @@ Playground::~Playground()
     for (PlayerItem* player : players) {
         if (player != NULL)
             delete player;
+    }
+    if(textItem != NULL){
+        delete textItem;
     }
 }
